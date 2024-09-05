@@ -1,0 +1,9 @@
+load("//:rust.bzl", "rust_component")
+
+# Example to build a simple component with a custom interface.
+rust_component(
+    name = "foo",
+    wit = "foo.wit",
+    srcs = ["foo.rs"],
+    world = "the-world",
+)

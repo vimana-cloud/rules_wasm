@@ -1,0 +1,105 @@
+module(name = "wasm-components")
+
+bazel_dep(name = "bazel_skylib", version = "1.7.1")
+bazel_dep(name = "rules_rust", version = "0.49.3")
+
+register_toolchains("//:wasm32-wasip2-toolchain")
+
+# Version for the WASI SDK: https://github.com/WebAssembly/wasi-sdk/releases.
+wasi_sdk_version = "24"
+
+# Version for `wasm-tools`: https://github.com/bytecodealliance/wasm-tools/releases.
+wasm_tools_version = "1.216.0"
+
+# Version for `wit-bindgen`: https://github.com/bytecodealliance/wit-bindgen/releases.
+wit_bindgen_version = "0.30.0"
+
+# The execution platform of all pre-built binaries.
+execution_platform = "x86_64-linux"
+
+# Rust setup: depend on `wit-bindgen` for build-time linking.
+crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
+crate.spec(
+    package = "wit-bindgen",
+    version = wit_bindgen_version,
+)
+crate.from_specs()
+use_repo(crate, "crates")
+
+# Manually download prebuilt binaries for various dependencies:
+
+http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+
+http_archive(
+    name = "wasi-sdk",
+    url = "https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-{version}/wasi-sdk-{version}.0-{platform}.tar.gz"
+        .format(version = wasi_sdk_version, platform = execution_platform),
+    integrity = "sha384-zKYGc5aaiM61Xn9KklKJLsm3sTwm6zDrghzzZhDbBZ318eUFzNiBYwUZnb2dZgq3",
+    build_file_content = """
+package(default_visibility = ["//visibility:public"])
+alias(
+    name = "wasm32-wasip2-clang",
+    actual = "wasi-sdk-{version}.0-{platform}/bin/wasm32-wasip2-clang",
+)
+alias(
+    name = "wasm32-wasip2-clang++",
+    actual = "wasi-sdk-{version}.0-{platform}/bin/wasm32-wasip2-clang++",
+)
+alias(
+    name = "wasm-component-ld",
+    actual = "wasi-sdk-{version}.0-{platform}/bin/wasm-component-ld",
+)
+alias(
+    name = "ar",
+    actual = "wasi-sdk-{version}.0-{platform}/bin/ar",
+)
+alias(
+    name = "nm",
+    actual = "wasi-sdk-{version}.0-{platform}/bin/nm",
+)
+alias(
+    name = "objdump",
+    actual = "wasi-sdk-{version}.0-{platform}/bin/objdump",
+)
+alias(
+    name = "strip",
+    actual = "wasi-sdk-{version}.0-{platform}/bin/strip",
+)
+""".format(version = wasi_sdk_version, platform = execution_platform),
+)
+
+http_archive(
+    name = "wasm-tools",
+    url = "https://github.com/bytecodealliance/wasm-tools/releases/download/v{version}/wasm-tools-{version}-{platform}.tar.gz"
+        .format(version = wasm_tools_version, platform = execution_platform),
+    integrity = "sha384-T96x029RaE8p1yhmJAR4Pdv1uGuq7cUkBI3heDaoMxz4eZm3YIGGz2SznlCvmyAd",
+    build_file_content = """
+package(default_visibility = ["//visibility:public"])
+alias(
+    name = "wasm-tools",
+    actual = "wasm-tools-{version}-{platform}/wasm-tools",
+)
+""".format(version = wasm_tools_version, platform = execution_platform),
+)
+
+http_archive(
+    name = "wit-bindgen",
+    url = "https://github.com/bytecodealliance/wit-bindgen/releases/download/v{version}/wit-bindgen-{version}-{platform}.tar.gz"
+        .format(version = wit_bindgen_version, platform = execution_platform),
+    integrity = "sha384-1dKYqjyugHFTKvcMVRYhEs8rlwbMXrqIRHwuwM/nUVJTBhCTOwwc9wJf6/Pe5k5Y",
+    build_file_content = """
+package(default_visibility = ["//visibility:public"])
+alias(
+    name = "wit-bindgen",
+    actual = "wit-bindgen-{version}-{platform}/wit-bindgen",
+)
+""".format(version = wit_bindgen_version, platform = execution_platform),
+)
+
+http_file(
+    name = "libwit-bindgen-cabi-realloc",
+    url = "https://github.com/bytecodealliance/wit-bindgen/raw/v{version}/crates/guest-rust/rt/src/libwit_bindgen_cabi_realloc.a"
+        .format(version = wit_bindgen_version),
+    integrity =  "sha384-NHz3ZkkmpvoqhS8KWedFZV3ORSMTVwdoBqoG/8g6NLqwIeK7clN5MCIJh63Sogp2",
+)

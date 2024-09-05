@@ -1,0 +1,6 @@
+package test:foo;
+
+world the-world {
+    export words: func(text: string) -> list<string>;
+    import log-activity: func(text: string);
+}
