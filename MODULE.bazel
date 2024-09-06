@@ -5,6 +5,9 @@ bazel_dep(name = "rules_rust", version = "0.49.3")
 
 register_toolchains("//:wasm32-wasip2-toolchain")
 
+# Version for WASI interface definitions: https://github.com/WebAssembly/WASI/releases.
+wasi_version = "0.2.1"
+
 # Version for the WASI SDK: https://github.com/WebAssembly/wasi-sdk/releases.
 wasi_sdk_version = "24"
 
@@ -30,6 +33,24 @@ use_repo(crate, "crates")
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+
+http_archive(
+    name = "wasi",
+    url = "https://github.com/WebAssembly/WASI/archive/refs/tags/v{version}.tar.gz"
+        .format(version = wasi_version),
+    integrity = "sha384-7kxa+SG+M43Wv9RkO/WrRghhN55JBWl9VOl/qgqo3X3673e4KipKJl3wMqp3oFSK",
+    build_file_content = """
+package(default_visibility = ["//visibility:public"])
+filegroup(
+    name = "cli",
+    srcs = glob(["WASI-{version}/wasip2/cli/*.wit"]),
+)
+filegroup(
+    name = "io",
+    srcs = glob(["WASI-{version}/wasip2/io/*.wit"]),
+)
+""".format(version = wasi_version),
+)
 
 http_archive(
     name = "wasi-sdk",

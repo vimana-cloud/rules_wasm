@@ -3,7 +3,17 @@ load("//:rust.bzl", "rust_component")
 # Example to build a simple component with a custom interface.
 rust_component(
     name = "foo",
-    wit = "foo.wit",
     srcs = ["foo.rs"],
+    wits = ["foo.wit"],
     world = "the-world",
+)
+
+# Example to build a wrapper component to run `foo`,
+# using the standard `wasi:cli` interface.
+rust_component(
+    name = "foo-runner",
+    srcs = ["runner.rs"],
+    wits = ["@wasi//:cli"],
+    world = "the-world",
+    wit_deps = ["@wasi//:io"],
 )
