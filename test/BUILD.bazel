@@ -13,7 +13,7 @@ rust_component(
 rust_component(
     name = "foo-runner",
     srcs = ["runner.rs"],
+    wit_deps = ["@wasi//:io"],
     wits = ["@wasi//:cli"],
     world = "the-world",
-    wit_deps = ["@wasi//:io"],
 )

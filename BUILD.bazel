@@ -1,6 +1,5 @@
 load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
-load("@rules_rust//proto/prost:defs.bzl", "rust_prost_toolchain")
-load("@rules_rust//rust:defs.bzl", "rust_library", "rust_library_group", "rust_shared_library")
+load("@buildtools//:rules.bzl", "buildifier")
 load(":wasi-toolchain-config.bzl", "wasi_toolchain_config")
 
 # Rename the manually-downloaded `realloc` library, as per
@@ -21,7 +20,7 @@ cc_import(
     visibility = ["//visibility:public"],
 )
 
-filegroup(name = "empty") # An empty file group.
+filegroup(name = "empty")  # An empty file group.
 
 # WASI C++ toolchain config:
 
@@ -29,7 +28,6 @@ wasi_toolchain_config(name = "wasm32-wasip2-cc-toolchain-config")
 
 cc_toolchain(
     name = "wasm32-wasip2-cc-toolchain",
-    toolchain_config = ":wasm32-wasip2-cc-toolchain-config",
     all_files = ":empty",
     compiler_files = ":empty",
     dwp_files = ":empty",
@@ -37,12 +35,11 @@ cc_toolchain(
     objcopy_files = ":empty",
     strip_files = ":empty",
     supports_param_files = False,
+    toolchain_config = ":wasm32-wasip2-cc-toolchain-config",
 )
 
 toolchain(
     name = "wasm32-wasip2-toolchain",
-    toolchain = ":wasm32-wasip2-cc-toolchain",
-    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
     exec_compatible_with = [
         "@platforms//cpu:x86_64",
         "@platforms//os:linux",
@@ -51,4 +48,16 @@ toolchain(
         "@platforms//cpu:wasm32",
         "@platforms//os:wasi",
     ],
+    toolchain = ":wasm32-wasip2-cc-toolchain",
+    toolchain_type = "@bazel_tools//tools/cpp:toolchain_type",
+)
+
+# To format all Bazel files, run `bazel run //:buildifier`.
+buildifier(
+    name = "buildifier",
+    exclude_patterns = [
+        "./.git/*",
+    ],
+    lint_mode = "fix",
+    mode = "fix",
 )

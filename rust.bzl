@@ -6,7 +6,7 @@ load(":private.bzl", "group_wit_files")
 
 def _kebab_to_snake(s):
     "Convert a string from kebab-case to snake_case."
-    return s.replace('-', '_')
+    return s.replace("-", "_")
 
 def _rust_wit_bindgen_impl(ctx):
     world = ctx.attr.world or ctx.label.name

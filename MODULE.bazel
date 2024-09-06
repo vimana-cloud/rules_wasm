@@ -3,6 +3,8 @@ module(name = "wasm-components")
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
 bazel_dep(name = "rules_rust", version = "0.49.3")
 
+bazel_dep(name = "buildifier_prebuilt", version = "7.3.1", dev_dependency = True, repo_name = "buildtools")
+
 register_toolchains("//:wasm32-wasip2-toolchain")
 
 # Version for WASI interface definitions: https://github.com/WebAssembly/WASI/releases.
@@ -32,13 +34,11 @@ use_repo(crate, "crates")
 # Manually download prebuilt binaries for various dependencies:
 
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
 http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 
 http_archive(
     name = "wasi",
-    url = "https://github.com/WebAssembly/WASI/archive/refs/tags/v{version}.tar.gz"
-        .format(version = wasi_version),
-    integrity = "sha384-7kxa+SG+M43Wv9RkO/WrRghhN55JBWl9VOl/qgqo3X3673e4KipKJl3wMqp3oFSK",
     build_file_content = """
 package(default_visibility = ["//visibility:public"])
 filegroup(
@@ -50,13 +50,13 @@ filegroup(
     srcs = glob(["WASI-{version}/wasip2/io/*.wit"]),
 )
 """.format(version = wasi_version),
+    integrity = "sha384-7kxa+SG+M43Wv9RkO/WrRghhN55JBWl9VOl/qgqo3X3673e4KipKJl3wMqp3oFSK",
+    url = "https://github.com/WebAssembly/WASI/archive/refs/tags/v{version}.tar.gz"
+        .format(version = wasi_version),
 )
 
 http_archive(
     name = "wasi-sdk",
-    url = "https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-{version}/wasi-sdk-{version}.0-{platform}.tar.gz"
-        .format(version = wasi_sdk_version, platform = execution_platform),
-    integrity = "sha384-zKYGc5aaiM61Xn9KklKJLsm3sTwm6zDrghzzZhDbBZ318eUFzNiBYwUZnb2dZgq3",
     build_file_content = """
 package(default_visibility = ["//visibility:public"])
 alias(
@@ -87,40 +87,61 @@ alias(
     name = "strip",
     actual = "wasi-sdk-{version}.0-{platform}/bin/strip",
 )
-""".format(version = wasi_sdk_version, platform = execution_platform),
+""".format(
+        platform = execution_platform,
+        version = wasi_sdk_version,
+    ),
+    integrity = "sha384-zKYGc5aaiM61Xn9KklKJLsm3sTwm6zDrghzzZhDbBZ318eUFzNiBYwUZnb2dZgq3",
+    url = "https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-{version}/wasi-sdk-{version}.0-{platform}.tar.gz"
+        .format(
+        platform = execution_platform,
+        version = wasi_sdk_version,
+    ),
 )
 
 http_archive(
     name = "wasm-tools",
-    url = "https://github.com/bytecodealliance/wasm-tools/releases/download/v{version}/wasm-tools-{version}-{platform}.tar.gz"
-        .format(version = wasm_tools_version, platform = execution_platform),
-    integrity = "sha384-T96x029RaE8p1yhmJAR4Pdv1uGuq7cUkBI3heDaoMxz4eZm3YIGGz2SznlCvmyAd",
     build_file_content = """
 package(default_visibility = ["//visibility:public"])
 alias(
     name = "wasm-tools",
     actual = "wasm-tools-{version}-{platform}/wasm-tools",
 )
-""".format(version = wasm_tools_version, platform = execution_platform),
+""".format(
+        platform = execution_platform,
+        version = wasm_tools_version,
+    ),
+    integrity = "sha384-T96x029RaE8p1yhmJAR4Pdv1uGuq7cUkBI3heDaoMxz4eZm3YIGGz2SznlCvmyAd",
+    url = "https://github.com/bytecodealliance/wasm-tools/releases/download/v{version}/wasm-tools-{version}-{platform}.tar.gz"
+        .format(
+        platform = execution_platform,
+        version = wasm_tools_version,
+    ),
 )
 
 http_archive(
     name = "wit-bindgen",
-    url = "https://github.com/bytecodealliance/wit-bindgen/releases/download/v{version}/wit-bindgen-{version}-{platform}.tar.gz"
-        .format(version = wit_bindgen_version, platform = execution_platform),
-    integrity = "sha384-1dKYqjyugHFTKvcMVRYhEs8rlwbMXrqIRHwuwM/nUVJTBhCTOwwc9wJf6/Pe5k5Y",
     build_file_content = """
 package(default_visibility = ["//visibility:public"])
 alias(
     name = "wit-bindgen",
     actual = "wit-bindgen-{version}-{platform}/wit-bindgen",
 )
-""".format(version = wit_bindgen_version, platform = execution_platform),
+""".format(
+        platform = execution_platform,
+        version = wit_bindgen_version,
+    ),
+    integrity = "sha384-1dKYqjyugHFTKvcMVRYhEs8rlwbMXrqIRHwuwM/nUVJTBhCTOwwc9wJf6/Pe5k5Y",
+    url = "https://github.com/bytecodealliance/wit-bindgen/releases/download/v{version}/wit-bindgen-{version}-{platform}.tar.gz"
+        .format(
+        platform = execution_platform,
+        version = wit_bindgen_version,
+    ),
 )
 
 http_file(
     name = "libwit-bindgen-cabi-realloc",
+    integrity = "sha384-NHz3ZkkmpvoqhS8KWedFZV3ORSMTVwdoBqoG/8g6NLqwIeK7clN5MCIJh63Sogp2",
     url = "https://github.com/bytecodealliance/wit-bindgen/raw/v{version}/crates/guest-rust/rt/src/libwit_bindgen_cabi_realloc.a"
         .format(version = wit_bindgen_version),
-    integrity =  "sha384-NHz3ZkkmpvoqhS8KWedFZV3ORSMTVwdoBqoG/8g6NLqwIeK7clN5MCIJh63Sogp2",
 )
