@@ -10,6 +10,7 @@ rust_component(
 
 # Example to build a wrapper component to run `foo`,
 # using the standard `wasi:cli` interface.
+# TODO: Fix broken transitive wit_deps.
 rust_component(
     name = "foo-runner",
     srcs = ["runner.rs"],
