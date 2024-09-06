@@ -22,6 +22,10 @@ wit_bindgen_version = "0.30.0"
 # The execution platform of all pre-built binaries.
 execution_platform = "x86_64-linux"
 
+# List of WASI packages to make available.
+# TODO: Stop duplicating this information with wasip2/BUILD.bazel.
+wasi_packages = ["cli", "clocks", "filesystem", "http", "io", "random", "sockets"]
+
 # Rust setup: depend on `wit-bindgen` for build-time linking.
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
 crate.spec(
@@ -40,16 +44,12 @@ http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_
 http_archive(
     name = "wasi",
     build_file_content = """
-package(default_visibility = ["//visibility:public"])
-filegroup(
-    name = "cli",
-    srcs = glob(["WASI-{version}/wasip2/cli/*.wit"]),
-)
-filegroup(
-    name = "io",
-    srcs = glob(["WASI-{version}/wasip2/io/*.wit"]),
-)
-""".format(version = wasi_version),
+[filegroup(
+    name = package,
+    srcs = glob(["WASI-{version}/wasip2/" + package + "/*.wit"]),
+    visibility = ["//visibility:public"],
+) for package in {packages}]
+""".format(packages = repr(wasi_packages), version = wasi_version),
     integrity = "sha384-7kxa+SG+M43Wv9RkO/WrRghhN55JBWl9VOl/qgqo3X3673e4KipKJl3wMqp3oFSK",
     url = "https://github.com/WebAssembly/WASI/archive/refs/tags/v{version}.tar.gz"
         .format(version = wasi_version),
@@ -58,35 +58,20 @@ filegroup(
 http_archive(
     name = "wasi-sdk",
     build_file_content = """
-package(default_visibility = ["//visibility:public"])
-alias(
-    name = "wasm32-wasip2-clang",
-    actual = "wasi-sdk-{version}.0-{platform}/bin/wasm32-wasip2-clang",
-)
-alias(
-    name = "wasm32-wasip2-clang++",
-    actual = "wasi-sdk-{version}.0-{platform}/bin/wasm32-wasip2-clang++",
-)
-alias(
-    name = "wasm-component-ld",
-    actual = "wasi-sdk-{version}.0-{platform}/bin/wasm-component-ld",
-)
-alias(
-    name = "ar",
-    actual = "wasi-sdk-{version}.0-{platform}/bin/ar",
-)
-alias(
-    name = "nm",
-    actual = "wasi-sdk-{version}.0-{platform}/bin/nm",
-)
-alias(
-    name = "objdump",
-    actual = "wasi-sdk-{version}.0-{platform}/bin/objdump",
-)
-alias(
-    name = "strip",
-    actual = "wasi-sdk-{version}.0-{platform}/bin/strip",
-)
+for binary in [
+    "wasm32-wasip2-clang",
+    "wasm32-wasip2-clang++",
+    "wasm-component-ld",
+    "ar",
+    "nm",
+    "objdump",
+    "strip"
+]:
+    alias(
+        name = binary,
+        actual = "wasi-sdk-{version}.0-{platform}/bin/" + binary,
+        visibility = ["//visibility:public"],
+    )
 """.format(
         platform = execution_platform,
         version = wasi_sdk_version,
@@ -102,10 +87,10 @@ alias(
 http_archive(
     name = "wasm-tools",
     build_file_content = """
-package(default_visibility = ["//visibility:public"])
 alias(
     name = "wasm-tools",
     actual = "wasm-tools-{version}-{platform}/wasm-tools",
+    visibility = ["//visibility:public"],
 )
 """.format(
         platform = execution_platform,
@@ -122,10 +107,10 @@ alias(
 http_archive(
     name = "wit-bindgen",
     build_file_content = """
-package(default_visibility = ["//visibility:public"])
 alias(
     name = "wit-bindgen",
     actual = "wit-bindgen-{version}-{platform}/wit-bindgen",
+    visibility = ["//visibility:public"],
 )
 """.format(
         platform = execution_platform,

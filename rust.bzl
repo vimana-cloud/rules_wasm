@@ -1,8 +1,7 @@
 # Rust-specific rules and macros.
 
 load("@rules_rust//rust:defs.bzl", "rust_library", "rust_shared_library")
-load(":component.bzl", "wasm_component")
-load(":private.bzl", "group_wit_files")
+load(":wasm.bzl", "wasm_component")
 
 def _kebab_to_snake(s):
     "Convert a string from kebab-case to snake_case."
@@ -10,12 +9,13 @@ def _kebab_to_snake(s):
 
 def _rust_wit_bindgen_impl(ctx):
     world = ctx.attr.world or ctx.label.name
-    wit_dir = group_wit_files(ctx, ctx.files.srcs, ctx.files.deps)
     output = ctx.actions.declare_file(_kebab_to_snake(world) + ".rs")
     outputs = [output]
-    arguments = ["rust", "--world", world, "--out-dir", output.dirname, wit_dir.path]
+    arguments = [
+        "rust", "--generate-all", ctx.file.src.path, "--world", world, "--out-dir", output.dirname,
+    ]
     ctx.actions.run(
-        inputs = [wit_dir],
+        inputs = [ctx.file.src],
         outputs = outputs,
         executable = ctx.executable._wit_bindgen_bin,
         arguments = arguments,
@@ -26,23 +26,17 @@ rust_wit_bindgen = rule(
     implementation = _rust_wit_bindgen_impl,
     doc = "Generate Rust bindings from a WebAssembly Interface (WIT) file.",
     attrs = {
-        "srcs": attr.label_list(
-            doc = "Wasm interface (WIT) source files.",
-            allow_files = [".wit"],
-        ),
-        "deps": attr.label_list(
-            doc = "Wasm interface (WIT) dependencies; all files included by WIT sources.",
-            allow_files = [".wit"],
+        "src": attr.label(
+            doc = "WIT source package.",
+            allow_single_file = [".wit"],
         ),
         "world": attr.string(
             doc = "World to generate bindings for. Default is the target name.",
         ),
         "_wit_bindgen_bin": attr.label(
-            # TODO: Use wit-bindgen-cli crate dependency
-            #   instead of checking in the binary.
-            # https://github.com/bazelbuild/rules_rust/discussions/2786
+            # TODO: Use wit-bindgen-cli crate dependency instead of checking in the binary
+            #   https://github.com/bazelbuild/rules_rust/discussions/2786
             default = "@wit-bindgen//:wit-bindgen",
-            #default = "@wit-bindgen-release//:wit-bindgen",
             allow_files = True,
             executable = True,
             cfg = "exec",
@@ -50,9 +44,9 @@ rust_wit_bindgen = rule(
     },
 )
 
-def rust_component(name, srcs, wits, world = None, deps = None, wit_deps = None):
+def rust_component(name, srcs, wit, world = None, deps = None):
     """
-    Compile a Wasm component given a set of interface definitions (`wits`),
+    Compile a Wasm component given a WIT package (`wit`),
     a set of Rust source files (`srcs`), and a world name.
 
     The default for `world` is `name`.
@@ -61,14 +55,11 @@ def rust_component(name, srcs, wits, world = None, deps = None, wit_deps = None)
         world = name
     if deps == None:
         deps = []
-    if wit_deps == None:
-        wit_deps = []
 
     wit_name = name + " wit"
     rust_wit_bindgen(
         name = wit_name,
-        srcs = wits,
-        deps = wit_deps,
+        src = wit,
         world = world,
     )
 
@@ -95,6 +86,6 @@ def rust_component(name, srcs, wits, world = None, deps = None, wit_deps = None)
     wasm_component(
         name = name,
         module = ":" + core_name,
-        wits = wits,
-        wit_deps = wit_deps,
+        wit = wit,
+        world = world,
     )

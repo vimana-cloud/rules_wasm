@@ -1,0 +1,50 @@
+load("//:wasm.bzl", "wit_package")
+
+wit_package(
+    name = "sockets",
+    srcs = ["@wasi//:sockets"],
+    visibility = ["//visibility:public"],
+)
+
+wit_package(
+    name = "random",
+    srcs = ["@wasi//:random"],
+    visibility = ["//visibility:public"],
+)
+
+wit_package(
+    name = "io",
+    srcs = ["@wasi//:io"],
+    visibility = ["//visibility:public"],
+)
+
+wit_package(
+    name = "http",
+    srcs = ["@wasi//:http"],
+    visibility = ["//visibility:public"],
+)
+
+wit_package(
+    name = "filesystem",
+    srcs = ["@wasi//:filesystem"],
+    visibility = ["//visibility:public"],
+)
+
+wit_package(
+    name = "clocks",
+    srcs = ["@wasi//:clocks"],
+    visibility = ["//visibility:public"],
+)
+
+wit_package(
+    name = "cli",
+    srcs = ["@wasi//:cli"],
+    deps = [
+        ":io",
+        ":clocks",
+        ":filesystem",
+        ":sockets",
+        ":random",
+    ],
+    visibility = ["//visibility:public"],
+)

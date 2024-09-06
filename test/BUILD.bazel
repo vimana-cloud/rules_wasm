@@ -4,17 +4,15 @@ load("//:rust.bzl", "rust_component")
 rust_component(
     name = "foo",
     srcs = ["foo.rs"],
-    wits = ["foo.wit"],
+    wit = "foo.wit",
     world = "the-world",
 )
 
 # Example to build a wrapper component to run `foo`,
 # using the standard `wasi:cli` interface.
-# TODO: Fix broken transitive wit_deps.
 rust_component(
     name = "foo-runner",
     srcs = ["runner.rs"],
-    wit_deps = ["@wasi//:io"],
-    wits = ["@wasi//:cli"],
-    world = "the-world",
+    wit = "//wasip2:cli",
+    world = "command",
 )
