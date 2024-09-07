@@ -1,4 +1,5 @@
 load("//:rust.bzl", "rust_component")
+load("@bazel_skylib//rules:native_binary.bzl", "native_test")
 
 # Example to build a simple component with a custom interface.
 rust_component(
@@ -9,10 +10,18 @@ rust_component(
 )
 
 # Example to build a wrapper component to run `foo`,
-# using the standard `wasi:cli` interface.
+# using the standard `wasi:cli/run` interface.
 rust_component(
     name = "foo-runner",
     srcs = ["runner.rs"],
     wit = "//wasip2:cli",
     world = "command",
+)
+
+native_test(
+    name = "runner-test",
+    size = "small",
+    src = "@wasmtime//:wasmtime",
+    data = [":foo-runner"],
+    args = ["run", "$(location :foo-runner)"],
 )

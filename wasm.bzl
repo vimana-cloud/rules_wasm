@@ -39,7 +39,7 @@ WitPackageInfo = provider(
     },
 )
 
-def _bash_escape(path):
+def _bash_quote(path):
     """
     Surround a string with single-quotes.
     If it contains a single-quote, it is escaped a-la-Bash.
@@ -55,32 +55,32 @@ def _wit_package_impl(ctx):
     commands = [
         # Start by hard-linking the source files into the output directory.
         "ln {srcs} {dir}".format(
-            srcs = " ".join([_bash_escape(src.path) for src in ctx.files.srcs]),
-            dir = _bash_escape(package_dir.path),
+            srcs = " ".join([_bash_quote(src.path) for src in ctx.files.srcs]),
+            dir = _bash_quote(package_dir.path),
         ),
         # Create the `deps/` subfolder.
         # It will be empty if there are no dependencies.
-        "mkdir {deps_dir}".format(deps_dir = _bash_escape(deps_path)),
+        "mkdir {deps_dir}".format(deps_dir = _bash_quote(deps_path)),
     ]
     for dep in ctx.files.deps:
         if dep.is_directory:
             # Packaged dependencies need to have further subfolders created.
             dep_path = deps_path + "/" + dep.basename
-            commands.append("mkdir {dep_dir}".format(dep_dir = _bash_escape(dep_path)))
+            commands.append("mkdir {dep_dir}".format(dep_dir = _bash_quote(dep_path)))
 
             # Then their source files are hard-linked into that sub-subfolder.
             commands.append(
                 "ln {dep_wits} {dep_dir}".format(
-                    dep_wits = _bash_escape(dep.path) + "/*.wit",
-                    dep_dir = _bash_escape(dep_path),
+                    dep_wits = _bash_quote(dep.path) + "/*.wit",
+                    dep_dir = _bash_quote(dep_path),
                 ),
             )
         else:
             # Standalone dependency files can be hard-linked directly under `deps/`.
             commands.append(
                 "ln {dep} {deps_dir}".format(
-                    dep = _bash_escape(dep.path),
-                    deps_dir = _bash_escape(deps_path),
+                    dep = _bash_quote(dep.path),
+                    deps_dir = _bash_quote(deps_path),
                 ),
             )
 
