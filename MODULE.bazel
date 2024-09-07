@@ -22,10 +22,6 @@ wit_bindgen_version = "0.30.0"
 # The execution platform of all pre-built binaries.
 execution_platform = "x86_64-linux"
 
-# List of WASI packages to make available.
-# TODO: Stop duplicating this information with wasip2/BUILD.bazel.
-wasi_packages = ["cli", "clocks", "filesystem", "http", "io", "random", "sockets"]
-
 # Rust setup: depend on `wit-bindgen` for build-time linking.
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
 crate.spec(
@@ -44,13 +40,22 @@ http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_
 http_archive(
     name = "wasi",
     build_file_content = """
+load(":wasm.bzl", "wasi_packages")
+
 [filegroup(
     name = package,
     srcs = glob(["WASI-{version}/wasip2/" + package + "/*.wit"]),
     visibility = ["//visibility:public"],
-) for package in {packages}]
-""".format(packages = repr(wasi_packages), version = wasi_version),
+) for package in wasi_packages.keys()]
+""".format(version = wasi_version),
     integrity = "sha384-7kxa+SG+M43Wv9RkO/WrRghhN55JBWl9VOl/qgqo3X3673e4KipKJl3wMqp3oFSK",
+    patch_args = [],
+    # By abusing `cat` as a "patch" tool,
+    # we simply copy the "patch" file into the root of the archive.
+    # This hack involves hardwiring the file name in multiple places :/.
+    # Ideally there would be something like `remote_file_urls` for local files.
+    patch_tool = "cat > wasm.bzl",
+    patches = [":wasm.bzl"],
     url = "https://github.com/WebAssembly/WASI/archive/refs/tags/v{version}.tar.gz"
         .format(version = wasi_version),
 )

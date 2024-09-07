@@ -1,5 +1,35 @@
 # Language-agnostic rules and macros.
 
+# Mapping from WASI packages to dependencies:
+wasi_packages = {
+    "cli": [
+        "clocks",
+        "filesystem",
+        "io",
+        "random",
+        "sockets",
+    ],
+    "clocks": ["io"],
+    "filesystem": [
+        "clocks",
+        "io",
+    ],
+    "http": [
+        "cli",
+        "clocks",
+        "filesystem",
+        "io",
+        "random",
+        "sockets",
+    ],
+    "io": [],
+    "random": [],
+    "sockets": [
+        "clocks",
+        "io",
+    ],
+}
+
 WitPackageInfo = provider(
     "Information about a WIT package.",
     fields = {
@@ -37,12 +67,13 @@ def _wit_package_impl(ctx):
             # Packaged dependencies need to have further subfolders created.
             dep_path = deps_path + "/" + dep.basename
             commands.append("mkdir {dep_dir}".format(dep_dir = _bash_escape(dep_path)))
+
             # Then their source files are hard-linked into that sub-subfolder.
             commands.append(
                 "ln {dep_wits} {dep_dir}".format(
                     dep_wits = _bash_escape(dep.path) + "/*.wit",
                     dep_dir = _bash_escape(dep_path),
-                )
+                ),
             )
         else:
             # Standalone dependency files can be hard-linked directly under `deps/`.
@@ -50,7 +81,7 @@ def _wit_package_impl(ctx):
                 "ln {dep} {deps_dir}".format(
                     dep = _bash_escape(dep.path),
                     deps_dir = _bash_escape(deps_path),
-                )
+                ),
             )
 
     ctx.actions.run_shell(
@@ -67,8 +98,8 @@ def _wit_package_impl(ctx):
 wit_package = rule(
     implementation = _wit_package_impl,
     doc =
-        "Bundle a group of WIT files, belonging to the same package, into a unified dependency." \
-            + " Otherwise, only single-file packages can be depended upon.",
+        "Bundle a group of WIT files, belonging to the same package, into a unified dependency." +
+        " Otherwise, only single-file packages can be depended upon.",
     attrs = {
         "srcs": attr.label_list(
             doc = "WIT source files.",
@@ -89,9 +120,14 @@ def _wasm_component_impl(ctx):
     output = ctx.actions.declare_file(ctx.label.name + ".component.wasm")
     outputs = [output]
     arguments = [
-        "component", "embed", ctx.file.wit.path, ctx.file.module.path,
-        "--world", ctx.attr.world or ctx.label.name,
-        "--output", output.path,
+        "component",
+        "embed",
+        ctx.file.wit.path,
+        ctx.file.module.path,
+        "--world",
+        ctx.attr.world or ctx.label.name,
+        "--output",
+        output.path,
     ]
     ctx.actions.run(
         inputs = [ctx.file.module, ctx.file.wit],

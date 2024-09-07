@@ -12,7 +12,13 @@ def _rust_wit_bindgen_impl(ctx):
     output = ctx.actions.declare_file(_kebab_to_snake(world) + ".rs")
     outputs = [output]
     arguments = [
-        "rust", "--generate-all", ctx.file.src.path, "--world", world, "--out-dir", output.dirname,
+        "rust",
+        "--generate-all",
+        ctx.file.src.path,
+        "--world",
+        world,
+        "--out-dir",
+        output.dirname,
     ]
     ctx.actions.run(
         inputs = [ctx.file.src],
