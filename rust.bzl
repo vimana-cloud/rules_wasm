@@ -9,37 +9,52 @@ def _kebab_to_snake(s):
 
 def _rust_wit_bindgen_impl(ctx):
     world = ctx.attr.world or ctx.label.name
-    kebab_world = _kebab_to_snake(world)
-    output = ctx.actions.declare_file(kebab_world + ".rs")
-    outputs = [output]
-    arguments = [
+    snake_world = _kebab_to_snake(world)
+
+    # Generate the actual bindings in a directory called `wit`.
+    bindings = ctx.actions.declare_directory("wit")
+    wit_bindgen_arguments = [
         "rust",
         ctx.file.src.path,
         "--world",
         world,
         "--out-dir",
-        output.dirname,
+        bindings.path,
         "--generate-all",
         # Generate a public `export!` macro.
         "--pub-export-macro",
         # Make sure the generated `export!` macro uses the right namespace.
         "--default-bindings-module",
-        kebab_world,
+        snake_world,
     ]
     ctx.actions.run(
         inputs = [ctx.file.src],
-        outputs = outputs,
+        outputs = [bindings],
         executable = ctx.executable._wit_bindgen_bin,
-        arguments = arguments,
+        arguments = wit_bindgen_arguments,
     )
-    return [DefaultInfo(files = depset(outputs))]
+
+    # The wrapper `lib.rs` just republishes everything for the generated world.
+    wrapper = ctx.actions.declare_file("lib.rs", sibling = bindings)
+    ctx.actions.write(
+        output = wrapper,
+        content = """
+mod wit {{
+    pub mod {world};
+}}
+
+pub use wit::{world}::*;
+""".format(world = snake_world),
+    )
+
+    return [DefaultInfo(files = depset([bindings, wrapper]))]
 
 rust_wit_bindgen = rule(
     implementation = _rust_wit_bindgen_impl,
-    doc = "Generate Rust bindings from a WebAssembly Interface (WIT) file.",
+    doc = "Generate Rust bindings from a WebAssembly Interface (WIT).",
     attrs = {
         "src": attr.label(
-            doc = "WIT source package.",
+            doc = "WIT source file or package.",
             allow_single_file = [".wit"],
         ),
         "world": attr.string(
