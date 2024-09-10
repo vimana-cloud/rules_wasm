@@ -1,5 +1,5 @@
-load("//:rust.bzl", "rust_component")
 load("@bazel_skylib//rules:native_binary.bzl", "native_test")
+load("//:rust.bzl", "rust_component")
 
 # Example to build a simple component with a custom interface.
 rust_component(
@@ -21,7 +21,10 @@ rust_component(
 native_test(
     name = "runner-test",
     size = "small",
-    src = "@wasmtime//:wasmtime",
+    src = "@wasmtime",
+    args = [
+        "run",
+        "$(location :foo-runner)",
+    ],
     data = [":foo-runner"],
-    args = ["run", "$(location :foo-runner)"],
 )

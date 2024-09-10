@@ -9,16 +9,22 @@ def _kebab_to_snake(s):
 
 def _rust_wit_bindgen_impl(ctx):
     world = ctx.attr.world or ctx.label.name
-    output = ctx.actions.declare_file(_kebab_to_snake(world) + ".rs")
+    kebab_world = _kebab_to_snake(world)
+    output = ctx.actions.declare_file(kebab_world + ".rs")
     outputs = [output]
     arguments = [
         "rust",
-        "--generate-all",
         ctx.file.src.path,
         "--world",
         world,
         "--out-dir",
         output.dirname,
+        "--generate-all",
+        # Generate a public `export!` macro.
+        "--pub-export-macro",
+        # Make sure the generated `export!` macro uses the right namespace.
+        "--default-bindings-module",
+        kebab_world,
     ]
     ctx.actions.run(
         inputs = [ctx.file.src],

@@ -10,3 +10,5 @@ impl the_world::Guest for FooImpl {
         words
     }
 }
+
+the_world::export!(FooImpl);

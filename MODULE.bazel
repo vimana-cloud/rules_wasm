@@ -25,7 +25,7 @@ wit_bindgen_version = "0.30.0"
 # The execution platform of all pre-built binaries.
 execution_platform = "x86_64-linux"
 
-# Rust setup: depend on `wit-bindgen` for build-time linking.
+# Rust setup: wit-bindgen-generated Rust files depend on the wit-bindgen crate.
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
 crate.spec(
     package = "wit-bindgen",
@@ -40,6 +40,7 @@ http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "ht
 
 http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 
+# WASI interface definitions.
 http_archive(
     name = "wasi",
     build_file_content = """
@@ -63,23 +64,24 @@ load(":wasm.bzl", "wasi_packages")
         .format(version = wasi_version),
 )
 
+# WASI SDK to set up a CC toolchain. AFAICT it's never actually invoked.
+# TODO: See if this can be removed.
 http_archive(
     name = "wasi-sdk",
     build_file_content = """
-for binary in [
+[alias(
+    name = binary,
+    actual = "wasi-sdk-{version}.0-{platform}/bin/" + binary,
+    visibility = ["//visibility:public"],
+) for binary in [
     "wasm32-wasip2-clang",
     "wasm32-wasip2-clang++",
     "wasm-component-ld",
     "ar",
     "nm",
     "objdump",
-    "strip"
-]:
-    alias(
-        name = binary,
-        actual = "wasi-sdk-{version}.0-{platform}/bin/" + binary,
-        visibility = ["//visibility:public"],
-    )
+    "strip",
+]]
 """.format(
         platform = execution_platform,
         version = wasi_sdk_version,
@@ -156,4 +158,12 @@ http_file(
     integrity = "sha384-NHz3ZkkmpvoqhS8KWedFZV3ORSMTVwdoBqoG/8g6NLqwIeK7clN5MCIJh63Sogp2",
     url = "https://github.com/bytecodealliance/wit-bindgen/raw/v{version}/crates/guest-rust/rt/src/libwit_bindgen_cabi_realloc.a"
         .format(version = wit_bindgen_version),
+)
+
+# Temporary crutch until we can build against wasip2 directly.
+http_file(
+    name = "wasi-snapshot-preview1-reactor",
+    integrity = "sha384-u3TvoxreZTa86exGH3q3WVcW972rnRfzX53gDqwoIjPnnwCPy0E9y/AFIQRjHl/S",
+    url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasi_snapshot_preview1.reactor.wasm"
+        .format(version = wasmtime_version),
 )

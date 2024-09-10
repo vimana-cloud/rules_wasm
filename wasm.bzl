@@ -114,32 +114,46 @@ wit_package = rule(
             doc = "Explicit name for the package. Default is the build rule name.",
         ),
     },
+    provides = [WitPackageInfo],
 )
 
 def _wasm_component_impl(ctx):
-    output = ctx.actions.declare_file(ctx.label.name + ".component.wasm")
-    outputs = [output]
-    arguments = [
-        "component",
-        "embed",
-        ctx.file.wit.path,
-        ctx.file.module.path,
-        "--world",
-        ctx.attr.world or ctx.label.name,
-        "--output",
-        output.path,
-    ]
+    embedded = ctx.actions.declare_file(ctx.label.name + ".embedded.wasm")
     ctx.actions.run(
         inputs = [ctx.file.module, ctx.file.wit],
-        outputs = outputs,
+        outputs = [embedded],
         executable = ctx.executable._wasm_tools_bin,
-        arguments = arguments,
+        arguments = [
+            "component",
+            "embed",
+            ctx.file.wit.path,
+            ctx.file.module.path,
+            "--world",
+            ctx.attr.world or ctx.label.name,
+            "--output",
+            embedded.path,
+        ],
     )
-    return [DefaultInfo(files = depset(outputs))]
+    component = ctx.actions.declare_file(ctx.label.name + ".component.wasm")
+    ctx.actions.run(
+        inputs = [embedded, ctx.file._adapter],
+        outputs = [component],
+        executable = ctx.executable._wasm_tools_bin,
+        arguments = [
+            "component",
+            "new",
+            embedded.path,
+            "--adapt",
+            ctx.file._adapter.path,
+            "--output",
+            component.path,
+        ],
+    )
+    return [DefaultInfo(files = depset([component]))]
 
 wasm_component = rule(
     implementation = _wasm_component_impl,
-    doc = "Embed a Wasm interface into a core module to create a component.",
+    doc = "Embed a Wasm interface into a core module and create a component.",
     attrs = {
         "module": attr.label(
             doc = "Core Wasm module to embed the interface in.",
@@ -155,9 +169,13 @@ wasm_component = rule(
         ),
         "_wasm_tools_bin": attr.label(
             default = "@wasm-tools//:wasm-tools",
-            allow_files = True,
+            allow_single_file = True,
             executable = True,
             cfg = "exec",
+        ),
+        "_adapter": attr.label(
+            default = "//:wasi-snapshot-preview1-reactor",
+            allow_single_file = True,
         ),
     },
 )
