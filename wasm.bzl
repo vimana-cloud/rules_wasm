@@ -47,6 +47,16 @@ def _bash_quote(path):
     return "'{}'".format(path.replace("'", "'\"'\"'"))
 
 def _wit_package_impl(ctx):
+    # The output of this action is a single directory, named after the WIT package:
+    #     <package>.
+    #     ├── [source files ...]
+    #     └── deps/
+    #         ├── <dependency-1>.wit
+    #         ├── <dependency-2>/
+    #         │   └── [dependency-2 source files ...]
+    #         └── <dependency-3>.wit
+    # This is due to under-documented implementation details of wit-bindgen:
+    # https://github.com/bytecodealliance/wit-bindgen/issues/1046.
     package_name = ctx.attr.package_name or ctx.label.name
     package_dir = ctx.actions.declare_directory(package_name)
     deps_path = package_dir.path + "/deps"

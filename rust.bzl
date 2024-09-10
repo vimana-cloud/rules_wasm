@@ -1,5 +1,6 @@
 # Rust-specific rules and macros.
 
+load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@rules_rust//rust:defs.bzl", "rust_library", "rust_shared_library")
 load(":wasm.bzl", "wasm_component")
 
@@ -11,8 +12,9 @@ def _rust_wit_bindgen_impl(ctx):
     world = ctx.attr.world or ctx.label.name
     snake_world = _kebab_to_snake(world)
 
-    # Generate the actual bindings in a directory called `wit`.
-    bindings = ctx.actions.declare_directory("wit")
+    # Put everything in a folder with the same name as the target to avoid name conflicts.
+    # Generate the actual bindings in a subdirectory called `wit`.
+    bindings = ctx.actions.declare_directory(paths.join(ctx.label.name, "wit"))
     wit_bindgen_arguments = [
         "rust",
         ctx.file.src.path,
@@ -80,6 +82,7 @@ def rust_component(name, srcs, wit, world = None, deps = None):
     """
     if world == None:
         world = name
+    snake_world = _kebab_to_snake(world)
     if deps == None:
         deps = []
 
@@ -95,14 +98,14 @@ def rust_component(name, srcs, wit, world = None, deps = None):
         name = lib_name,
         srcs = [":" + wit_name],
         deps = ["@crates//:wit-bindgen"],
-        crate_name = _kebab_to_snake(world),
+        crate_name = snake_world,
     )
 
     core_name = name + " core"
     rust_shared_library(
         name = core_name,
         srcs = srcs,
-        crate_name = _kebab_to_snake(world),
+        crate_name = snake_world,
         deps = deps + [
             ":" + lib_name,
             "//:wit-bindgen-cabi-realloc",

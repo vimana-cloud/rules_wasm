@@ -5,7 +5,7 @@ bazel_dep(name = "rules_rust", version = "0.49.3")
 
 bazel_dep(name = "buildifier_prebuilt", version = "7.3.1", dev_dependency = True, repo_name = "buildtools")
 
-register_toolchains("//:wasm32-wasip2-toolchain")
+register_toolchains("//:wasm32-wasi-toolchain")
 
 # Version for WASI interface definitions: https://github.com/WebAssembly/WASI/releases.
 wasi_version = "0.2.1"

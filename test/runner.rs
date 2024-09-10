@@ -5,7 +5,11 @@ struct RunnerImpl;
 
 impl Guest for RunnerImpl {
     fn run() -> Result<(), ()> {
-        get_stdout().write(b"Is this thing on?").map_err(|_| ())?;
+        let stdout = get_stdout();
+        stdout.write(b"It's running!").map_err(|_| ())?;
+
+        ;
+
         Ok(())
     }
 }

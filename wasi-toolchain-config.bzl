@@ -3,10 +3,10 @@ load("@bazel_tools//tools/cpp:cc_toolchain_config_lib.bzl", "tool_path")
 def _wasi_toolchain_config_impl(ctx):
     return cc_common.create_cc_toolchain_config_info(
         ctx = ctx,
-        toolchain_identifier = "wasm32-wasip2",
-        target_system_name = "wasm32-wasip2",
+        toolchain_identifier = "wasm32-wasi",
+        target_system_name = "wasm32-wasi",
         target_cpu = "wasm32",
-        target_libc = "wasip2",
+        target_libc = "wasi",
         compiler = "clang",
         tool_paths = [
             tool_path(

@@ -18,6 +18,9 @@ rust_component(
     world = "command",
 )
 
+# Example of a simple way to run a component implementing `wasi:cli/run`
+# as a test using wasmtime.
+# The test fails if `run` returns an error.
 native_test(
     name = "runner-test",
     size = "small",
