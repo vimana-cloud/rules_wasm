@@ -24,7 +24,7 @@ rust_component(
 native_test(
     name = "runner-test",
     size = "small",
-    src = "@wasmtime",
+    src = "//:wasmtime",
     args = [
         "run",
         "$(location :foo-runner)",

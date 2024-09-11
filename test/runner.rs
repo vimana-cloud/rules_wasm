@@ -8,7 +8,8 @@ impl Guest for RunnerImpl {
         let stdout = get_stdout();
         stdout.write(b"It's running!").map_err(|_| ())?;
 
-        ;
+        // TODO: Figure out a way to verify that the test is *actually running*
+        //   rather than manually inspecting stdout.
 
         Ok(())
     }

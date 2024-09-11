@@ -65,7 +65,7 @@ rust_wit_bindgen = rule(
         "_wit_bindgen_bin": attr.label(
             # TODO: Use wit-bindgen-cli crate dependency instead of checking in the binary
             #   https://github.com/bazelbuild/rules_rust/discussions/2786
-            default = "@wit-bindgen//:wit-bindgen",
+            default = "//:wit-bindgen",
             allow_files = True,
             executable = True,
             cfg = "exec",

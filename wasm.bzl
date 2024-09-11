@@ -178,7 +178,7 @@ wasm_component = rule(
             doc = "World to generate bindings for. Default is the target name.",
         ),
         "_wasm_tools_bin": attr.label(
-            default = "@wasm-tools//:wasm-tools",
+            default = "//:wasm-tools",
             allow_single_file = True,
             executable = True,
             cfg = "exec",

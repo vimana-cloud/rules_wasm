@@ -10,9 +10,6 @@ register_toolchains("//:wasm32-wasi-toolchain")
 # Version for WASI interface definitions: https://github.com/WebAssembly/WASI/releases.
 wasi_version = "0.2.1"
 
-# Version for the WASI SDK: https://github.com/WebAssembly/wasi-sdk/releases.
-wasi_sdk_version = "24"
-
 # Version for wasmtime: https://github.com/bytecodealliance/wasmtime/releases
 wasmtime_version = "24.0.0"
 
@@ -22,8 +19,14 @@ wasm_tools_version = "1.216.0"
 # Version for `wit-bindgen`: https://github.com/bytecodealliance/wit-bindgen/releases.
 wit_bindgen_version = "0.30.0"
 
-# The execution platform of all pre-built binaries.
-execution_platform = "x86_64-linux"
+# Supported execution platforms for pre-built binaries.
+# TODO: Figure out how to dedupe this list with `private.bzl`.
+execution_platforms = [
+    "aarch64-linux",
+    "aarch64-macos",
+    "x86_64-linux",
+    "x86_64-macos",
+]
 
 # Rust setup: wit-bindgen-generated Rust files depend on the wit-bindgen crate.
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
@@ -58,44 +61,16 @@ load(":wasm.bzl", "wasi_packages")
     # we simply copy the "patch" file into the root of the archive.
     # This hack involves hardwiring the file name in multiple places :/.
     # Ideally there would be something like `remote_file_urls` for local files.
+    # Copying this file allows us to keep a single source of truth
+    # for the set of WASI package names.
     patch_tool = "cat > wasm.bzl",
     patches = [":wasm.bzl"],
     url = "https://github.com/WebAssembly/WASI/archive/refs/tags/v{version}.tar.gz"
         .format(version = wasi_version),
 )
 
-# WASI SDK to set up a CC toolchain. AFAICT it's never actually invoked.
-# TODO: See if this can be removed.
-http_archive(
-    name = "wasi-sdk",
-    build_file_content = """
-[alias(
-    name = binary,
-    actual = "wasi-sdk-{version}.0-{platform}/bin/" + binary,
-    visibility = ["//visibility:public"],
-) for binary in [
-    "wasm32-wasip2-clang",
-    "wasm32-wasip2-clang++",
-    "wasm-component-ld",
-    "ar",
-    "nm",
-    "objdump",
-    "strip",
-]]
-""".format(
-        platform = execution_platform,
-        version = wasi_sdk_version,
-    ),
-    integrity = "sha384-zKYGc5aaiM61Xn9KklKJLsm3sTwm6zDrghzzZhDbBZ318eUFzNiBYwUZnb2dZgq3",
-    url = "https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-{version}/wasi-sdk-{version}.0-{platform}.tar.gz"
-        .format(
-        platform = execution_platform,
-        version = wasi_sdk_version,
-    ),
-)
-
-http_archive(
-    name = "wasmtime",
+[http_archive(
+    name = "wasmtime-" + exe_platform,
     build_file_content = """
 alias(
     name = "wasmtime",
@@ -103,18 +78,18 @@ alias(
     visibility = ["//visibility:public"],
 )
 """.format(
-        platform = execution_platform,
+        platform = exe_platform,
         version = wasmtime_version,
     ),
     integrity = "sha384-4JX5ScczhNYkRvPmZVnND8CnZkavJqpBagfEgnRCFIw+G63AiuXPfrtLioxmW2YR",
     url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasmtime-v{version}-{platform}.tar.xz".format(
-        platform = execution_platform,
+        platform = exe_platform,
         version = wasmtime_version,
     ),
-)
+) for exe_platform in execution_platforms]
 
-http_archive(
-    name = "wasm-tools",
+[http_archive(
+    name = "wasm-tools-" + exe_platform,
     build_file_content = """
 alias(
     name = "wasm-tools",
@@ -122,19 +97,19 @@ alias(
     visibility = ["//visibility:public"],
 )
 """.format(
-        platform = execution_platform,
+        platform = exe_platform,
         version = wasm_tools_version,
     ),
     integrity = "sha384-T96x029RaE8p1yhmJAR4Pdv1uGuq7cUkBI3heDaoMxz4eZm3YIGGz2SznlCvmyAd",
     url = "https://github.com/bytecodealliance/wasm-tools/releases/download/v{version}/wasm-tools-{version}-{platform}.tar.gz"
         .format(
-        platform = execution_platform,
+        platform = exe_platform,
         version = wasm_tools_version,
     ),
-)
+) for exe_platform in execution_platforms]
 
-http_archive(
-    name = "wit-bindgen",
+[http_archive(
+    name = "wit-bindgen-" + exe_platform,
     build_file_content = """
 alias(
     name = "wit-bindgen",
@@ -142,16 +117,16 @@ alias(
     visibility = ["//visibility:public"],
 )
 """.format(
-        platform = execution_platform,
+        platform = exe_platform,
         version = wit_bindgen_version,
     ),
     integrity = "sha384-1dKYqjyugHFTKvcMVRYhEs8rlwbMXrqIRHwuwM/nUVJTBhCTOwwc9wJf6/Pe5k5Y",
     url = "https://github.com/bytecodealliance/wit-bindgen/releases/download/v{version}/wit-bindgen-{version}-{platform}.tar.gz"
         .format(
-        platform = execution_platform,
+        platform = exe_platform,
         version = wit_bindgen_version,
     ),
-)
+) for exe_platform in execution_platforms]
 
 http_file(
     name = "libwit-bindgen-cabi-realloc",

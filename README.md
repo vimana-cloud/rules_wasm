@@ -19,8 +19,13 @@ See [`test/BUILD.bazel`](test/BUILD.bazel).
 
 ## Caveats
 
-- Currently works only when the execution platform is `x86_64-linux`.
-  This might be easily fixed
-  by doing something more sophisticated than hard-wiring the platform
-  in [`MODULE.bazel`](MODULE.bazel).
-  Pre-built binaries generally exist for MacOS as well.
+- Currently works only for the following execution platforms
+  (due to downloading pre-built binaries):
+  * `aarch64-linux`
+  * `aarch64-macos`
+  * `x86_64-linux`
+  * `x86_64-macos`
+
+## Todo
+
+- Add a rule for [Wasm compositions](https://github.com/bytecodealliance/wac).
