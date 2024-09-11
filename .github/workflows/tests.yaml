@@ -27,6 +27,7 @@ jobs:
       - name: Run Tests
         run: bazel test //...
       - name: Upload Log
+        if: ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
           name: bazel-testlogs
