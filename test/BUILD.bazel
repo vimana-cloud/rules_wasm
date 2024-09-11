@@ -28,7 +28,8 @@ native_test(
     args = [
         "run",
         # Turn off caching because it doesn't play nice with Bazel on GitHub Actions.
-        "--codegen", "cache=n",
+        "--codegen",
+        "cache=n",
         "$(location :foo-runner)",
     ],
     data = [":foo-runner"],

@@ -1,6 +1,6 @@
 load("@bazel_tools//tools/cpp:cc_toolchain_config_lib.bzl", "tool_path")
 
-# TODO: Figure out how to dedupe this list with `private.bzl`.
+# TODO: Figure out how to dedupe this list with `MODULE.bazel`.
 execution_platforms = [
     "aarch64-linux",
     "aarch64-macos",

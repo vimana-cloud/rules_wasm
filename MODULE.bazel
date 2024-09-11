@@ -1,7 +1,7 @@
-module(name = "rules_wasm")
+module(name = "rules_wasm", version = "0.1.0")
 
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
-bazel_dep(name = "rules_rust", version = "0.49.3")
+bazel_dep(name = "rules_rust", version = "0.50.0")
 
 bazel_dep(name = "buildifier_prebuilt", version = "7.3.1", dev_dependency = True, repo_name = "buildtools")
 
@@ -18,10 +18,12 @@ execution_platforms = [
 
 # Version for WASI interface definitions: https://github.com/WebAssembly/WASI/releases.
 wasi_version = "0.2.1"
+
 wasi_integrity = "sha384-7kxa+SG+M43Wv9RkO/WrRghhN55JBWl9VOl/qgqo3X3673e4KipKJl3wMqp3oFSK"
 
 # Version for wasmtime: https://github.com/bytecodealliance/wasmtime/releases
 wasmtime_version = "24.0.0"
+
 wasmtime_integrity = {
     "aarch64-linux": "sha384-XW50NqDx889qHB4ZiSBkzRXcpTpcI+VmhaqKtC3r5ZZNincZNTMhKqCjSr2l0nAt",
     "aarch64-macos": "sha384-I7PFzHWrkIaHfCDs1cDLQzoswDMqRp4XtcD35Sjs47CyDZTgkPpC7AzQ8LuwjF2l",
@@ -31,6 +33,7 @@ wasmtime_integrity = {
 
 # Version for `wasm-tools`: https://github.com/bytecodealliance/wasm-tools/releases.
 wasm_tools_version = "1.217.0"
+
 wasm_tools_integrity = {
     "aarch64-linux": "sha384-r8szVaQeRUw83jIPPpD4dtc2WF49gLsFjKEq7kTaj3NrJKykqaApOVhG9o7Ia2Og",
     "aarch64-macos": "sha384-n7E5R5Pu03QyGy0RPjZKAXEvZDQVZup1QIZrC278vrqfcM3tE0Un8IbLzWnMoFTr",
@@ -40,6 +43,7 @@ wasm_tools_integrity = {
 
 # Version for `wit-bindgen`: https://github.com/bytecodealliance/wit-bindgen/releases.
 wit_bindgen_version = "0.32.0"
+
 wit_bindgen_integrity = {
     "aarch64-linux": "sha384-pu8lWUFCsa6AsFkqxMQVNKRKH+npfYj0laArNAtDCOAO0XhX1IkVCidBTeEfMiSU",
     "aarch64-macos": "sha384-WM/f7sB9ZvD+gWSRheN42ZeQubkUv/G4/abFryehzMlHIerH/h2YlFf7ybJjfuFz",
