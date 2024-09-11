@@ -1,17 +1,6 @@
 load("@bazel_skylib//lib:selects.bzl", "selects")
 load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
-load("@buildtools//:rules.bzl", "buildifier")
 load(":private.bzl", "execution_platforms", "format_platform", "wasi_toolchain_config")
-
-# To format all Bazel files, run `bazel run //:buildifier`.
-buildifier(
-    name = "buildifier",
-    exclude_patterns = [
-        "./.git/*",
-    ],
-    lint_mode = "fix",
-    mode = "fix",
-)
 
 # Execution-platform-specific aliases for pre-built binaries:
 # Some custom rules need Bash, so Windows is out for now.

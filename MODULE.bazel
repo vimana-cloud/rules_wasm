@@ -1,4 +1,7 @@
-module(name = "rules_wasm", version = "0.1.0")
+module(
+    name = "rules_wasm",
+    version = "0.1.1",
+)
 
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
 bazel_dep(name = "rules_rust", version = "0.50.0")

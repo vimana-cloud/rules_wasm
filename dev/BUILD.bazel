@@ -1,0 +1,11 @@
+load("@buildtools//:rules.bzl", "buildifier")
+
+# To format all Bazel files, run `bazel run //:buildifier`.
+buildifier(
+    name = "buildifier",
+    exclude_patterns = [
+        "./.git/*",
+    ],
+    lint_mode = "fix",
+    mode = "fix",
+)
