@@ -61,8 +61,8 @@ crate.spec(
     package = "wit-bindgen",
     version = wit_bindgen_version,
 )
-crate.from_specs()
-use_repo(crate, "crates")
+crate.from_specs(name = "rules-wasm-crates")
+use_repo(crate, "rules-wasm-crates")
 
 # Manually download prebuilt binaries for various dependencies:
 

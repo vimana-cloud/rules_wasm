@@ -97,7 +97,7 @@ def rust_component(name, srcs, wit, world = None, deps = None):
     rust_library(
         name = lib_name,
         srcs = [":" + wit_name],
-        deps = ["@crates//:wit-bindgen"],
+        deps = ["@rules-wasm-crates//:wit-bindgen"],
         crate_name = snake_world,
     )
 
