@@ -7,18 +7,6 @@ bazel_dep(name = "buildifier_prebuilt", version = "7.3.1", dev_dependency = True
 
 register_toolchains("//:wasm32-wasi-toolchain")
 
-# Version for WASI interface definitions: https://github.com/WebAssembly/WASI/releases.
-wasi_version = "0.2.1"
-
-# Version for wasmtime: https://github.com/bytecodealliance/wasmtime/releases
-wasmtime_version = "24.0.0"
-
-# Version for `wasm-tools`: https://github.com/bytecodealliance/wasm-tools/releases.
-wasm_tools_version = "1.217.0"
-
-# Version for `wit-bindgen`: https://github.com/bytecodealliance/wit-bindgen/releases.
-wit_bindgen_version = "0.32.0"
-
 # Supported execution platforms for pre-built binaries.
 # TODO: Figure out how to dedupe this list with `private.bzl`.
 execution_platforms = [
@@ -27,6 +15,37 @@ execution_platforms = [
     "x86_64-linux",
     "x86_64-macos",
 ]
+
+# Version for WASI interface definitions: https://github.com/WebAssembly/WASI/releases.
+wasi_version = "0.2.1"
+wasi_integrity = "sha384-7kxa+SG+M43Wv9RkO/WrRghhN55JBWl9VOl/qgqo3X3673e4KipKJl3wMqp3oFSK"
+
+# Version for wasmtime: https://github.com/bytecodealliance/wasmtime/releases
+wasmtime_version = "24.0.0"
+wasmtime_integrity = {
+    "aarch64-linux": "sha384-XW50NqDx889qHB4ZiSBkzRXcpTpcI+VmhaqKtC3r5ZZNincZNTMhKqCjSr2l0nAt",
+    "aarch64-macos": "sha384-I7PFzHWrkIaHfCDs1cDLQzoswDMqRp4XtcD35Sjs47CyDZTgkPpC7AzQ8LuwjF2l",
+    "x86_64-linux": "sha384-4JX5ScczhNYkRvPmZVnND8CnZkavJqpBagfEgnRCFIw+G63AiuXPfrtLioxmW2YR",
+    "x86_64-macos": "sha384-PPNKw12YUvYkREcdfTicpMPOOd3+/7NO1iM8ocGjAeO3bM2IuJhSoC+nxq1g2wUG",
+}
+
+# Version for `wasm-tools`: https://github.com/bytecodealliance/wasm-tools/releases.
+wasm_tools_version = "1.217.0"
+wasm_tools_integrity = {
+    "aarch64-linux": "sha384-r8szVaQeRUw83jIPPpD4dtc2WF49gLsFjKEq7kTaj3NrJKykqaApOVhG9o7Ia2Og",
+    "aarch64-macos": "sha384-n7E5R5Pu03QyGy0RPjZKAXEvZDQVZup1QIZrC278vrqfcM3tE0Un8IbLzWnMoFTr",
+    "x86_64-linux": "sha384-vb69rPMRE7x1VjAWm6CmyxWgwVFNSY0sPvkqIk3WMrI9lWXXPFXOWfc4JFCkYfBS",
+    "x86_64-macos": "sha384-3u3PikLgj6KJ5yZsPyN4iHg66DkNf9gyeQViI+gqRm2hMSgX0gOPU9zli+0KHqEQ",
+}
+
+# Version for `wit-bindgen`: https://github.com/bytecodealliance/wit-bindgen/releases.
+wit_bindgen_version = "0.32.0"
+wit_bindgen_integrity = {
+    "aarch64-linux": "sha384-pu8lWUFCsa6AsFkqxMQVNKRKH+npfYj0laArNAtDCOAO0XhX1IkVCidBTeEfMiSU",
+    "aarch64-macos": "sha384-WM/f7sB9ZvD+gWSRheN42ZeQubkUv/G4/abFryehzMlHIerH/h2YlFf7ybJjfuFz",
+    "x86_64-linux": "sha384-EUtCHgZeCGY+W9VX/p8tMGC6R9UjerTpuLRyPXMcOHsGoG3OQwuXOUsulfVrFaiy",
+    "x86_64-macos": "sha384-ClPO7LFNwFa0rugCUDbbroLbRe85D4oxAuPUW+8T6XRSSNZW94gU5BWMqXZKcXRj",
+}
 
 # Rust setup: wit-bindgen-generated Rust files depend on the wit-bindgen crate.
 crate = use_extension("@rules_rust//crate_universe:extension.bzl", "crate")
@@ -55,7 +74,7 @@ load(":wasm.bzl", "wasi_packages")
     visibility = ["//visibility:public"],
 ) for package in wasi_packages.keys()]
 """.format(version = wasi_version),
-    integrity = "sha384-7kxa+SG+M43Wv9RkO/WrRghhN55JBWl9VOl/qgqo3X3673e4KipKJl3wMqp3oFSK",
+    integrity = wasi_integrity,
     patch_args = [],
     # By abusing `cat` as a "patch" tool,
     # we simply copy the "patch" file into the root of the archive.
@@ -81,7 +100,7 @@ alias(
         platform = exe_platform,
         version = wasmtime_version,
     ),
-    integrity = "sha384-4JX5ScczhNYkRvPmZVnND8CnZkavJqpBagfEgnRCFIw+G63AiuXPfrtLioxmW2YR",
+    integrity = wasmtime_integrity[exe_platform],
     url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasmtime-v{version}-{platform}.tar.xz".format(
         platform = exe_platform,
         version = wasmtime_version,
@@ -100,7 +119,7 @@ alias(
         platform = exe_platform,
         version = wasm_tools_version,
     ),
-    integrity = "sha384-vb69rPMRE7x1VjAWm6CmyxWgwVFNSY0sPvkqIk3WMrI9lWXXPFXOWfc4JFCkYfBS",
+    integrity = wasm_tools_integrity[exe_platform],
     url = "https://github.com/bytecodealliance/wasm-tools/releases/download/v{version}/wasm-tools-{version}-{platform}.tar.gz"
         .format(
         platform = exe_platform,
@@ -120,7 +139,7 @@ alias(
         platform = exe_platform,
         version = wit_bindgen_version,
     ),
-    integrity = "sha384-EUtCHgZeCGY+W9VX/p8tMGC6R9UjerTpuLRyPXMcOHsGoG3OQwuXOUsulfVrFaiy",
+    integrity = wit_bindgen_integrity[exe_platform],
     url = "https://github.com/bytecodealliance/wit-bindgen/releases/download/v{version}/wit-bindgen-{version}-{platform}.tar.gz"
         .format(
         platform = exe_platform,
