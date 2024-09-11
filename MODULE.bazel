@@ -14,10 +14,10 @@ wasi_version = "0.2.1"
 wasmtime_version = "24.0.0"
 
 # Version for `wasm-tools`: https://github.com/bytecodealliance/wasm-tools/releases.
-wasm_tools_version = "1.216.0"
+wasm_tools_version = "1.217.0"
 
 # Version for `wit-bindgen`: https://github.com/bytecodealliance/wit-bindgen/releases.
-wit_bindgen_version = "0.30.0"
+wit_bindgen_version = "0.32.0"
 
 # Supported execution platforms for pre-built binaries.
 # TODO: Figure out how to dedupe this list with `private.bzl`.
@@ -100,7 +100,7 @@ alias(
         platform = exe_platform,
         version = wasm_tools_version,
     ),
-    integrity = "sha384-T96x029RaE8p1yhmJAR4Pdv1uGuq7cUkBI3heDaoMxz4eZm3YIGGz2SznlCvmyAd",
+    integrity = "sha384-vb69rPMRE7x1VjAWm6CmyxWgwVFNSY0sPvkqIk3WMrI9lWXXPFXOWfc4JFCkYfBS",
     url = "https://github.com/bytecodealliance/wasm-tools/releases/download/v{version}/wasm-tools-{version}-{platform}.tar.gz"
         .format(
         platform = exe_platform,
@@ -120,7 +120,7 @@ alias(
         platform = exe_platform,
         version = wit_bindgen_version,
     ),
-    integrity = "sha384-1dKYqjyugHFTKvcMVRYhEs8rlwbMXrqIRHwuwM/nUVJTBhCTOwwc9wJf6/Pe5k5Y",
+    integrity = "sha384-EUtCHgZeCGY+W9VX/p8tMGC6R9UjerTpuLRyPXMcOHsGoG3OQwuXOUsulfVrFaiy",
     url = "https://github.com/bytecodealliance/wit-bindgen/releases/download/v{version}/wit-bindgen-{version}-{platform}.tar.gz"
         .format(
         platform = exe_platform,
@@ -130,7 +130,7 @@ alias(
 
 http_file(
     name = "libwit-bindgen-cabi-realloc",
-    integrity = "sha384-NHz3ZkkmpvoqhS8KWedFZV3ORSMTVwdoBqoG/8g6NLqwIeK7clN5MCIJh63Sogp2",
+    integrity = "sha384-p6B7cM+5whsc1zqAKpr0DyQx1d5RLPmXkdmys8hUQiLI678qXTJA2zvLpomLTknD",
     url = "https://github.com/bytecodealliance/wit-bindgen/raw/v{version}/crates/guest-rust/rt/src/libwit_bindgen_cabi_realloc.a"
         .format(version = wit_bindgen_version),
 )
