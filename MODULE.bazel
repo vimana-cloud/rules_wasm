@@ -9,8 +9,6 @@ bazel_dep(name = "rules_rust", version = "0.50.0")
 
 bazel_dep(name = "buildifier_prebuilt", version = "7.3.1", dev_dependency = True, repo_name = "buildtools")
 
-register_toolchains("//:wasm32-wasi-toolchain")
-
 # Supported execution platforms for pre-built binaries.
 # TODO: Figure out how to dedupe this list with `private.bzl`.
 execution_platforms = [
@@ -169,3 +167,5 @@ http_file(
     url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasi_snapshot_preview1.reactor.wasm"
         .format(version = wasmtime_version),
 )
+
+register_toolchains("//:wasm32-wasi-toolchain")

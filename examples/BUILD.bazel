@@ -1,0 +1,34 @@
+load("@bazel_skylib//rules:native_binary.bzl", "native_test")
+load("//:rust.bzl", "rust_component")
+
+# Build a simple component with a custom interface.
+rust_component(
+    name = "foo",
+    srcs = ["foo.rs"],
+    wit = "foo.wit",
+    world = "the-world",
+)
+
+# Build a wrapper component around `foo`, using the standard `wasi:cli/run` interface.
+rust_component(
+    name = "foo-runner",
+    srcs = ["runner.rs"],
+    wit = "//wasip2:cli",
+    world = "command",
+)
+
+# A simple way to run a component implementing `wasi:cli/run` as a test using wasmtime.
+# The test fails if `run` returns an error.
+native_test(
+    name = "runner-test",
+    size = "small",
+    src = "//:wasmtime",
+    args = [
+        "run",
+        "$(location :foo-runner)",
+        # Turn off caching because it doesn't play nice with Bazel on GitHub Actions.
+        "--codegen",
+        "cache=n",
+    ],
+    data = [":foo-runner"],
+)

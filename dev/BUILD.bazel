@@ -1,3 +1,6 @@
+# Putting dev-only dependencies in the top-level BUILD file
+# would break downstream dependers.
+
 load("@buildtools//:rules.bzl", "buildifier")
 
 # To format all Bazel files, run `bazel run //:buildifier`.

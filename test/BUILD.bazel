@@ -1,36 +1,16 @@
-load("@bazel_skylib//rules:native_binary.bzl", "native_test")
-load("//:rust.bzl", "rust_component")
+load("@bazel_skylib//rules:build_test.bzl", "build_test")
+load("//:private.bzl", "execution_platforms")
 
-# Example to build a simple component with a custom interface.
-rust_component(
-    name = "foo",
-    srcs = ["foo.rs"],
-    wit = "foo.wit",
-    world = "the-world",
-)
+# Download all binaries for all platforms
+# to make sure the checksums are correct in MODULE.bazel.
 
-# Example to build a wrapper component to run `foo`,
-# using the standard `wasi:cli/run` interface.
-rust_component(
-    name = "foo-runner",
-    srcs = ["runner.rs"],
-    wit = "//wasip2:cli",
-    world = "command",
-)
+binary_names = ["wasmtime", "wasm-tools", "wit-bindgen"]
 
-# Example of a simple way to run a component implementing `wasi:cli/run`
-# as a test using wasmtime.
-# The test fails if `run` returns an error.
-native_test(
-    name = "runner-test",
-    size = "small",
-    src = "//:wasmtime",
-    args = [
-        "run",
-        # Turn off caching because it doesn't play nice with Bazel on GitHub Actions.
-        "--codegen",
-        "cache=n",
-        "$(location :foo-runner)",
+build_test(
+    name = "fetch-binaries",
+    targets = [
+        "@{name}-{platform}//:{name}".format(name = name, platform = platform)
+        for name in binary_names
+        for platform in execution_platforms
     ],
-    data = [":foo-runner"],
 )

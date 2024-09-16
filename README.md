@@ -15,7 +15,7 @@ for working with [WebAssembly components](https://component-model.bytecodeallian
 
 ## Examples
 
-See [`test/BUILD.bazel`](test/BUILD.bazel).
+See [`examples/BUILD.bazel`](examples/BUILD.bazel).
 
 ## Caveats
 
