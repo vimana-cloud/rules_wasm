@@ -1,5 +1,6 @@
 load("@bazel_skylib//lib:selects.bzl", "selects")
 load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
+load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
 load(":private.bzl", "execution_platforms", "format_platform", "wasi_toolchain_config")
 
 # Execution-platform-specific aliases for pre-built binaries:
@@ -13,6 +14,12 @@ load(":private.bzl", "execution_platforms", "format_platform", "wasi_toolchain_c
         "@platforms//os:" + platform.split("-")[1],
     ],
 ) for platform in execution_platforms]
+
+native_binary(
+    name = "wac",
+    src = format_platform("@wac-{}//file"),
+    visibility = ["//visibility:public"],
+)
 
 alias(
     name = "wasmtime",

@@ -4,13 +4,18 @@ load("//:private.bzl", "execution_platforms")
 # Download all binaries for all platforms
 # to make sure the checksums are correct in MODULE.bazel.
 
-binary_names = ["wasmtime", "wasm-tools", "wit-bindgen"]
+binaries = {
+    "wasmtime": ":wasmtime",
+    "wasm-tools": ":wasm-tools",
+    "wit-bindgen": ":wit-bindgen",
+    "wac": "file",
+}
 
 build_test(
     name = "fetch-binaries",
     targets = [
-        "@{name}-{platform}//:{name}".format(name = name, platform = platform)
-        for name in binary_names
+        "@{}-{}//{}".format(repo_name, platform, target_name)
+        for repo_name, target_name in binaries.items()
         for platform in execution_platforms
     ],
 )
