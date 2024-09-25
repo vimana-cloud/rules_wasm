@@ -16,6 +16,8 @@ for working with [WebAssembly components](https://component-model.bytecodeallian
   * `rust_component` - Compile a Wasm interface and matching Rust implementation
     into a component (macro).
   * `rust_wit_bindgen` - Generate Rust sources for a Wasm interface.
+    This is a lower-level rule that you normally wouldn't use directly.
+    Use `rust_component` for a single rule to compile a component from Rust.
 
 ## Examples
 
