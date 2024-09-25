@@ -1,21 +1,46 @@
 load("@bazel_skylib//rules:build_test.bzl", "build_test")
+load("@bazel_skylib//rules:write_file.bzl", "write_file")
+load("@bazel_skylib//rules:diff_test.bzl", "diff_test")
 load("//:private.bzl", "execution_platforms")
+
+# List of platform-dependent binaries,
+# where `{}` is a placeholder for the platform name.
+binaries = [
+    "@wasmtime-{}//:wasmtime",
+    "@wasm-tools-{}//:wasm-tools",
+    "@wit-bindgen-{}//:wit-bindgen",
+    "@wac-{}//file",
+]
 
 # Download all binaries for all platforms
 # to make sure the checksums are correct in MODULE.bazel.
-
-binaries = {
-    "wasmtime": ":wasmtime",
-    "wasm-tools": ":wasm-tools",
-    "wit-bindgen": ":wit-bindgen",
-    "wac": "file",
-}
-
 build_test(
-    name = "fetch-binaries",
+    name = "fetch-all-binaries",
     targets = [
-        "@{}-{}//{}".format(repo_name, platform, target_name)
-        for repo_name, target_name in binaries.items()
+        binary.format(platform)
+        for binary in binaries
         for platform in execution_platforms
     ],
+)
+
+# Run the simple example command and save standard output to a file.
+genrule(
+    name = "command-output-actual",
+    tools = ["//:wasmtime"],
+    srcs = ["//examples:command"],
+    outs = ["stdout.txt"],
+    cmd = "$(location //:wasmtime) $(location //examples:command) > \"$@\"",
+)
+
+# For sanity, check that the generated output from `:command-output-actual` is expected.
+write_file(
+    name = "command-output-expected",
+    out = "expected.txt",
+    content = ["I'm a command."],
+)
+
+diff_test(
+    name = "verify-command-runs",
+    file1 = ":command-output-actual",
+    file2 = ":command-output-expected",
 )

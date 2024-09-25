@@ -65,3 +65,6 @@ wit_package(
         "//wasip2:sockets",
     ],
 )
+
+# Allow tests to reference these rules.
+package(default_visibility = ["//test:__pkg__"])
