@@ -29,7 +29,8 @@ genrule(
     tools = ["//:wasmtime"],
     srcs = ["//examples:command"],
     outs = ["stdout.txt"],
-    cmd = "$(location //:wasmtime) $(location //examples:command) > \"$@\"",
+    # Run without caching so it plays nice with GitHub Actions.
+    cmd = "$(location //:wasmtime) run $(location //examples:command) --codegen cache=n > \"$@\"",
 )
 
 # For sanity, check that the generated output from `:command-output-actual` is expected.
