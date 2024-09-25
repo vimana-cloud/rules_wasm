@@ -1,5 +1,6 @@
 load("@bazel_skylib//rules:native_binary.bzl", "native_test")
 load("//:rust.bzl", "rust_component")
+load("//:wasm.bzl", "wasm_plug", "wit_package")
 
 # Build a simple component with a custom interface.
 rust_component(
@@ -9,26 +10,58 @@ rust_component(
     world = "the-world",
 )
 
-# Build a wrapper component around `foo`, using the standard `wasi:cli/run` interface.
+# Build a command using the standard `wasi:cli/run` interface.
 rust_component(
-    name = "foo-runner",
-    srcs = ["runner.rs"],
+    name = "command",
+    srcs = ["command.rs"],
     wit = "//wasip2:cli",
     world = "command",
+)
+
+# Build a wrapper component to interact with `:foo` from a command.
+rust_component(
+    name = "foo-wrapper",
+    srcs = ["foo-wrapper.rs"],
+    wit = ":foo-wrapper-wit",
+    world = "foo-command",
+)
+
+# Plug `:foo` into `:foo-wrapper` to resolve the import
+# and create a new component that implements the standard `wasi:cli/run` interface.
+wasm_plug(
+    name = "foo-wrapped",
+    wrapper = ":foo-wrapper",
+    plug = ":foo",
 )
 
 # A simple way to run a component implementing `wasi:cli/run` as a test using wasmtime.
 # The test fails if `run` returns an error.
 native_test(
-    name = "runner-test",
+    name = "wrapper-test",
     size = "small",
     src = "//:wasmtime",
     args = [
         "run",
-        "$(location :foo-runner)",
+        "$(location :foo-wrapped)",
         # Turn off caching because it doesn't play nice with Bazel on GitHub Actions.
         "--codegen",
         "cache=n",
     ],
-    data = [":foo-runner"],
+    data = [":foo-wrapped"],
+)
+
+# When a WIT world has any dependencies, they must be bundled as a package.
+wit_package(
+    name = "foo-wrapper-wit",
+    srcs = ["foo-wrapper.wit"],
+    deps = [
+        "foo.wit",
+        "//wasip2:cli",
+        # Unfortunately, transitive dependencies must be spelled out.
+        "//wasip2:io",
+        "//wasip2:clocks",
+        "//wasip2:filesystem",
+        "//wasip2:random",
+        "//wasip2:sockets",
+    ],
 )

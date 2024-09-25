@@ -1,6 +1,9 @@
 package test:foo;
 
+interface custom {
+    words: func(text: string) -> list<string>;
+}
+
 world the-world {
-    export words: func(text: string) -> list<string>;
-    import log-activity: func(text: string);
+    export custom;
 }

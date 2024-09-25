@@ -1,0 +1,13 @@
+package test:foo-wrapper@6.6.6;
+
+world foo-command {
+  // We need to 'use' something from this package before we can `export` anything.
+  // This seems to be a bug in wit-parser.
+  use wasi:cli/terminal-input@0.2.1.{terminal-input};
+
+  // The regular WASI run interface:
+  export wasi:cli/run@0.2.1;
+
+  // Augment it with an additional import:
+  import test:foo/custom;
+}

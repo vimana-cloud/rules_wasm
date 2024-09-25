@@ -7,6 +7,10 @@ for working with [WebAssembly components](https://component-model.bytecodeallian
 
 - [`//:wasm.bzl`](wasm.bzl):
   * `wasm_component` - Turn a core Wasm module into a component.
+  * `wasm_plug` - Link the exports of a 'plug' component
+    into the imports of a 'wrapper' component to create a new component.
+    This is the simplest way to compose components together
+    without a [WAC](https://github.com/bytecodealliance/wac) file.
   * `wit_package` - Bundle a group of WIT files into a unified package.
 - [`//:rust.bzl`](rust.bzl):
   * `rust_component` - Compile a Wasm interface and matching Rust implementation
@@ -25,7 +29,3 @@ See [`examples/BUILD.bazel`](examples/BUILD.bazel).
   * `aarch64-macos`
   * `x86_64-linux`
   * `x86_64-macos`
-
-## Todo
-
-- Add a rule for [Wasm compositions](https://github.com/bytecodealliance/wac).

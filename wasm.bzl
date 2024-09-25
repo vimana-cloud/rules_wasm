@@ -127,6 +127,8 @@ wit_package = rule(
     provides = [WitPackageInfo],
 )
 
+_component_suffix = ".component.wasm"
+
 def _wasm_component_impl(ctx):
     embedded = ctx.actions.declare_file(ctx.label.name + ".embedded.wasm")
     ctx.actions.run(
@@ -144,7 +146,7 @@ def _wasm_component_impl(ctx):
             embedded.path,
         ],
     )
-    component = ctx.actions.declare_file(ctx.label.name + ".component.wasm")
+    component = ctx.actions.declare_file(ctx.label.name + _component_suffix)
     ctx.actions.run(
         inputs = [embedded, ctx.file._adapter],
         outputs = [component],
@@ -186,6 +188,44 @@ wasm_component = rule(
         "_adapter": attr.label(
             default = "//:wasi-snapshot-preview1-reactor",
             allow_single_file = True,
+        ),
+    },
+)
+
+def _wasm_plug_impl(ctx):
+    output = ctx.actions.declare_file(ctx.label.name + _component_suffix)
+    ctx.actions.run(
+        inputs = [ctx.file.wrapper, ctx.file.plug],
+        outputs = [output],
+        executable = ctx.executable._wac_bin,
+        arguments = [
+            "plug",
+            ctx.file.wrapper.path,
+            "--plug",
+            ctx.file.plug.path,
+            "--output",
+            output.path,
+        ],
+    )
+    return [DefaultInfo(files = depset([output]))]
+
+wasm_plug = rule(
+    implementation = _wasm_plug_impl,
+    doc = "For simple Wasm compositions without a WAC file.",
+    attrs = {
+        "wrapper": attr.label(
+            doc = "Wrapper component to plug into.",
+            allow_single_file = [".wasm", ".wat"],
+        ),
+        "plug": attr.label(
+            doc = "Plug component to be wrapped around.",
+            allow_single_file = [".wasm", ".wat"],
+        ),
+        "_wac_bin": attr.label(
+            default = "//:wac",
+            allow_single_file = True,
+            executable = True,
+            cfg = "exec",
         ),
     },
 )
