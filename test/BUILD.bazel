@@ -1,6 +1,6 @@
 load("@bazel_skylib//rules:build_test.bzl", "build_test")
-load("@bazel_skylib//rules:write_file.bzl", "write_file")
 load("@bazel_skylib//rules:diff_test.bzl", "diff_test")
+load("@bazel_skylib//rules:write_file.bzl", "write_file")
 load("//:private.bzl", "execution_platforms")
 
 # List of platform-dependent binaries,
@@ -26,11 +26,12 @@ build_test(
 # Run the simple example command and save standard output to a file.
 genrule(
     name = "command-output-actual",
-    tools = ["//:wasmtime"],
     srcs = ["//examples:command"],
     outs = ["stdout.txt"],
     # Run without caching so it plays nice with GitHub Actions.
-    cmd = "$(location //:wasmtime) run $(location //examples:command) --codegen cache=n > \"$@\"",
+    # Note that wasmtime insists that the flags precede the component path.
+    cmd = "$(location //:wasmtime) run --codegen cache=n $(location //examples:command) > \"$@\"",
+    tools = ["//:wasmtime"],
 )
 
 # For sanity, check that the generated output from `:command-output-actual` is expected.
