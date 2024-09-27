@@ -64,7 +64,7 @@ def _wit_package_impl(ctx):
     # Chain a bunch of Bash commands together with `&&`.
     commands = [
         # Start by hard-linking the source files into the output directory.
-        "ln {srcs} {dir}".format(
+        "cp {srcs} {dir}".format(
             srcs = " ".join([_bash_quote(src.path) for src in ctx.files.srcs]),
             dir = _bash_quote(package_dir.path),
         ),
@@ -80,7 +80,7 @@ def _wit_package_impl(ctx):
 
             # Then their source files are hard-linked into that sub-subfolder.
             commands.append(
-                "ln {dep_wits} {dep_dir}".format(
+                "cp {dep_wits} {dep_dir}".format(
                     dep_wits = _bash_quote(dep.path) + "/*.wit",
                     dep_dir = _bash_quote(dep_path),
                 ),
@@ -88,7 +88,7 @@ def _wit_package_impl(ctx):
         else:
             # Standalone dependency files can be hard-linked directly under `deps/`.
             commands.append(
-                "ln {dep} {deps_dir}".format(
+                "cp {dep} {deps_dir}".format(
                     dep = _bash_quote(dep.path),
                     deps_dir = _bash_quote(deps_path),
                 ),
