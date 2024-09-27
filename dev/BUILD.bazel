@@ -3,7 +3,7 @@
 
 load("@buildtools//:rules.bzl", "buildifier")
 
-# To format all Bazel files, run `bazel run //:buildifier`.
+# To format all Bazel files, run `bazel run //dev:buildifier`.
 buildifier(
     name = "buildifier",
     exclude_patterns = [

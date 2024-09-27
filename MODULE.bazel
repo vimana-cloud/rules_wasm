@@ -82,6 +82,7 @@ http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_
     name = "wac-" + exe_platform,
     executable = True,
     integrity = wac_integrity[exe_platform],
+    # WAC uses non-canonical platform strings in the URLs:
     url = {
         "aarch64-linux": "https://github.com/bytecodealliance/wac/releases/download/v{version}/wac-cli-aarch64-unknown-linux-gnu",
         "aarch64-macos": "https://github.com/bytecodealliance/wac/releases/download/v{version}/wac-cli-aarch64-apple-darwin",
