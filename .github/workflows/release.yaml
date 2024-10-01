@@ -3,6 +3,7 @@ on:
   release:
     types: ['released']
 permissions:
+  # Necessary to upload a release asset:
   contents: write
 jobs:
   linux:
