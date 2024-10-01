@@ -82,13 +82,16 @@ http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_
     name = "wac-" + exe_platform,
     executable = True,
     integrity = wac_integrity[exe_platform],
-    # WAC uses non-canonical platform strings in the URLs:
-    url = {
-        "aarch64-linux": "https://github.com/bytecodealliance/wac/releases/download/v{version}/wac-cli-aarch64-unknown-linux-gnu",
-        "aarch64-macos": "https://github.com/bytecodealliance/wac/releases/download/v{version}/wac-cli-aarch64-apple-darwin",
-        "x86_64-linux": "https://github.com/bytecodealliance/wac/releases/download/v{version}/wac-cli-x86_64-unknown-linux-gnu",
-        "x86_64-macos": "https://github.com/bytecodealliance/wac/releases/download/v{version}/wac-cli-x86_64-apple-darwin",
-    }[exe_platform].format(version = wac_version),
+    url = "https://github.com/bytecodealliance/wac/releases/download/v{version}/wac-cli-{platform}".format(
+        # WAC uses non-canonical platform strings in the URLs:
+        platform = {
+            "aarch64-linux": "aarch64-unknown-linux-gnu",
+            "aarch64-macos": "aarch64-apple-darwin",
+            "x86_64-linux": "x86_64-unknown-linux-gnu",
+            "x86_64-macos": "x86_64-apple-darwin",
+        }[exe_platform],
+        version = wac_version,
+    ),
 ) for exe_platform in execution_platforms]
 
 http_archive(
@@ -112,8 +115,7 @@ load(":wasm.bzl", "wasi_packages")
     # for the set of WASI package names.
     patch_tool = "cat > wasm.bzl",
     patches = [":wasm.bzl"],
-    url = "https://github.com/WebAssembly/WASI/archive/refs/tags/v{version}.tar.gz"
-        .format(version = wasi_version),
+    url = "https://github.com/WebAssembly/WASI/archive/refs/tags/v{version}.tar.gz".format(version = wasi_version),
 )
 
 [http_archive(
@@ -148,8 +150,7 @@ alias(
         version = wasm_tools_version,
     ),
     integrity = wasm_tools_integrity[exe_platform],
-    url = "https://github.com/bytecodealliance/wasm-tools/releases/download/v{version}/wasm-tools-{version}-{platform}.tar.gz"
-        .format(
+    url = "https://github.com/bytecodealliance/wasm-tools/releases/download/v{version}/wasm-tools-{version}-{platform}.tar.gz".format(
         platform = exe_platform,
         version = wasm_tools_version,
     ),
@@ -168,8 +169,7 @@ alias(
         version = wit_bindgen_version,
     ),
     integrity = wit_bindgen_integrity[exe_platform],
-    url = "https://github.com/bytecodealliance/wit-bindgen/releases/download/v{version}/wit-bindgen-{version}-{platform}.tar.gz"
-        .format(
+    url = "https://github.com/bytecodealliance/wit-bindgen/releases/download/v{version}/wit-bindgen-{version}-{platform}.tar.gz".format(
         platform = exe_platform,
         version = wit_bindgen_version,
     ),
@@ -178,16 +178,14 @@ alias(
 http_file(
     name = "libwit-bindgen-cabi-realloc",
     integrity = "sha384-odfz6w5DeGCAMwgGbe1q3wxN6e4dYBUajm5tF0l/1exCkzVMFek4ETkEYQfKi2rW",
-    url = "https://github.com/bytecodealliance/wit-bindgen/raw/v{version}/crates/guest-rust/rt/src/libwit_bindgen_cabi_realloc.a"
-        .format(version = wit_bindgen_version),
+    url = "https://github.com/bytecodealliance/wit-bindgen/raw/v{version}/crates/guest-rust/rt/src/libwit_bindgen_cabi_realloc.a".format(version = wit_bindgen_version),
 )
 
 # Temporary crutch until we can build against wasip2 directly.
 http_file(
     name = "wasi-snapshot-preview1-reactor",
     integrity = "sha384-eJUMcNUbiESXupKnPsfE9JzdNtxrX+6NEsR/n6OZ8CcMgqt8TCwzuWqaY8UVy91H",
-    url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasi_snapshot_preview1.reactor.wasm"
-        .format(version = wasmtime_version),
+    url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasi_snapshot_preview1.reactor.wasm".format(version = wasmtime_version),
 )
 
 register_toolchains("//:wasm32-wasi-toolchain")
