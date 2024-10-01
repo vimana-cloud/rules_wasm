@@ -9,10 +9,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      - name: Package
-        # Include all tracked top-level files and folders in the release archive.
-        run: git ls-tree --name-only HEAD | xargs tar czf release.tar.gz
-      - name: Upload Release Asset
-        run: gh api /repos/${{ github.repository }}/releases/${{ github.event.release.id }}/assets?name=${{ github.event.repository.name }}-${{ github.ref_name }}.tar.gz -f "@release.tar.gz"
+      - name: Upload Release Archive
+        run: |
+          git ls-tree --name-only HEAD | xargs tar czf ${ASSET_NAME}
+          gh release upload ${{ github.event.release.tag_name }} ${ASSET_NAME}
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ASSET_NAME: ${{ github.event.repository.name }}-${{ github.ref_name }}.tar.gz
