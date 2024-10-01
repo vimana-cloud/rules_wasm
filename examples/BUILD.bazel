@@ -5,14 +5,6 @@ load("//:wasm.bzl", "wasm_plug", "wit_package")
 # Allow tests to reference these rules.
 package(default_visibility = ["//test:__pkg__"])
 
-# Build a simple component with a custom interface.
-rust_component(
-    name = "foo",
-    srcs = ["foo.rs"],
-    wit = "foo.wit",
-    world = "the-world",
-)
-
 # Build a command using the standard `wasi:cli/run` interface.
 rust_component(
     name = "command",
@@ -21,12 +13,30 @@ rust_component(
     world = "command",
 )
 
+# Build a simple component with a custom interface.
+rust_component(
+    name = "foo",
+    srcs = ["foo.rs"],
+    wit = "foo.wit",
+    world = "the-world",
+)
+
 # Build a wrapper component to interact with `:foo` from a command.
 rust_component(
     name = "foo-wrapper",
     srcs = ["foo-wrapper.rs"],
     wit = ":foo-wrapper-wit",
     world = "foo-command",
+)
+
+# When a WIT world has any dependencies, they must be bundled as a package.
+wit_package(
+    name = "foo-wrapper-wit",
+    srcs = ["foo-wrapper.wit"],
+    deps = [
+        "foo.wit",
+        "//wasip2:cli",
+    ],
 )
 
 # Plug `:foo` into `:foo-wrapper` to resolve the import
@@ -52,20 +62,4 @@ native_test(
         "$(location :foo-wrapped)",
     ],
     data = [":foo-wrapped"],
-)
-
-# When a WIT world has any dependencies, they must be bundled as a package.
-wit_package(
-    name = "foo-wrapper-wit",
-    srcs = ["foo-wrapper.wit"],
-    deps = [
-        "foo.wit",
-        "//wasip2:cli",
-        # Unfortunately, transitive dependencies must be spelled out.
-        "//wasip2:io",
-        "//wasip2:clocks",
-        "//wasip2:filesystem",
-        "//wasip2:random",
-        "//wasip2:sockets",
-    ],
 )

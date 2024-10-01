@@ -1,4 +1,4 @@
-# The "MIT No Attribution" License (MIT-0)
+# MIT No Attribution (MIT-0)
 
 Copyright © 2024 Actio
 

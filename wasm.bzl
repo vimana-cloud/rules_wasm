@@ -1,6 +1,6 @@
 # Language-agnostic rules and macros.
 
-# Mapping from WASI packages to dependencies:
+# Mapping from WASI packages to direct dependencies:
 wasi_packages = {
     "cli": [
         "clocks",
@@ -17,10 +17,8 @@ wasi_packages = {
     "http": [
         "cli",
         "clocks",
-        "filesystem",
         "io",
         "random",
-        "sockets",
     ],
     "io": [],
     "random": [],
@@ -33,76 +31,53 @@ wasi_packages = {
 WitPackageInfo = provider(
     "Information about a WIT package.",
     fields = {
-        "name": "Short name of the package. Required.",
-        "namespace": "Namespace of the package. Optional.",
-        "version": "Version of the package. Optional.",
+        "deps": "Direct and transitive dependency set.",
     },
 )
 
-def _bash_quote(path):
-    """
-    Surround a string with single-quotes.
-    If it contains a single-quote, it is escaped a-la-Bash.
-    """
-    return "'{}'".format(path.replace("'", "'\"'\"'"))
-
 def _wit_package_impl(ctx):
-    # The output of this action is a single directory, named after the WIT package:
-    #     <package>.
+    # The output of this action is a single directory, named after the build rule name:
+    #
+    #     <name>
     #     ├── [source files ...]
     #     └── deps/
     #         ├── <dependency-1>.wit
     #         ├── <dependency-2>/
     #         │   └── [dependency-2 source files ...]
     #         └── <dependency-3>.wit
+    #
+    # Each dependency's name is the unique full, versioned package name declared in that package,
+    # or the original filename if none (or multiple) are declared.
+    #
     # This is due to under-documented implementation details of wit-bindgen:
     # https://github.com/bytecodealliance/wit-bindgen/issues/1046.
-    package_name = ctx.attr.package_name or ctx.label.name
-    package_dir = ctx.actions.declare_directory(package_name)
-    deps_path = package_dir.path + "/deps"
 
-    # Chain a bunch of Bash commands together with `&&`.
-    commands = [
-        # Start by hard-linking the source files into the output directory.
-        "cp {srcs} {dir}".format(
-            srcs = " ".join([_bash_quote(src.path) for src in ctx.files.srcs]),
-            dir = _bash_quote(package_dir.path),
-        ),
-        # Create the `deps/` subfolder.
-        # It will be empty if there are no dependencies.
-        "mkdir {deps_dir}".format(deps_dir = _bash_quote(deps_path)),
-    ]
-    for dep in ctx.files.deps:
-        if dep.is_directory:
-            # Packaged dependencies need to have further subfolders created.
-            dep_path = deps_path + "/" + dep.basename
-            commands.append("mkdir {dep_dir}".format(dep_dir = _bash_quote(dep_path)))
-
-            # Then their source files are hard-linked into that sub-subfolder.
-            commands.append(
-                "cp {dep_wits} {dep_dir}".format(
-                    dep_wits = _bash_quote(dep.path) + "/*.wit",
-                    dep_dir = _bash_quote(dep_path),
-                ),
-            )
-        else:
-            # Standalone dependency files can be hard-linked directly under `deps/`.
-            commands.append(
-                "cp {dep} {deps_dir}".format(
-                    dep = _bash_quote(dep.path),
-                    deps_dir = _bash_quote(deps_path),
-                ),
-            )
-
-    ctx.actions.run_shell(
-        inputs = ctx.files.srcs + ctx.files.deps,
-        outputs = [package_dir],
-        command = " && ".join(commands),
+    package_dir = ctx.actions.declare_directory(ctx.label.name)
+    deps = depset(
+        ctx.files.deps,
+        transitive = [
+            dep[WitPackageInfo].deps
+            for dep in ctx.attr.deps
+            if WitPackageInfo in dep
+        ],
     )
+    all_deps = deps.to_list()
+
+    ctx.actions.run(
+        inputs = ctx.files.srcs + all_deps,
+        outputs = [package_dir],
+        executable = ctx.executable._wit_package_bin,
+        arguments = [
+            package_dir.path,
+            str(len(ctx.files.srcs)),
+        ] + [src.path for src in ctx.files.srcs] + [
+            str(len(all_deps)),
+        ] + [dep.path for dep in all_deps],
+    )
+
     return [
         DefaultInfo(files = depset([package_dir])),
-        # TODO: Do something about namespace and version (parse the files?).
-        WitPackageInfo(name = package_name, namespace = None, version = None),
+        WitPackageInfo(deps = deps),
     ]
 
 wit_package = rule(
@@ -120,8 +95,10 @@ wit_package = rule(
             allow_files = [".wit"],
             providers = [WitPackageInfo],
         ),
-        "package_name": attr.string(
-            doc = "Explicit name for the package. Default is the build rule name.",
+        "_wit_package_bin": attr.label(
+            default = "//:wit-package",
+            executable = True,
+            cfg = "exec",
         ),
     },
     provides = [WitPackageInfo],

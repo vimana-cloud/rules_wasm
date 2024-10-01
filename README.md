@@ -26,7 +26,7 @@ See [`examples/BUILD.bazel`](examples/BUILD.bazel).
 ## Caveats
 
 - Currently works only for the following execution platforms
-  (due to downloading pre-built binaries):
+  (due to a dependency on Bash and downloading pre-built binaries):
   * `aarch64-linux`
   * `aarch64-macos`
   * `x86_64-linux`
