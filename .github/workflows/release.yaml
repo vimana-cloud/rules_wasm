@@ -11,13 +11,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Package
         # Include all tracked top-level files and folders in the release archive.
-        run: git ls-tree --name-only HEAD | xargs tar czf rules_wasm-${{ github.ref_name }}.tar.gz
+        run: git ls-tree --name-only HEAD | xargs tar czf release.tar.gz
       - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
+        run: gh api --method POST /repos/${{ github.repository }}/releases/${{ github.event.release.id }}/assets?name=${{ github.event.repository.name }}-${{ github.ref_name }}.tar.gz -f @release.tar.gz
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: https://uploads.github.com/repos/${{ github.repository }}/releases/${{ github.event.release.id }}/assets
-          asset_name: rules_wasm-${{ github.ref_name }}.tar.gz
-          asset_path: rules_wasm-${{ github.ref_name }}.tar.gz
-          asset_content_type: application/gzip
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
