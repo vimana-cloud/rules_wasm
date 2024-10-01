@@ -13,6 +13,6 @@ jobs:
         # Include all tracked top-level files and folders in the release archive.
         run: git ls-tree --name-only HEAD | xargs tar czf release.tar.gz
       - name: Upload Release Asset
-        run: gh api --method POST /repos/${{ github.repository }}/releases/${{ github.event.release.id }}/assets?name=${{ github.event.repository.name }}-${{ github.ref_name }}.tar.gz -f @release.tar.gz
+        run: gh api /repos/${{ github.repository }}/releases/${{ github.event.release.id }}/assets?name=${{ github.event.repository.name }}-${{ github.ref_name }}.tar.gz -f "@release.tar.gz"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
