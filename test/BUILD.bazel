@@ -12,14 +12,17 @@ binaries = [
     "@wac-{}//file",
 ]
 
-# Download all binaries for all platforms
+# Download all remote files for all platforms
 # to make sure the checksums are correct in MODULE.bazel.
 build_test(
-    name = "fetch-all-binaries",
+    name = "fetch-all-remotes",
     targets = [
         binary.format(platform)
         for binary in binaries
         for platform in execution_platforms
+    ] + [
+        "@libwit-bindgen-cabi-realloc//file",
+        "@wasi-snapshot-preview1-reactor//file",
     ],
 )
 
