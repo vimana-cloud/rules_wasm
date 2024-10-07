@@ -149,12 +149,13 @@ wasm_component = rule(
             allow_single_file = [".wasm", ".wat"],
         ),
         "wit": attr.label(
-            doc = "WIT source package.",
+            doc = "WIT package where the interface world is defined.",
             allow_single_file = [".wit"],
             providers = [WitPackageInfo],
         ),
         "world": attr.string(
-            doc = "World to generate bindings for. Default is the target name.",
+            doc = "World for the component, which must be defined in the WIT package."
+                + " Use the target name if unspecified.",
         ),
         "_wasm_tools_bin": attr.label(
             default = "//:wasm-tools",
@@ -188,7 +189,7 @@ def _wasm_plug_impl(ctx):
 
 wasm_plug = rule(
     implementation = _wasm_plug_impl,
-    doc = "For simple Wasm compositions without a WAC file.",
+    doc = "Compose simple Wasm compositions without a WAC file.",
     attrs = {
         "wrapper": attr.label(
             doc = "Wrapper component to plug into.",

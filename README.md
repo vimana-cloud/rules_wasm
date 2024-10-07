@@ -1,7 +1,12 @@
-# Wasm Component Bazel Tools
+# WebAssembly Component Bazel Tools
 
 A Bazel module with tools
 for working with [WebAssembly components](https://component-model.bytecodealliance.org/).
+
+This module primarily hosts
+language-agnostic rules for working with WebAssembly components,
+but also welcomes language-specific rules to compile source code files into components
+(including generating WIT bindings).
 
 ## Rules
 
