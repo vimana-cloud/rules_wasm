@@ -55,8 +55,7 @@ fi
 if (( dep_count > 0 ))
 then
   deps="${args[@]:$((src_count + 3)):$dep_count}"
-  # Make the special `/deps` subfolder and copy all the direct dependencies.
-  # Transitive dependencies have to be specified explicitly :(.
+  # Make the special `/deps` subfolder and copy all the dependencies.
   deps_dir="$outdir/deps"
   mkdir "$deps_dir" && \
     for dep in ${deps[@]}
