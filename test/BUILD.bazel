@@ -29,11 +29,11 @@ build_test(
 # Run the simple example command and save standard output to a file.
 genrule(
     name = "command-output-actual",
-    srcs = ["//examples:command"],
+    srcs = ["@example//:command"],
     outs = ["stdout.txt"],
     # Run without caching so it plays nice with GitHub Actions.
     # Note that wasmtime insists that the flags precede the component path.
-    cmd = "$(location //:wasmtime) run --codegen cache=n $(location //examples:command) > \"$@\"",
+    cmd = "$(location //:wasmtime) run --codegen cache=n $(location @example//:command) > \"$@\"",
     tools = ["//:wasmtime"],
 )
 

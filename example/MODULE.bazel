@@ -1,0 +1,9 @@
+module(name = "example")
+
+bazel_dep(name = "rules_wasm")
+local_path_override(
+    module_name = "rules_wasm",
+    path = "..",
+)
+
+bazel_dep(name = "bazel_skylib", version = "1.7.1")

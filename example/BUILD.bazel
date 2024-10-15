@@ -1,15 +1,15 @@
 load("@bazel_skylib//rules:native_binary.bzl", "native_test")
-load("//:rust.bzl", "rust_component")
-load("//:wasm.bzl", "wasm_plug", "wit_package")
+load("@rules_wasm//:rust.bzl", "rust_component")
+load("@rules_wasm//:wasm.bzl", "wasm_plug", "wit_package")
 
 # Allow tests to reference these rules.
-package(default_visibility = ["//test:__pkg__"])
+package(default_visibility = ["//visibility:public"])
 
 # Build a command using the standard `wasi:cli/run` interface.
 rust_component(
     name = "command",
     srcs = ["command.rs"],
-    wit = "//wasip2:cli",
+    wit = "@rules_wasm//wasip2:cli",
     world = "command",
 )
 
@@ -35,7 +35,7 @@ wit_package(
     srcs = ["foo-wrapper.wit"],
     deps = [
         "foo.wit",
-        "//wasip2:cli",
+        "@rules_wasm//wasip2:cli",
     ],
 )
 
@@ -52,7 +52,7 @@ wasm_plug(
 native_test(
     name = "wrapper-test",
     size = "small",
-    src = "//:wasmtime",
+    src = "@rules_wasm//:wasmtime",
     args = [
         "run",
         # Turn off caching because it doesn't play nice with Bazel on GitHub Actions.

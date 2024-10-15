@@ -26,7 +26,7 @@ but also welcomes language-specific rules to compile source code files into comp
 
 ## Examples
 
-See [`examples/BUILD.bazel`](examples/BUILD.bazel).
+See [`example/BUILD.bazel`](example/BUILD.bazel).
 
 ## Caveats
 

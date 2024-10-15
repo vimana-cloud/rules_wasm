@@ -12,4 +12,6 @@ tasks:
     name: Run all tests
     platform: ${{ platform }}
     bazel: ${{ bazel }}
-    test_targets: ["//..."]
+    test_targets:
+      - "//..."
+      - "@example//..."

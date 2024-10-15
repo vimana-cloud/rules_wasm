@@ -9,6 +9,15 @@ bazel_dep(name = "rules_rust", version = "0.50.0")
 
 bazel_dep(name = "buildifier_prebuilt", version = "7.3.1", dev_dependency = True, repo_name = "buildtools")
 
+# The example module (which contains basic tests)
+# is itself referenced by tests in the main module,
+# which verify that some example tests are running properly.
+bazel_dep(name = "example", dev_dependency = True)
+local_path_override(
+    module_name = "example",
+    path = "example",
+)
+
 # Supported execution platforms for pre-built binaries.
 # TODO: Figure out how to dedupe this list with `private.bzl`.
 execution_platforms = [

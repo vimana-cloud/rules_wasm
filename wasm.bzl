@@ -154,8 +154,8 @@ wasm_component = rule(
             providers = [WitPackageInfo],
         ),
         "world": attr.string(
-            doc = "World for the component, which must be defined in the WIT package."
-                + " Use the target name if unspecified.",
+            doc = "World for the component, which must be defined in the WIT package." +
+                  " Use the target name if unspecified.",
         ),
         "_wasm_tools_bin": attr.label(
             default = "//:wasm-tools",

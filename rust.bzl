@@ -95,7 +95,7 @@ def rust_component(name, srcs, wit, world = None, deps = None):
     rust_library(
         name = lib_name,
         srcs = [":" + wit_name],
-        deps = ["@rules-wasm-crates//:wit-bindgen"],
+        deps = [Label("@rules-wasm-crates//:wit-bindgen")],
         crate_name = snake_world,
     )
 
@@ -106,9 +106,9 @@ def rust_component(name, srcs, wit, world = None, deps = None):
         crate_name = snake_world,
         deps = deps + [
             ":" + lib_name,
-            "//:wit-bindgen-cabi-realloc",
+            Label("//:wit-bindgen-cabi-realloc"),
         ],
-        platform = "@rules_rust//rust/platform:wasi",
+        platform = Label("@rules_rust//rust/platform:wasi"),
     )
 
     wasm_component(
