@@ -38,38 +38,38 @@ wac_integrity = {
 }
 
 # Version for WASI interface definitions: https://github.com/WebAssembly/WASI/releases.
-wasi_version = "0.2.1"
+wasi_version = "0.2.2"
 
-wasi_integrity = "sha384-7kxa+SG+M43Wv9RkO/WrRghhN55JBWl9VOl/qgqo3X3673e4KipKJl3wMqp3oFSK"
+wasi_integrity = "sha384-rEua24bGo/umBK+J5IYrre5vJlv7HPQashxuHzN/a0/Q63/ZYFamAcqsEzL54gxo"
 
 # Version for wasmtime: https://github.com/bytecodealliance/wasmtime/releases
-wasmtime_version = "25.0.1"
+wasmtime_version = "25.0.2"
 
 wasmtime_integrity = {
-    "aarch64-linux": "sha384-8zI5YZBTEFGm1qTuWKsP8I4xdqS1butv29MEvjHHd4kc1rCuUGz7bWeO9VKQvz7+",
-    "aarch64-macos": "sha384-uuNq+tE6NryCcdD4k0e/obyS2DPRAwqGPwRA7dXK2k5GwOqXb4Bu4A7wU/N0kJXI",
-    "x86_64-linux": "sha384-kHf68o7N1XkNOxNyEA2W45l8ywb143KbT9oFlbKFd6MRe0nw5bbsAd0muEfgvYyg",
-    "x86_64-macos": "sha384-CPDBQibAob48FBIqKuIJShows08eSV8EBSHTtl5VwyJLV1RPKGxiPZufSADeE8sI",
+    "aarch64-linux": "sha384-7Qy3QOIQNuWtL66QplN3IXVFThzQic5IlG2Tp9eWqjdejS33T1hB6OYkRKK1g8G+",
+    "aarch64-macos": "sha384-90+LDoYVzfhJ9cT2fwMlvWtVjtDo9dTlCMhzGdlbzrIdsnigVjGA+V3FHfI5V5zj",
+    "x86_64-linux": "sha384-7INZ/bTSIBo+Mp7r6lsKSa9g1uwPmHwYhp0JW3H7qiEwgdCP5SP2xzqnVCvg8D8d",
+    "x86_64-macos": "sha384-kqW9twRC7+yjWKXeoALamsYWu8songtQnl5X1M7ajAkAluNufx7VTPn011kEdeC3",
 }
 
 # Version for `wasm-tools`: https://github.com/bytecodealliance/wasm-tools/releases.
-wasm_tools_version = "1.218.0"
+wasm_tools_version = "1.219.1"
 
 wasm_tools_integrity = {
-    "aarch64-linux": "sha384-cNTII1wkqpYsjM/PK5j1w1z7/K9EHsunClf2oQ4JBjQZyiUKOom3/V0vJ7cBJvbT",
-    "aarch64-macos": "sha384-oWa67H/K1DN+Iu4sB3fvt8260BHjnh2QZM8T+0ty29r9mrwa9sMec6AhBu2l9Cx1",
-    "x86_64-linux": "sha384-/hIWhq3IGV0rPlHX8xIPl4smY7Dx7PuI9jldnjCJhHhMlzq4VqyQkVaxJOVZDReQ",
-    "x86_64-macos": "sha384-UW9v+1TNS7BtHvMFhz8eubmhI4+pGUb+QnNs6GuQpAPvawZ7i9inUxEX2BUiAZX2",
+    "aarch64-linux": "sha384-fMGoTqD8ojuIjh3bfULf4civ3fHkweX2JvsYJBr78jWLL/EeyWF/jbucyeXwe+9M",
+    "aarch64-macos": "sha384-bA7N8OBAsOjYH4O1/n3WsIlXoBPdPRhhltrZwjID9ftELtqAoGIDx+itzWE8tUjl",
+    "x86_64-linux": "sha384-E1/QFP7rYM6kvRBe0YUitkAEjkkfsCd9CQl/DdnpqQb9jXld7GI/mYVN81cX5p2e",
+    "x86_64-macos": "sha384-5OOs5j3jc/HWi4dbDuqVBXeLRTuONLZkhiGooJndvD4kf9qYiS+ghcSCAN1cRxQw",
 }
 
 # Version for `wit-bindgen`: https://github.com/bytecodealliance/wit-bindgen/releases.
-wit_bindgen_version = "0.33.0"
+wit_bindgen_version = "0.34.0"
 
 wit_bindgen_integrity = {
-    "aarch64-linux": "sha384-snKfIDz1sjU3AvCMuz8ioaKouqVcUO3qaKdPdIvVpPKrELw7RecyqVa1GSdqxOuc",
-    "aarch64-macos": "sha384-rxB7ISTMAeX/zpARYvf2zSalx2zTLL8cn7C86oFkpo8zYr7U531iAbvYvUguRW+L",
-    "x86_64-linux": "sha384-YbilHiakSfctiHCx6a88xiIzCPM3L4ftYaO8mlxM+OKMlaA6KtpBtHi/RAja6mHJ",
-    "x86_64-macos": "sha384-MqqmaIZ2Azn/1qPwPDHvcw/F/ny8WYOajqK+74pxvhMokM9AxY1pzVHuUE+OES+M",
+    "aarch64-linux": "sha384-WzVAuiAKmb2jE3tjCdMlfoRo/+4exUyWFxNAnN0+LOXaAUM/rWAvSOjyHcv4O+8Y",
+    "aarch64-macos": "sha384-uBK4dWWJIvO2veGCVnt5Ys9F36PrU6aHCJ8Hj+YVS3O3//mJLw2mlzjMbWSFo2OI",
+    "x86_64-linux": "sha384-oCxAhKR/GAIuokdcYzbmV2IMomIuzUHj1FngJD7QknU1t9kqPhB4WpXxJ/8OTxVV",
+    "x86_64-macos": "sha384-e7FrH1XCnMD0/nsM9dfS6fOyN7sKOEHdPthqnCA0Y8ayIl8O8p/WTkyLNg20It+Y",
 }
 
 # Rust setup: wit-bindgen-generated Rust files depend on the wit-bindgen crate.
@@ -186,14 +186,14 @@ alias(
 
 http_file(
     name = "libwit-bindgen-cabi-realloc",
-    integrity = "sha384-odfz6w5DeGCAMwgGbe1q3wxN6e4dYBUajm5tF0l/1exCkzVMFek4ETkEYQfKi2rW",
+    integrity = "sha384-6dQJsdPJKAphLtWp1KbulCUONNavNtn9dsfOFNdbcuQMiajUZl9hwFRnn7d4REvr",
     url = "https://github.com/bytecodealliance/wit-bindgen/raw/v{version}/crates/guest-rust/rt/src/libwit_bindgen_cabi_realloc.a".format(version = wit_bindgen_version),
 )
 
 # Temporary crutch until we can build against wasip2 directly.
 http_file(
     name = "wasi-snapshot-preview1-reactor",
-    integrity = "sha384-eJUMcNUbiESXupKnPsfE9JzdNtxrX+6NEsR/n6OZ8CcMgqt8TCwzuWqaY8UVy91H",
+    integrity = "sha384-hzGEnAMVlUQiEQZc9qcP0XI1i2mSo1rFZ2jA1Zfuvanxh3TRbSnj3e9tkoyt57VL",
     url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasi_snapshot_preview1.reactor.wasm".format(version = wasmtime_version),
 )
 

@@ -19,10 +19,10 @@ but also welcomes language-specific rules to compile source code files into comp
   * `wit_package` - Bundle a group of WIT files into a unified package.
 - [`//:rust.bzl`](rust.bzl):
   * `rust_component` - Compile a Wasm interface and matching Rust implementation
-    into a component (macro).
+    into a Wasm component.
   * `rust_wit_bindgen` - Generate Rust sources for a Wasm interface.
-    This is a lower-level rule that you normally wouldn't use directly.
-    Use `rust_component` for a single rule to compile a component from Rust.
+    This is a lower-level rule that you normally wouldn't need to use directly.
+    Use `rust_component` for a single macro to compile a component from Rust.
 
 ## Examples
 
