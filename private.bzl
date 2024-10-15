@@ -42,3 +42,10 @@ wasi_toolchain_config = rule(
     attrs = {},
     provides = [CcToolchainConfigInfo],
 )
+
+# Macros generate intermediate targets for a "root" target based on various affixes.
+# Format those intermediate target names so that they're decently readable
+# while reducing the risk of collisions and keeping intermediates near their roots
+# when sorted alphabetically.
+def intermediate_target_name(root, affix):
+    return "{}({})".format(root, affix)

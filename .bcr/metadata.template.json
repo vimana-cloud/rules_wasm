@@ -1,5 +1,5 @@
 {
-  "homepage": "https://github.com/actio-cloud/rules_wasm",
+  "homepage": "https://github.com/vimana-cloud/rules_wasm",
   "maintainers": [
     {
       "name": "Will Noble",
@@ -8,7 +8,7 @@
     }
   ],
   "repository": [
-    "github:actio-cloud/rules_wasm"
+    "github:vimana-cloud/rules_wasm"
   ],
   "versions": [],
   "yanked_versions": {}

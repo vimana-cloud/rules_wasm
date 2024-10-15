@@ -2,6 +2,7 @@
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@rules_rust//rust:defs.bzl", "rust_library", "rust_shared_library")
+load(":private.bzl", "intermediate_target_name")
 load(":wasm.bzl", "wasm_component")
 
 def _kebab_to_snake(s):
@@ -84,14 +85,14 @@ def rust_component(name, srcs, wit, world = None, deps = None):
     if deps == None:
         deps = []
 
-    wit_name = name + " wit"
+    wit_name = intermediate_target_name(name, "wit")
     rust_wit_bindgen(
         name = wit_name,
         src = wit,
         world = world,
     )
 
-    lib_name = name + " lib"
+    lib_name = intermediate_target_name(name, "lib")
     rust_library(
         name = lib_name,
         srcs = [":" + wit_name],
@@ -99,7 +100,7 @@ def rust_component(name, srcs, wit, world = None, deps = None):
         crate_name = snake_world,
     )
 
-    core_name = name + " core"
+    core_name = intermediate_target_name(name, "core")
     rust_shared_library(
         name = core_name,
         srcs = srcs,
