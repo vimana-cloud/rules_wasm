@@ -1,6 +1,6 @@
 module(
     name = "rules_wasm",
-    version = "1.0.13",
+    version = "1.0.14",
 )
 
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
