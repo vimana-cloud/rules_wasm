@@ -14,16 +14,23 @@ jobs:
       - name: Upload Release Archive
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # `ASSET_NAME` looks like `rules_wasm-v1.2.3.tar.gz`.
-          ASSET_NAME: ${{ github.event.repository.name }}-${{ github.ref_name }}.tar.gz
+          REPO_NAME: ${{ github.event.repository.name }}
+          RELEASE_TAG: ${{ github.ref_name }}
         run: |
-          # Extract the Bazel module version from `MODULE.bazel` (distinct from the GitHub release tag).
-          # `ROOT_DIRECTORY` looks like `rules_wasm-1.2.3.tar.gz`.
-          export ROOT_DIRECTORY="${{ github.event.repository.name }}-$(bazel mod explain --output json '<root>' | jq --raw-output .version)"
+          # Extract the version from `MODULE.bazel`
+          # and make sure it matches the release tag.
+          export MODULE_VERSION="$(bazel mod explain --output json '<root>' | jq --raw-output .version)"
+          if [ "${RELEASE_TAG}" != "v${MODULE_VERSION}" ]
+          then
+            echo >&2 "ERROR: Release tag does not match the version in MODULE.bazel"
+            exit 1
+          fi
 
-          # Add all Git-tracked files to a TAR archive.
-          # Use `--transform` to insert a single parent directory inside the archive
-          # because the BCR publishing app seems to like that.
-          # https://github.com/bazel-contrib/publish-to-bcr
-          git ls-tree --name-only HEAD | xargs tar --transform "s,^,${ROOT_DIRECTORY}/," -czf ${ASSET_NAME}
-          gh release upload ${{ github.ref_name }} ${ASSET_NAME}
+          # Add all Git-tracked files to a compressed TAR archive.
+          # Use `--transform` to put them under a single parent directory inside the archive.
+          # This structure seems to be conventional.
+          export ASSET_NAME="${REPO_NAME}-${RELEASE_TAG}.tar.gz"
+          export ROOT_DIRECTORY="${REPO_NAME}-${MODULE_VERSION}"
+          git ls-tree -r --name-only HEAD | xargs tar --transform "s,^,${ROOT_DIRECTORY}/," -czf "${ASSET_NAME}"
+
+          gh release upload "${RELEASE_TAG}" "${ASSET_NAME}"
