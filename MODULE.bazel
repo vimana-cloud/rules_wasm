@@ -5,7 +5,7 @@ module(
 
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
 bazel_dep(name = "platforms", version = "0.0.10")
-bazel_dep(name = "rules_rust", version = "0.52.2")
+bazel_dep(name = "rules_rust", version = "0.53.0")
 
 bazel_dep(name = "buildifier_prebuilt", version = "7.3.1", dev_dependency = True, repo_name = "buildtools")
 
@@ -28,13 +28,13 @@ execution_platforms = [
 ]
 
 # Version for WebAssembly Compositions: https://github.com/bytecodealliance/wac/releases.
-wac_version = "0.6.0"
+wac_version = "0.6.1"
 
 wac_integrity = {
-    "aarch64-linux": "sha384-ltqIX+BXjRrZPN+VJEzIUy9A+NJcYjuM81+QfpavptA5oQRCaw6J96FerO60R79F",
-    "aarch64-macos": "sha384-DXtE6rOZc7zAZ7GRS1cqb12AT1bNUWzk4xNI1yzbmzFKN5u1YIk8OZne5bynKM8f",
-    "x86_64-linux": "sha384-13W0ad1dfggR0pEBl2wPa3VbLbt1oerMLsQ8SIFEGfruUwEeOcdB9l/sKgpNLizy",
-    "x86_64-macos": "sha384-oA/n5jFUooC03r7Q/rliiFdCQoTTxTAq1ZxULnoETOLTFqX4I2DbWo7cGb9xo8ZW",
+    "aarch64-linux": "sha384-a/w+0nesiZRqMqid2W9mrjBA4S/qU4iGXRgHZjA+3Ydq7/efLT3XE41mGBNNqkeC",
+    "aarch64-macos": "sha384-cEtDDp4io01CLGUuZVZu9LPbk3/Ib7yYn88Q0XG785OltXG81NibGfZVSD9C/+n/",
+    "x86_64-linux": "sha384-90D0wJeI35nuWmkZMHrOd79pVequX7kbAWHqpcmsG6ZKJdwmfLZVTSGyuvPhjlpo",
+    "x86_64-macos": "sha384-+hH0YcJEeLeih4NULigzzFgJ3pCKnKq70oB5hEJGKC0E+xU4Hd/kH6NUV9BX/IV+",
 }
 
 # Version for WASI interface definitions: https://github.com/WebAssembly/WASI/releases.
@@ -94,9 +94,9 @@ http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_
     url = "https://github.com/bytecodealliance/wac/releases/download/v{version}/wac-cli-{platform}".format(
         # WAC uses non-canonical platform strings in the URLs:
         platform = {
-            "aarch64-linux": "aarch64-unknown-linux-gnu",
+            "aarch64-linux": "aarch64-unknown-linux-musl",
             "aarch64-macos": "aarch64-apple-darwin",
-            "x86_64-linux": "x86_64-unknown-linux-gnu",
+            "x86_64-linux": "x86_64-unknown-linux-musl",
             "x86_64-macos": "x86_64-apple-darwin",
         }[exe_platform],
         version = wac_version,
