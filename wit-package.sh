@@ -25,7 +25,7 @@ function get-package-name {
       if read conflicting_package_name
       then
         # When there are multiple declarations, print a message but use the default.
-        echo "Conflicting package declarations: $full_package_name $conflicting_package_name" >&2
+        echo >&2 "Conflicting package declarations: $full_package_name $conflicting_package_name"
         return 1
       fi
 
@@ -68,7 +68,7 @@ then
         outname="$deps_dir/$(cat "$dep"/*.wit | get-package-name || basename "$dep")"
         mkdir "$outname" && ( ln "$dep"/*.wit "$outname" || cp "$dep"/*.wit "$outname" )
       else
-        outname="$deps_dir/$(get-package-name < "$dep" || basename "$dep").wit"
+        outname="$deps_dir/$(get-package-name < "$dep" || basename "$dep" .wit).wit"
         ln "$dep" "$outname" || cp "$dep" "$outname"
       fi
     done
