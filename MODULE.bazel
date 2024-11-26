@@ -115,15 +115,11 @@ load(":wasm.bzl", "wasi_packages")
 ) for package in wasi_packages.keys()]
 """.format(version = wasi_version),
     integrity = wasi_integrity,
-    patch_args = [],
-    # By abusing `cat` as a "patch" tool,
-    # we simply copy the "patch" file into the root of the archive.
-    # This hack involves hardwiring the file name in multiple places :/.
-    # Ideally there would be something like `remote_file_urls` for local files.
-    # Copying this file allows us to keep a single source of truth
-    # for the set of WASI package names.
-    patch_tool = "cat > wasm.bzl",
-    patches = [":wasm.bzl"],
+    # Ideally there would be something like `remote_file_urls` for local files
+    # so we can eliminate this redundant patch file
+    # and instead just copy `wasm.bzl` into the remote repo:
+    # https://github.com/bazelbuild/bazel/issues/24499.
+    patches = [":wasi-patch.bzl"],
     url = "https://github.com/WebAssembly/WASI/archive/refs/tags/v{version}.tar.gz".format(version = wasi_version),
 )
 
