@@ -1,6 +1,5 @@
 # Language-agnostic rules and macros.
 
-# TODO: Figure out how to dedupe this with `wasi-patch.bzl`.
 # Mapping from WASI packages to direct dependencies:
 wasi_packages = {
     "cli": [
