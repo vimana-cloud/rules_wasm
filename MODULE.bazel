@@ -5,7 +5,7 @@ module(
 
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
 bazel_dep(name = "platforms", version = "0.0.10")
-bazel_dep(name = "rules_rust", version = "0.53.0")
+bazel_dep(name = "rules_rust", version = "0.56.0")
 
 bazel_dep(name = "buildifier_prebuilt", version = "7.3.1", dev_dependency = True, repo_name = "buildtools")
 
@@ -38,38 +38,38 @@ wac_integrity = {
 }
 
 # Version for WASI interface definitions: https://github.com/WebAssembly/WASI/releases.
-wasi_version = "0.2.2"
+wasi_version = "0.2.3"
 
-wasi_integrity = "sha384-rEua24bGo/umBK+J5IYrre5vJlv7HPQashxuHzN/a0/Q63/ZYFamAcqsEzL54gxo"
+wasi_integrity = "sha384-wd/5mo2TDA7ADdkZqib/2gNCGHIghMCM8ONJNq/xK9WVznX6EU4iW4jbJKYxXu/7"
 
-# Version for wasmtime: https://github.com/bytecodealliance/wasmtime/releases
-wasmtime_version = "25.0.2"
+# Version for wasmtime: https://github.com/bytecodealliance/wasmtime/releases.
+wasmtime_version = "28.0.0"
 
 wasmtime_integrity = {
-    "aarch64-linux": "sha384-7Qy3QOIQNuWtL66QplN3IXVFThzQic5IlG2Tp9eWqjdejS33T1hB6OYkRKK1g8G+",
-    "aarch64-macos": "sha384-90+LDoYVzfhJ9cT2fwMlvWtVjtDo9dTlCMhzGdlbzrIdsnigVjGA+V3FHfI5V5zj",
-    "x86_64-linux": "sha384-7INZ/bTSIBo+Mp7r6lsKSa9g1uwPmHwYhp0JW3H7qiEwgdCP5SP2xzqnVCvg8D8d",
-    "x86_64-macos": "sha384-kqW9twRC7+yjWKXeoALamsYWu8songtQnl5X1M7ajAkAluNufx7VTPn011kEdeC3",
+    "aarch64-linux": "sha384-e4eOQdu/NRb2d33CGqO131rUcwJ0bgZVGFDCxrrQHEHaUO/km9K0qFa1zT8I/0or",
+    "aarch64-macos": "sha384-4nFcDlSpEKq/pVrKmOOqwArwYnjJl3M/+Nk9Jp9kmQBUs0jdvvLn69ulvOCoKBg0",
+    "x86_64-linux": "sha384-PwpaM4kG4e723IcNvwXTf5onABRQMXsNge2bOd1GumzrxO2ngXfc/Qw604bOSFKU",
+    "x86_64-macos": "sha384-wVbcHFcVW/QLidoX4jphwgbGEDYAd5VjLPmSIOS4fTf7E4p8aA7tG0t3+JKkTxlN",
 }
 
 # Version for `wasm-tools`: https://github.com/bytecodealliance/wasm-tools/releases.
-wasm_tools_version = "1.219.1"
+wasm_tools_version = "1.222.0"
 
 wasm_tools_integrity = {
-    "aarch64-linux": "sha384-fMGoTqD8ojuIjh3bfULf4civ3fHkweX2JvsYJBr78jWLL/EeyWF/jbucyeXwe+9M",
-    "aarch64-macos": "sha384-bA7N8OBAsOjYH4O1/n3WsIlXoBPdPRhhltrZwjID9ftELtqAoGIDx+itzWE8tUjl",
-    "x86_64-linux": "sha384-E1/QFP7rYM6kvRBe0YUitkAEjkkfsCd9CQl/DdnpqQb9jXld7GI/mYVN81cX5p2e",
-    "x86_64-macos": "sha384-5OOs5j3jc/HWi4dbDuqVBXeLRTuONLZkhiGooJndvD4kf9qYiS+ghcSCAN1cRxQw",
+    "aarch64-linux": "sha384-TVvUEfaZld5M/ieispvUCQKz/4p3cj6veYQOjnxjw1sW1ru9vBcaGOCNDGCEhbIw",
+    "aarch64-macos": "sha384-qHhU42lAl13p3CCIE1r4xPqt4jIyyXqBX1Eg9Ede7OvliwTnsl1yooODLu+yxgDp",
+    "x86_64-linux": "sha384-27Bnt7XZaY+o11oPSuIqqbqCkPsbq4fXbh2qxV+gxpNpFJ88USjrnNobRjFBvK3z",
+    "x86_64-macos": "sha384-71HFBpP7i/19RB/2ZMAR4RdSUPgOOmlE72ucVZug6BFfTb2wEll19f0OQZwpo1VC",
 }
 
 # Version for `wit-bindgen`: https://github.com/bytecodealliance/wit-bindgen/releases.
-wit_bindgen_version = "0.34.0"
+wit_bindgen_version = "0.36.0"
 
 wit_bindgen_integrity = {
-    "aarch64-linux": "sha384-WzVAuiAKmb2jE3tjCdMlfoRo/+4exUyWFxNAnN0+LOXaAUM/rWAvSOjyHcv4O+8Y",
-    "aarch64-macos": "sha384-uBK4dWWJIvO2veGCVnt5Ys9F36PrU6aHCJ8Hj+YVS3O3//mJLw2mlzjMbWSFo2OI",
-    "x86_64-linux": "sha384-oCxAhKR/GAIuokdcYzbmV2IMomIuzUHj1FngJD7QknU1t9kqPhB4WpXxJ/8OTxVV",
-    "x86_64-macos": "sha384-e7FrH1XCnMD0/nsM9dfS6fOyN7sKOEHdPthqnCA0Y8ayIl8O8p/WTkyLNg20It+Y",
+    "aarch64-linux": "sha384-dWeeLwRPUDle2+UIC341EZKp9eTwmaHEmcgz5jNeLCCJWazQDKMYj+v7RD+OqDJj",
+    "aarch64-macos": "sha384-HECPlVnFj5HTjEvseZciO5FE66mm+3Z0QlTUrcM0ycjI4PpKd5C15MFQ8xY3NuhB",
+    "x86_64-linux": "sha384-LL0oARTtBo6pdTOmJF7OoqIpv+O/L0zQ1ltubxgOTzEvkEpjuLTUE1RziPFfJGB5",
+    "x86_64-macos": "sha384-eKzFLPVUMtww4ov1jEzaK31iE0vvMQ22t9xvcus86+mpq8esw43s1xm0naPivEGo",
 }
 
 # Rust setup: wit-bindgen-generated Rust files depend on the wit-bindgen crate.
@@ -180,14 +180,14 @@ alias(
 
 http_file(
     name = "libwit-bindgen-cabi-realloc",
-    integrity = "sha384-6dQJsdPJKAphLtWp1KbulCUONNavNtn9dsfOFNdbcuQMiajUZl9hwFRnn7d4REvr",
+    integrity = "sha384-4cpApVpbtIZb+jzbpZaSQ2Td0SrcvhkGq4qFwruq4o+OrvlPcnkaZ1Alur8Bd/Ca",
     url = "https://github.com/bytecodealliance/wit-bindgen/raw/v{version}/crates/guest-rust/rt/src/libwit_bindgen_cabi_realloc.a".format(version = wit_bindgen_version),
 )
 
 # Temporary crutch until we can build against wasip2 directly.
 http_file(
     name = "wasi-snapshot-preview1-reactor",
-    integrity = "sha384-hzGEnAMVlUQiEQZc9qcP0XI1i2mSo1rFZ2jA1Zfuvanxh3TRbSnj3e9tkoyt57VL",
+    integrity = "sha384-c0P96LoyKwdtEo+9rHgzfS0Tb8Qva2is/g3vHfpUA1Sq5Mdcadg+pRSufZ2ZYn74",
     url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasi_snapshot_preview1.reactor.wasm".format(version = wasmtime_version),
 )
 
