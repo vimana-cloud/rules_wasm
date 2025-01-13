@@ -5,6 +5,7 @@ module(
 
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
 bazel_dep(name = "platforms", version = "0.0.10")
+bazel_dep(name = "rules_go", version = "0.51.0")
 bazel_dep(name = "rules_rust", version = "0.56.0")
 
 bazel_dep(name = "buildifier_prebuilt", version = "7.3.1", dev_dependency = True, repo_name = "buildtools")
@@ -76,6 +77,16 @@ wasm_tools_integrity = {
 wit_bindgen_version = "0.36.0"
 
 wit_bindgen_integrity = {
+    "aarch64-linux": "sha384-dWeeLwRPUDle2+UIC341EZKp9eTwmaHEmcgz5jNeLCCJWazQDKMYj+v7RD+OqDJj",
+    "aarch64-macos": "sha384-HECPlVnFj5HTjEvseZciO5FE66mm+3Z0QlTUrcM0ycjI4PpKd5C15MFQ8xY3NuhB",
+    "x86_64-linux": "sha384-LL0oARTtBo6pdTOmJF7OoqIpv+O/L0zQ1ltubxgOTzEvkEpjuLTUE1RziPFfJGB5",
+    "x86_64-macos": "sha384-eKzFLPVUMtww4ov1jEzaK31iE0vvMQ22t9xvcus86+mpq8esw43s1xm0naPivEGo",
+}
+
+# Version for `wit-bindgen-go`: https://github.com/bytecodealliance/go-modules/releases.
+wit_bindgen_go_version = "0.5.0"
+
+wit_bindgen_go_integrity = {
     "aarch64-linux": "sha384-dWeeLwRPUDle2+UIC341EZKp9eTwmaHEmcgz5jNeLCCJWazQDKMYj+v7RD+OqDJj",
     "aarch64-macos": "sha384-HECPlVnFj5HTjEvseZciO5FE66mm+3Z0QlTUrcM0ycjI4PpKd5C15MFQ8xY3NuhB",
     "x86_64-linux": "sha384-LL0oARTtBo6pdTOmJF7OoqIpv+O/L0zQ1ltubxgOTzEvkEpjuLTUE1RziPFfJGB5",
@@ -235,6 +246,27 @@ alias(
     url = "https://github.com/bytecodealliance/wit-bindgen/releases/download/v{version}/wit-bindgen-{version}-{platform}.tar.gz".format(
         platform = exe_platform,
         version = wit_bindgen_version,
+    ),
+) for exe_platform in execution_platforms]
+
+[http_archive(
+    name = "wit-bindgen-go-" + exe_platform,
+    build_file_content = """
+alias(
+    name = "wit-bindgen-go",
+    actual = "wit-bindgen-go",
+    visibility = ["//visibility:public"],
+)
+""",
+    integrity = wit_bindgen_go_integrity[exe_platform],
+    url = "https://github.com/bytecodealliance/go-modules/releases/download/v{version}/wit-bindgen-go-{platform}.tgz".format(
+        platform = {
+            "aarch64-linux": "linux-arm64",
+            "aarch64-macos": "darwin-arm64",
+            "x86_64-linux": "linux-amd64",
+            "x86_64-macos": "darwin-amd64",
+        }[exe_platform],
+        version = wit_bindgen_go_version,
     ),
 ) for exe_platform in execution_platforms]
 

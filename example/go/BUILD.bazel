@@ -1,0 +1,17 @@
+load("@bazel_skylib//rules:native_binary.bzl", "native_test")
+load("@rules_wasm//:go.bzl", "go_component", "go_wit_bindgen")
+load("@rules_wasm//:wasm.bzl", "wasm_plug")
+
+# Build a Go component to plug into a Rust component.
+#go_component(
+#    name = "foo-wrapper",
+#    srcs = ["foo-wrapper.go"],
+#    wit = "//:foo-wrapper-wit",
+#    world = "foo-command",
+#)
+
+go_wit_bindgen(
+    name = "fersher",
+    src = "//:foo-wrapper-wit",
+    world = "foo-command",
+)

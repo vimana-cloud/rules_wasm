@@ -44,6 +44,12 @@ alias(
     visibility = ["//visibility:public"],
 )
 
+alias(
+    name = "wit-bindgen-go",
+    actual = format_platform("@wit-bindgen-go-{}//:wit-bindgen-go"),
+    visibility = ["//visibility:public"],
+)
+
 sh_binary(
     name = "wit-package",
     srcs = ["wit-package.sh"],
