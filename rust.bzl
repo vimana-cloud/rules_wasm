@@ -110,6 +110,8 @@ def rust_component(name, srcs, wit, world = None, deps = None):
             Label("//:wit-bindgen-cabi-realloc"),
         ],
         platform = Label("@rules_rust//rust/platform:wasi"),
+        # Make components as small as possible.
+        rustc_flags = ["-C", "opt-level=s"],
     )
 
     wasm_component(
