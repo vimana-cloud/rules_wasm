@@ -104,6 +104,16 @@ wit_package = rule(
     provides = [WitPackageInfo],
 )
 
+def _wasm32_wasi_impl(settings, attr):
+    return {"//command_line_option:platforms": "//:wasm32-wasi-platform"}
+
+# Transition to Wasm32.
+wasm32_wasi = transition(
+    implementation = _wasm32_wasi_impl,
+    inputs = [],
+    outputs = ["//command_line_option:platforms"],
+)
+
 _component_suffix = ".component.wasm"
 
 def _wasm_component_impl(ctx):
@@ -143,6 +153,7 @@ def _wasm_component_impl(ctx):
 wasm_component = rule(
     implementation = _wasm_component_impl,
     doc = "Embed a Wasm interface into a core module and create a component.",
+    cfg = wasm32_wasi,
     attrs = {
         "module": attr.label(
             doc = "Core Wasm module to embed the interface in.",
