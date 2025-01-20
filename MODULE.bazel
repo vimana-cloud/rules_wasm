@@ -218,12 +218,6 @@ wasi_sdk_platforms = {
 
 [http_archive(
     name = "wasi-sdk-" + exe_platform,
-    # Note: these are symlinks within the HTTP archive:
-    # - clang -> clang-19
-    # - ar -> llvm-ar
-    # - nm -> llvm-nm
-    # - objdump -> llvm-objdump
-    # - strip -> llvm-objcopy
     build_file_content = """
 load("@bazel_skylib//rules/directory:directory.bzl", "directory")
 load("@bazel_skylib//rules/directory:subdirectory.bzl", "subdirectory")
@@ -231,15 +225,20 @@ load("@bazel_skylib//rules/directory:subdirectory.bzl", "subdirectory")
 package(default_visibility=["//visibility:public"])
 
 alias(name = "clang", actual = "wasi-sdk-{version}.0-{platform}/bin/clang")
-alias(name = "wasm-component-ld", actual = "wasi-sdk-{version}.0-{platform}/bin/wasm-component-ld")
-alias(name = "ar", actual = "wasi-sdk-{version}.0-{platform}/bin/ar")
-alias(name = "nm", actual = "wasi-sdk-{version}.0-{platform}/bin/nm")
-alias(name = "objdump", actual = "wasi-sdk-{version}.0-{platform}/bin/objdump")
-alias(name = "strip", actual = "wasi-sdk-{version}.0-{platform}/bin/strip")
+alias(name = "clang++", actual = "wasi-sdk-{version}.0-{platform}/bin/clang++")
+alias(name = "lld", actual = "wasi-sdk-{version}.0-{platform}/bin/lld")
+alias(name = "llvm-ar", actual = "wasi-sdk-{version}.0-{platform}/bin/llvm-ar")
+alias(name = "llvm-objcopy", actual = "wasi-sdk-{version}.0-{platform}/bin/llvm-objcopy")
+alias(name = "llvm-strip", actual = "wasi-sdk-{version}.0-{platform}/bin/llvm-strip")
 
 directory(
-    name = "lib",
+    name = "lib-root",
     srcs = glob(["wasi-sdk-{version}.0-{platform}/lib/**"]),
+)
+subdirectory(
+    name = "lib",
+    parent = ":lib-root",
+    path = "wasi-sdk-{version}.0-{platform}/lib",
 )
 subdirectory(
     name = "include",
