@@ -1,3 +1,5 @@
+// Basic example of a teeny weeny world.
+
 package test:foo;
 
 interface custom {

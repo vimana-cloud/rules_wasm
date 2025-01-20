@@ -2,16 +2,12 @@
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@rules_rust//rust:defs.bzl", "rust_library", "rust_shared_library")
-load(":private.bzl", "intermediate_target_name")
+load(":private.bzl", "intermediate_target_name", "kebab_to_snake")
 load(":wasm.bzl", "wasm_component")
-
-def _kebab_to_snake(s):
-    "Convert a string from kebab-case to snake_case."
-    return s.replace("-", "_")
 
 def _rust_wit_bindgen_impl(ctx):
     world = ctx.attr.world or ctx.label.name
-    snake_world = _kebab_to_snake(world)
+    snake_world = kebab_to_snake(world)
 
     # Put everything in a folder with the same name as the target to avoid name conflicts.
     # Generate the actual bindings in a subdirectory called `wit`.
@@ -81,7 +77,7 @@ def rust_component(name, srcs, wit, world = None, deps = None):
     """
     if world == None:
         world = name
-    snake_world = _kebab_to_snake(world)
+    snake_world = kebab_to_snake(world)
     if deps == None:
         deps = []
 

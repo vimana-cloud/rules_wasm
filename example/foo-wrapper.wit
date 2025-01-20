@@ -1,3 +1,7 @@
+// The `foo-command` world:
+// basically just `wasi:cli/run`, but with an additional import;
+// perfect for composing with another component.
+
 package test:foo-wrapper@6.6.6;
 
 world foo-command {
