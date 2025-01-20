@@ -3,9 +3,9 @@ load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
 load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
 load(":private.bzl", "execution_platforms", "format_platform", "wasi_toolchain_config")
 
-# Execution-platform-specific aliases for pre-built binaries:
-# Some custom rules need Bash, so Windows is out for now.
-# Pre-built binaries might be available for other CPU's.
+# Execution-platform-specific aliases for pre-built dependencies:
+# Some custom rules need Bash, so Windows is out for now,
+# but pre-built binaries might be available for other CPU's.
 
 [selects.config_setting_group(
     name = "exe-" + platform,
@@ -22,14 +22,19 @@ native_binary(
 )
 
 alias(
-    name = "wasmtime",
-    actual = format_platform("@wasmtime-{}//:wasmtime"),
-    visibility = ["//visibility:public"],
+    name = "wasi-clang",
+    actual = format_platform("@wasi-sdk-{}//:clang"),
 )
 
 alias(
     name = "wasm-tools",
     actual = format_platform("@wasm-tools-{}//:wasm-tools"),
+    visibility = ["//visibility:public"],
+)
+
+alias(
+    name = "wasmtime",
+    actual = format_platform("@wasmtime-{}//:wasmtime"),
     visibility = ["//visibility:public"],
 )
 
@@ -70,7 +75,7 @@ cc_import(
 )
 
 # WASI C++ toolchain config:
-# The compiler claims this is necessary,
+# The *Rust* compiler claims this is necessary,
 # but AFAICT we can just use garbage values for every argument
 # and everything will still work fine.
 

@@ -3,13 +3,20 @@ load("@bazel_skylib//rules:diff_test.bzl", "diff_test")
 load("@bazel_skylib//rules:write_file.bzl", "write_file")
 load("//:private.bzl", "execution_platforms")
 
-# List of platform-dependent binaries,
+# List of platform-dependent downloadable targets,
 # where `{}` is a placeholder for the platform name.
-binaries = [
-    "@wasmtime-{}//:wasmtime",
-    "@wasm-tools-{}//:wasm-tools",
-    "@wit-bindgen-{}//:wit-bindgen",
+platform_downloads = [
     "@wac-{}//file",
+    "@wasm-tools-{}//:wasm-tools",
+    "@wasi-sdk-{}//:clang",
+    "@wasmtime-{}//:wasmtime",
+    "@wit-bindgen-{}//:wit-bindgen",
+]
+
+# List of platform-independent downloadable targets.
+universal_downloads = [
+    "@libwit-bindgen-cabi-realloc//file",
+    "@wasi-snapshot-preview1-reactor//file",
 ]
 
 # Download all remote files for all platforms
@@ -17,13 +24,10 @@ binaries = [
 build_test(
     name = "fetch-all-remotes",
     targets = [
-        binary.format(platform)
-        for binary in binaries
+        download.format(platform)
+        for download in platform_downloads
         for platform in execution_platforms
-    ] + [
-        "@libwit-bindgen-cabi-realloc//file",
-        "@wasi-snapshot-preview1-reactor//file",
-    ],
+    ] + universal_downloads,
 )
 
 # Run the simple example command and save standard output to a file.

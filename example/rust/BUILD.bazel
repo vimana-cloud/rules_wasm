@@ -1,6 +1,6 @@
-load("@bazel_skylib//rules:native_binary.bzl", "native_test")
 load("@rules_wasm//:rust.bzl", "rust_component")
-load("@rules_wasm//:wasm.bzl", "wasm_plug", "wit_package")
+load("@rules_wasm//:wasm.bzl", "wasm_plug")
+load("//:wasm-test.bzl", "wasm_test")
 
 # Allow tests to reference these rules.
 package(default_visibility = ["//visibility:public"])
@@ -17,7 +17,7 @@ rust_component(
 rust_component(
     name = "foo",
     srcs = ["foo.rs"],
-    wit = "foo.wit",
+    wit = "//:foo.wit",
     world = "the-world",
 )
 
@@ -25,18 +25,8 @@ rust_component(
 rust_component(
     name = "foo-wrapper",
     srcs = ["foo-wrapper.rs"],
-    wit = ":foo-wrapper-wit",
+    wit = "//:foo-wrapper-wit",
     world = "foo-command",
-)
-
-# When a WIT world has any dependencies, they must be bundled as a package.
-wit_package(
-    name = "foo-wrapper-wit",
-    srcs = ["foo-wrapper.wit"],
-    deps = [
-        "foo.wit",
-        "@rules_wasm//wasip2:cli",
-    ],
 )
 
 # Plug `:foo` into `:foo-wrapper` to resolve the import
@@ -47,19 +37,7 @@ wasm_plug(
     wrapper = ":foo-wrapper",
 )
 
-# A simple way to run a component implementing `wasi:cli/run` as a test using wasmtime.
-# The test fails if `run` returns an error.
-native_test(
+wasm_test(
     name = "wrapper-test",
-    size = "small",
-    src = "@rules_wasm//:wasmtime",
-    args = [
-        "run",
-        # Turn off caching because it doesn't play nice with Bazel on GitHub Actions.
-        # Note that wasmtime insists that the flags precede the component path.
-        "--codegen",
-        "cache=n",
-        "$(location :foo-wrapped)",
-    ],
-    data = [":foo-wrapped"],
+    component = ":foo-wrapped",
 )

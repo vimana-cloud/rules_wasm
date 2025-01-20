@@ -43,9 +43,15 @@ wasi_toolchain_config = rule(
     provides = [CcToolchainConfigInfo],
 )
 
-# Macros generate intermediate targets for a "root" target based on various affixes.
-# Format those intermediate target names so that they're decently readable
-# while reducing the risk of collisions and keeping intermediates near their roots
-# when sorted alphabetically.
+def kebab_to_snake(s):
+    "Convert a string from kebab-case to snake_case."
+    return s.replace("-", "_")
+
 def intermediate_target_name(root, affix):
+    """
+    Macros generate intermediate targets for a "root" target based on various affixes.
+    Format those intermediate target names so that they're decently readable
+    while reducing the risk of collisions and keeping intermediates near their roots
+    when sorted alphabetically.
+    """
     return "{}({})".format(root, affix)
