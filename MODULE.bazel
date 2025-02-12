@@ -1,13 +1,13 @@
 module(
     name = "rules_wasm",
-    version = "1.0.17",
+    version = "1.1.0",
 )
 
 bazel_dep(name = "bazel_skylib", version = "1.7.1")
-bazel_dep(name = "platforms", version = "0.0.10")
-bazel_dep(name = "rules_rust", version = "0.56.0")
+bazel_dep(name = "platforms", version = "0.0.11")
+bazel_dep(name = "rules_rust", version = "0.57.1")
 
-bazel_dep(name = "buildifier_prebuilt", version = "7.3.1", dev_dependency = True, repo_name = "buildtools")
+bazel_dep(name = "buildifier_prebuilt", version = "8.0.1", dev_dependency = True, repo_name = "buildtools")
 
 # The example module (which contains basic tests)
 # is itself referenced by tests in the main module,
