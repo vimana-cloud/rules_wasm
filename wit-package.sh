@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Compile a WIT package,
 # consisting of a set of source files and an optional set of dependencies,
