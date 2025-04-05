@@ -17,6 +17,7 @@ platform_downloads = [
 universal_downloads = [
     "@libwit-bindgen-cabi-realloc//file",
     "@wasi-snapshot-preview1-reactor//file",
+    "@wasi//:cli",
 ]
 
 # Download all remote files for all platforms
