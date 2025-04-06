@@ -131,7 +131,7 @@ load(":wasm.bzl", "wasi_packages")
     # so we can eliminate this redundant patch file
     # and instead just copy `wasm.bzl` into the remote repo:
     # https://github.com/bazelbuild/bazel/issues/24499.
-    patches = [":wasi-patch.bzl"],
+    patches = [":wasi.patch"],
     url = "https://github.com/WebAssembly/WASI/archive/refs/tags/v{version}.tar.gz".format(version = wasi_version),
 )
 
