@@ -61,7 +61,7 @@ rust_wit_bindgen = rule(
         ),
         "_wit_bindgen_bin": attr.label(
             default = "//:wit-bindgen",
-            allow_files = True,
+            allow_single_file = True,
             executable = True,
             cfg = "exec",
         ),

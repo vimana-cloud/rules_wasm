@@ -1,5 +1,6 @@
 # C-specific rules and macros.
 
+load("@bazel_skylib//lib:paths.bzl", "paths")
 load(":private.bzl", "intermediate_target_name", "kebab_to_snake")
 load(":wasm.bzl", "wasm_component")
 
@@ -15,15 +16,12 @@ def _c_wit_bindgen_impl(ctx):
     snake_world = kebab_to_snake(world)
 
     # Output 3 files in a new directory named after the target label's name.
-    if ctx.label.package == "":
-        out_dir = "{}".format(ctx.label.name)
-    else:
-        # wit-bindgen hardcodes `#include` directives using the label's package,
-        # so if that's non-empty, we need to mirror that structure in the output directory.
-        out_dir = "{}/{}".format(ctx.label.name, ctx.label.package)
-    source = ctx.actions.declare_file("{}/{}.c".format(out_dir, snake_world))
-    header = ctx.actions.declare_file("{}.h".format(snake_world), sibling = source)
-    type_object = ctx.actions.declare_file("{}_component_type.o".format(snake_world), sibling = source)
+    # wit-bindgen hardcodes `#include` directives using the label's package,
+    # so mirror that structure within the output directory.
+    out_dir = paths.normalize(paths.join(ctx.label.name, ctx.label.package))
+    source = ctx.actions.declare_file(paths.join(out_dir, snake_world + ".c"))
+    header = ctx.actions.declare_file(snake_world + ".h", sibling = source)
+    type_object = ctx.actions.declare_file(snake_world + "_component_type.o", sibling = source)
     all_outputs = [source, header, type_object]
 
     wit_bindgen_arguments = [
@@ -42,8 +40,7 @@ def _c_wit_bindgen_impl(ctx):
     )
 
     # This is `out_dir` minus the label's package,
-    # which is where clang can later search for the generated header
-    # (because the `#include` directive would be prefixed by the label's package).
+    # which is where clang can search for the generated header.
     include_dir = header.dirname.removesuffix(out_dir) + ctx.label.name
 
     return [
@@ -64,7 +61,7 @@ c_wit_bindgen = rule(
         ),
         "_wit_bindgen_bin": attr.label(
             default = "//:wit-bindgen",
-            allow_files = True,
+            allow_single_file = True,
             executable = True,
             cfg = "exec",
         ),
