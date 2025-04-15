@@ -88,7 +88,21 @@ crate.spec(
     package = "wit-bindgen",
     version = wit_bindgen_version,
 )
-crate.from_specs(name = "rules-wasm-crates")
+crate.from_specs(
+    name = "rules-wasm-crates",
+    # Hardcode all supported Rust toolchains to make Cargo splicing more efficient.
+    # https://github.com/bazelbuild/rules_rust/discussions/2259
+    supported_platform_triples = [
+        "aarch64-unknown-linux-gnu",
+        "aarch64-apple-darwin",
+        # TODO: Updgrade to wasip2 when there's an available platform
+        #       (`@platforms//os:wasi` is only supported by wasip1).
+        "wasm32-wasip1",
+        "x86_64-unknown-linux-gnu",
+        "x86_64-apple-darwin",
+    ],
+
+)
 use_repo(crate, "rules-wasm-crates")
 
 # Manually download prebuilt binaries for various dependencies:
