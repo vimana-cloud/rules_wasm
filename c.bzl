@@ -116,7 +116,7 @@ c_module = rule(
         ),
         "_clang_bin": attr.label(
             default = "//:wasi-clang",
-            allow_files = True,
+            allow_single_file = True,
             executable = True,
             cfg = "exec",
         ),

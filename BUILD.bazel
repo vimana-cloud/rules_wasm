@@ -1,6 +1,7 @@
 load("@bazel_skylib//lib:selects.bzl", "selects")
 load("@bazel_skylib//rules:copy_file.bzl", "copy_file")
 load("@bazel_skylib//rules:native_binary.bzl", "native_binary")
+load("@rules_cc//cc:defs.bzl", "cc_import", "cc_toolchain")
 load(":private.bzl", "execution_platforms", "format_platform", "wasi_toolchain_config")
 
 # Execution-platform-specific aliases for pre-built dependencies:
