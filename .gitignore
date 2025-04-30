@@ -1,0 +1,4 @@
+bazel-bin
+bazel-rules_wasm
+bazel-out
+bazel-testlogs
