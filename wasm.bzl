@@ -32,6 +32,7 @@ wasi_packages = {
 WitPackageInfo = provider(
     "Information about a WIT package.",
     fields = {
+        "directory": "Generated WIT package directory.",
         "deps": "Direct and transitive dependency set.",
     },
 )
@@ -42,10 +43,11 @@ def _wit_package_impl(ctx):
     #     <name>
     #     ├── [source files ...]
     #     └── deps/
-    #         ├── <dependency-1>.wit
+    #         ├── <dependency-1>/
+    #         │   └── [dependency-1 source files ...]
     #         ├── <dependency-2>/
     #         │   └── [dependency-2 source files ...]
-    #         └── <dependency-3>.wit
+    #         └── ...
     #
     # Each dependency's name is the unique full, versioned package name declared in that package,
     # or the original filename if none (or multiple) are declared.
@@ -56,11 +58,7 @@ def _wit_package_impl(ctx):
     package_dir = ctx.actions.declare_directory(ctx.label.name)
     deps = depset(
         ctx.files.deps,
-        transitive = [
-            dep[WitPackageInfo].deps
-            for dep in ctx.attr.deps
-            if WitPackageInfo in dep
-        ],
+        transitive = [dep[WitPackageInfo].deps for dep in ctx.attr.deps],
     )
     all_deps = deps.to_list()
 
@@ -78,22 +76,20 @@ def _wit_package_impl(ctx):
 
     return [
         DefaultInfo(files = depset([package_dir])),
-        WitPackageInfo(deps = deps),
+        WitPackageInfo(directory = package_dir, deps = deps),
     ]
 
 wit_package = rule(
     implementation = _wit_package_impl,
     doc =
-        "Bundle a group of WIT files, belonging to the same package, into a unified dependency." +
-        " Otherwise, only single-file packages can be depended upon.",
+        "Bundle a group of WIT files belonging to the same package, along with dependencies.",
     attrs = {
         "srcs": attr.label_list(
             doc = "WIT source files.",
             allow_files = [".wit"],
         ),
         "deps": attr.label_list(
-            doc = "WIT dependencies.",
-            allow_files = [".wit"],
+            doc = "WIT package dependencies.",
             providers = [WitPackageInfo],
         ),
         "_wit_package_bin": attr.label(

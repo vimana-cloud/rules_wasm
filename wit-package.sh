@@ -62,14 +62,8 @@ then
     do
       # Extract an explicit package name declaration
       # and use that as the destination file / directory name to avoid collisions.
-      # Default to the input file / directory name.
-      if [ -d "$dep" ]
-      then
-        outname="$deps_dir/$(cat "$dep"/*.wit | get-package-name || basename "$dep")"
-        mkdir "$outname" && ( ln "$dep"/*.wit "$outname" || cp "$dep"/*.wit "$outname" )
-      else
-        outname="$deps_dir/$(get-package-name < "$dep" || basename "$dep" .wit).wit"
-        ln "$dep" "$outname" || cp "$dep" "$outname"
-      fi
+      # Default to the input directory name.
+      outname="$deps_dir/$(cat "$dep"/*.wit | get-package-name || basename "$dep")"
+      mkdir "$outname" && ( ln "$dep"/*.wit "$outname" || cp "$dep"/*.wit "$outname" )
     done
 fi

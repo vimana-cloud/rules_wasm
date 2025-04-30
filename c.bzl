@@ -26,14 +26,14 @@ def _c_wit_bindgen_impl(ctx):
 
     wit_bindgen_arguments = [
         "c",
-        ctx.file.src.path,
+        ctx.attr.src[WitPackageInfo].directory.path,
         "--world",
         world,
         "--out-dir",
         source.dirname,
     ]
     ctx.actions.run(
-        inputs = [ctx.file.src],
+        inputs = [ctx.attr.src[WitPackageInfo].directory],
         outputs = all_outputs,
         executable = ctx.executable._wit_bindgen_bin,
         arguments = wit_bindgen_arguments,
@@ -53,9 +53,8 @@ c_wit_bindgen = rule(
     doc = "Generate C bindings from a WebAssembly Interface (WIT).",
     attrs = {
         "src": attr.label(
-            doc = "WIT source file or package.",
+            doc = "WIT package.",
             providers = [WitPackageInfo],
-            allow_single_file = [".wit"],
             mandatory = True,
         ),
         "world": attr.string(

@@ -14,7 +14,7 @@ def _rust_wit_bindgen_impl(ctx):
     bindings = ctx.actions.declare_directory(paths.join(ctx.label.name, "wit"))
     wit_bindgen_arguments = [
         "rust",
-        ctx.file.src.path,
+        ctx.attr.src[WitPackageInfo].directory.path,
         "--world",
         world,
         "--out-dir",
@@ -27,7 +27,7 @@ def _rust_wit_bindgen_impl(ctx):
         snake_world,
     ]
     ctx.actions.run(
-        inputs = [ctx.file.src],
+        inputs = [ctx.attr.src[WitPackageInfo].directory],
         outputs = [bindings],
         executable = ctx.executable._wit_bindgen_bin,
         arguments = wit_bindgen_arguments,
@@ -53,9 +53,8 @@ rust_wit_bindgen = rule(
     doc = "Generate Rust bindings from a WebAssembly Interface (WIT).",
     attrs = {
         "src": attr.label(
-            doc = "WIT source file or package.",
+            doc = "WIT package.",
             providers = [WitPackageInfo],
-            allow_single_file = [".wit"],
             mandatory = True,
         ),
         "world": attr.string(

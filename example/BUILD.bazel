@@ -2,15 +2,16 @@ load("@rules_wasm//:wasm.bzl", "wit_package")
 
 package(default_visibility = [":__subpackages__"])
 
-# WIT files can be used directly if they have no dependencies.
-exports_files(["foo.wit"])
+wit_package(
+    name = "foo-wit",
+    srcs = ["foo.wit"],
+)
 
-# When a WIT file has dependencies, they must be bundled together in a package.
 wit_package(
     name = "foo-wrapper-wit",
     srcs = ["foo-wrapper.wit"],
     deps = [
-        "foo.wit",
+        ":foo-wit",
         "@rules_wasm//wasip2:cli",  # WASI interfaces are built-in.
     ],
 )
