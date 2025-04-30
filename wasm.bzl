@@ -29,11 +29,18 @@ wasi_packages = {
     ],
 }
 
+def _wit_package_info(package, directory):
+    """
+    Return WIT package information,
+    composed of the declared package name (string) and a generated directory (File object).
+    """
+    return struct(package = package, directory = directory)
+
 WitPackageInfo = provider(
     "Information about a WIT package.",
     fields = {
-        "directory": "Generated WIT package directory.",
-        "deps": "Direct and transitive dependency set.",
+        "info": "Information about this WIT package.",
+        "deps": "Dependency set of information for all transitive package dependencies.",
     },
 )
 
@@ -57,26 +64,33 @@ def _wit_package_impl(ctx):
 
     package_dir = ctx.actions.declare_directory(ctx.label.name)
     deps = depset(
-        ctx.files.deps,
+        [dep[WitPackageInfo].info for dep in ctx.attr.deps],
         transitive = [dep[WitPackageInfo].deps for dep in ctx.attr.deps],
     )
     all_deps = deps.to_list()
 
     ctx.actions.run(
-        inputs = ctx.files.srcs + all_deps,
+        inputs = ctx.files.srcs + [dep.directory for dep in all_deps],
         outputs = [package_dir],
         executable = ctx.executable._wit_package_bin,
         arguments = [
             package_dir.path,
+            ctx.attr.package,
             str(len(ctx.files.srcs)),
         ] + [src.path for src in ctx.files.srcs] + [
             str(len(all_deps)),
-        ] + [dep.path for dep in all_deps],
+        ] + [dep.directory.path for dep in all_deps],
     )
 
     return [
         DefaultInfo(files = depset([package_dir])),
-        WitPackageInfo(directory = package_dir, deps = deps),
+        WitPackageInfo(
+            info = _wit_package_info(
+                package = ctx.attr.package,
+                directory = package_dir,
+            ),
+            deps = deps,
+        ),
     ]
 
 wit_package = rule(
@@ -84,6 +98,12 @@ wit_package = rule(
     doc =
         "Bundle a group of WIT files belonging to the same package, along with dependencies.",
     attrs = {
+        # Building Go modules requires knowing all the package names during the analysis phase,
+        # so we cannot detect this information from the WIT source files.
+        "package": attr.string(
+            doc = "Name of the WIT package (e.g. `foo:bar`).",
+            mandatory = True,
+        ),
         "srcs": attr.label_list(
             doc = "WIT source files.",
             allow_files = [".wit"],

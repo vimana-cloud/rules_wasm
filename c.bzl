@@ -26,14 +26,14 @@ def _c_wit_bindgen_impl(ctx):
 
     wit_bindgen_arguments = [
         "c",
-        ctx.attr.src[WitPackageInfo].directory.path,
+        ctx.attr.src[WitPackageInfo].info.directory.path,
         "--world",
         world,
         "--out-dir",
         source.dirname,
     ]
     ctx.actions.run(
-        inputs = [ctx.attr.src[WitPackageInfo].directory],
+        inputs = [ctx.attr.src[WitPackageInfo].info.directory],
         outputs = all_outputs,
         executable = ctx.executable._wit_bindgen_bin,
         arguments = wit_bindgen_arguments,

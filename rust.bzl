@@ -14,7 +14,7 @@ def _rust_wit_bindgen_impl(ctx):
     bindings = ctx.actions.declare_directory(paths.join(ctx.label.name, "wit"))
     wit_bindgen_arguments = [
         "rust",
-        ctx.attr.src[WitPackageInfo].directory.path,
+        ctx.attr.src[WitPackageInfo].info.directory.path,
         "--world",
         world,
         "--out-dir",
@@ -27,7 +27,7 @@ def _rust_wit_bindgen_impl(ctx):
         snake_world,
     ]
     ctx.actions.run(
-        inputs = [ctx.attr.src[WitPackageInfo].directory],
+        inputs = [ctx.attr.src[WitPackageInfo].info.directory],
         outputs = [bindings],
         executable = ctx.executable._wit_bindgen_bin,
         arguments = wit_bindgen_arguments,

@@ -4,6 +4,7 @@ load("//:wasm.bzl", "wasi_packages", "wit_package")
 [wit_package(
     name = name,
     srcs = ["@wasi//:{}".format(name)],
+    package = "wasi:{}".format(name),
     visibility = ["//visibility:public"],
     deps = [":" + dep for dep in deps],
 ) for name, deps in wasi_packages.items()]

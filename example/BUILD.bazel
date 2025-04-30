@@ -5,11 +5,13 @@ package(default_visibility = [":__subpackages__"])
 wit_package(
     name = "foo-wit",
     srcs = ["foo.wit"],
+    package = "test:foo",
 )
 
 wit_package(
     name = "foo-wrapper-wit",
     srcs = ["foo-wrapper.wit"],
+    package = "test:foo-wrapper",
     deps = [
         ":foo-wit",
         "@rules_wasm//wasip2:cli",  # WASI interfaces are built-in.
