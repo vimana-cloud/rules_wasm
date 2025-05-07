@@ -23,7 +23,8 @@ but also welcomes language-specific rules to compile source code files into comp
   * `rust_wit_bindgen` - Generate Rust sources for a Wasm interface.
     This is a lower-level rule that you normally wouldn't need to use directly.
     Use `rust_component` for a single macro to compile a component from Rust.
-- C support is hacky and needs to be adapted to a proper CC toolchain,
+- C support is hacky and needs to be adapted to a proper CC toolchain
+  (blocked on [bazelbuild/rules_cc#277](https://github.com/bazelbuild/rules_cc/issues/277)),
   but there's [`//:c.bzl`](c.bzl):
   * `c_component` - Compile a Wasm interface and matching C implementation
     into a Wasm component.
