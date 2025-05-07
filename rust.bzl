@@ -3,7 +3,7 @@
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@rules_rust//rust:defs.bzl", "rust_library", "rust_shared_library")
 load(":private.bzl", "intermediate_target_name", "kebab_to_snake")
-load(":wasm.bzl", "wasm_component")
+load(":wasm.bzl", "WitPackageInfo", "wasm_component")
 
 def _rust_wit_bindgen_impl(ctx):
     world = ctx.attr.world or ctx.label.name
@@ -54,7 +54,9 @@ rust_wit_bindgen = rule(
     attrs = {
         "src": attr.label(
             doc = "WIT source file or package.",
+            providers = [WitPackageInfo],
             allow_single_file = [".wit"],
+            mandatory = True,
         ),
         "world": attr.string(
             doc = "World to generate bindings for. Default is the target name.",

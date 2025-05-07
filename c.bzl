@@ -2,7 +2,7 @@
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load(":private.bzl", "intermediate_target_name", "kebab_to_snake")
-load(":wasm.bzl", "wasm_component")
+load(":wasm.bzl", "WitPackageInfo", "wasm_component")
 
 CWitBindgenInfo = provider(
     "Information relevant to generated C WIT bindings.",
@@ -54,7 +54,9 @@ c_wit_bindgen = rule(
     attrs = {
         "src": attr.label(
             doc = "WIT source file or package.",
+            providers = [WitPackageInfo],
             allow_single_file = [".wit"],
+            mandatory = True,
         ),
         "world": attr.string(
             doc = "World to generate bindings for. Default is the target name.",
