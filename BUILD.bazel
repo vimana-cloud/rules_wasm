@@ -46,6 +46,11 @@ alias(
     visibility = ["//visibility:public"],
 )
 
+alias(
+    name = "tinygo",
+    actual = format_platform("@tinygo-{}//:tinygo"),
+)
+
 # Rename the manually-downloaded `realloc` library, as per
 # https://github.com/bytecodealliance/wit-bindgen/blob/v0.30.0/crates/guest-rust/rt/build.rs#L27.
 copy_file(

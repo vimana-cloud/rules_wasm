@@ -28,6 +28,16 @@ execution_platforms = [
     "x86_64-macos",
 ]
 
+# https://github.com/tinygo-org/tinygo/releases
+tinygo_version = "0.37.0"
+
+tinygo_integrity = {
+    "aarch64-linux": "sha384-hYPKBCmCOy1oi5qXLKXWevXrEs5y4Zo6UBSKAgd683pS9PZA1TTth4ncs2PPr0mc",
+    "aarch64-macos": "sha384-Wp+X+zpEQYouBrHXgbP9KRNO0q4P7rkhNAyIYzg9EvDhJmZN3WWHBzX5l8Uwlrmt",
+    "x86_64-linux": "sha384-mXvibb7zoGzU5lBnMPo8bb7FpZEMBTL9K55AdUlkfcmx+38FacG+dx2pciZcim7O",
+    "x86_64-macos": "sha384-fosbaDMTRkeIdEf5QJIL45SwutsjmaYFf8N5jeaJeABrw+Dc0/EjCPbVAAIPPj/H",
+}
+
 # https://github.com/bytecodealliance/wac/releases
 wac_version = "0.6.1"
 
@@ -254,6 +264,28 @@ alias(
     ),
 ) for exe_platform in execution_platforms]
 
+[http_archive(
+    name = "tinygo-" + exe_platform,
+    build_file_content = """
+alias(
+    name = "tinygo",
+    actual = "tinygo/bin/tinygo",
+    visibility = ["//visibility:public"],
+)
+""",
+    integrity = tinygo_integrity[exe_platform],
+    url = "https://github.com/tinygo-org/tinygo/releases/download/v{version}/tinygo{version}.{platform}.tar.gz".format(
+        platform = {
+            "aarch64-linux": "linux-arm64",
+            "aarch64-macos": "darwin-arm64",
+            "x86_64-linux": "linux-amd64",
+            "x86_64-macos": "darwin-amd64",
+        }[exe_platform],
+        version = tinygo_version,
+    ),
+) for exe_platform in execution_platforms]
+
+# Needed to build Rust components.
 http_file(
     name = "libwit-bindgen-cabi-realloc",
     integrity = "sha384-sle1RnmoH6vtWvvF2s5anuN/JaQA56HE6ZCS6MwXmmNNkyLcsYG///amLrQ7HNSI",

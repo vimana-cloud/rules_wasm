@@ -11,6 +11,7 @@ platform_downloads = [
     "@wasi-sdk-{}//:clang",
     "@wasmtime-{}//:wasmtime",
     "@wit-bindgen-{}//:wit-bindgen",
+    "@tinygo-{}//:tinygo",
 ]
 
 # List of platform-independent downloadable targets.
