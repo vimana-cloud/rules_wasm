@@ -98,12 +98,6 @@ wit_package = rule(
     doc =
         "Bundle a group of WIT files belonging to the same package, along with dependencies.",
     attrs = {
-        # Building Go modules requires knowing all the package names during the analysis phase,
-        # so we cannot detect this information from the WIT source files.
-        "package": attr.string(
-            doc = "Name of the WIT package (e.g. `foo:bar`).",
-            mandatory = True,
-        ),
         "srcs": attr.label_list(
             doc = "WIT source files.",
             allow_files = [".wit"],
@@ -111,6 +105,12 @@ wit_package = rule(
         "deps": attr.label_list(
             doc = "WIT package dependencies.",
             providers = [WitPackageInfo],
+        ),
+        # Building Go modules requires knowing package names during the analysis phase,
+        # so we cannot infer that information from the WIT source files.
+        "package": attr.string(
+            doc = "Name of the WIT package (e.g. `foo:bar`).",
+            mandatory = True,
         ),
         "_wit_package_bin": attr.label(
             default = ":wit-package",
@@ -121,7 +121,7 @@ wit_package = rule(
     provides = [WitPackageInfo],
 )
 
-_component_suffix = ".component.wasm"
+component_suffix = ".component.wasm"
 
 def _wasm_component_impl(ctx):
     embedded = ctx.actions.declare_file(ctx.label.name + ".embedded.wasm")
@@ -140,7 +140,7 @@ def _wasm_component_impl(ctx):
             embedded.path,
         ],
     )
-    component = ctx.actions.declare_file(ctx.label.name + _component_suffix)
+    component = ctx.actions.declare_file(ctx.label.name + component_suffix)
     ctx.actions.run(
         inputs = [embedded, ctx.file._adapter],
         outputs = [component],
@@ -188,7 +188,7 @@ wasm_component = rule(
 )
 
 def _wasm_plug_impl(ctx):
-    output = ctx.actions.declare_file(ctx.label.name + _component_suffix)
+    output = ctx.actions.declare_file(ctx.label.name + component_suffix)
     ctx.actions.run(
         inputs = [ctx.file.wrapper, ctx.file.plug],
         outputs = [output],

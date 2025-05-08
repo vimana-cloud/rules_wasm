@@ -5,6 +5,10 @@
 package test:foo-wrapper@6.6.6;
 
 world foo-command {
+  // Required to support Go:
+  // https://github.com/tinygo-org/tinygo/issues/4843
+  include wasi:cli/imports@0.2.0;
+
   // The regular WASI run interface:
   export wasi:cli/run@0.2.0;
 

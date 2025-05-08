@@ -1,0 +1,24 @@
+load("@rules_wasm//go:defs.bzl", "go_component")
+load("@rules_wasm//wasm:defs.bzl", "wasm_plug")
+load("//:wasm-test.bzl", "wasm_test")
+
+# Build a Go component.
+go_component(
+    name = "foo-wrapper",
+    srcs = ["foo-wrapper.go"],
+    wit = "//:foo-wrapper-wit",
+    wit_module = "example.com/wit",
+    world = "foo-command",
+)
+
+# Plug a Rust component into a Go component.
+wasm_plug(
+    name = "foo-wrapped",
+    plug = "//rust:foo",
+    wrapper = ":foo-wrapper",
+)
+
+wasm_test(
+    name = "wrapper-test",
+    component = ":foo-wrapped",
+)

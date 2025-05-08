@@ -1,0 +1,18 @@
+--- BUILD.bazel
++++ BUILD.bazel
+@@ -1,4 +1,15 @@
+ load("@io_bazel_rules_go//go:def.bzl", "go_library", "go_test")
++
++exports_files(
++    ["go.mod"],
++    visibility = ["//visibility:public"],
++)
++
++alias(
++    name = "package-info",
++    actual = ":gazelle_generated_package_info",
++    visibility = ["//visibility:public"],
++)
+
+ go_library(
+     name = "cm",

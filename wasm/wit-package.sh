@@ -20,12 +20,12 @@
 function get-package-name {
   # First eliminate all block comments from the input,
   # then search for valid `package` declaration lines and print the package name only.
-  sed -En 's@/\*([^*]|\*[^/])*\*/@@g; s@^package[ \t]+([^ \t]+)[ \t]*;[ \t]*(//.*)?$@\1@p' \
+  sed -En 's@/\*([^*]|\*[^/])*\*/@@g; s@^[ \t]*package[ \t]+([^ \t]+)[ \t]*;[ \t]*(//.*)?$@\1@p' \
     | uniq \
     | (
       if read full_package_name
       then
-        # `full_package_name` includes all namespaces / names and optional version.
+        # `full_package_name` includes all namespaces, name, and optional version.
 
         if read conflicting_package_name
         then
@@ -67,7 +67,7 @@ then
 
         if [[ "$package" != "$actual_package" ]]
         then
-          echo >&2 "Declared package name '$package' does not match detected '$actual_package'."
+          echo >&2 "Declared package name '$actual_package' does not match '$package'."
           exit 1
         fi
       fi || exit $?  # Propagate any error from the piped subshell.
@@ -86,7 +86,7 @@ then
     for dep in ${deps[@]}
     do
       # Extract an explicit package name declaration
-      # and use that as the destination file / directory name to avoid collisions.
+      # and use that as the destination directory name to avoid collisions.
       # Default to the input directory name.
       outname="$deps_dir/$(cat "$dep"/*.wit | get-package-name || basename "$dep")"
       mkdir "$outname" && ( ln "$dep"/*.wit "$outname" || cp "$dep"/*.wit "$outname" )
