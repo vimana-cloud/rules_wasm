@@ -113,7 +113,7 @@ wit_package = rule(
             providers = [WitPackageInfo],
         ),
         "_wit_package_bin": attr.label(
-            default = "//:wit-package",
+            default = ":wit-package",
             executable = True,
             cfg = "exec",
         ),

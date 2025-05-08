@@ -1,4 +1,4 @@
-load("//:wasm.bzl", "wasi_packages", "wit_package")
+load("//wasm:defs.bzl", "wasi_packages", "wit_package")
 
 # Declare a WIT package for each WASI package ("cli", "http", etc.).
 [wit_package(

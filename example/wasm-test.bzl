@@ -3,7 +3,7 @@ load("@bazel_skylib//rules:native_binary.bzl", "native_test")
 def wasm_test(name, component):
     """
     A simple way to run a component implementing `wasi:cli/run` as a test using wasmtime.
-    The test fails if `run` returns an error or false.
+    The test fails if `run` returns an error.
     """
     native_test(
         name = name,

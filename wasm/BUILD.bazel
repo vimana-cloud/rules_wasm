@@ -1,0 +1,4 @@
+sh_binary(
+    name = "wit-package",
+    srcs = ["wit-package.sh"],
+)

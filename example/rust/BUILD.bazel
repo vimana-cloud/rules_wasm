@@ -1,5 +1,5 @@
-load("@rules_wasm//:rust.bzl", "rust_component")
-load("@rules_wasm//:wasm.bzl", "wasm_plug")
+load("@rules_wasm//rust:defs.bzl", "rust_component")
+load("@rules_wasm//wasm:defs.bzl", "wasm_plug")
 load("//:wasm-test.bzl", "wasm_test")
 
 # Allow tests to reference these rules.

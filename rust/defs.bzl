@@ -2,8 +2,8 @@
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
 load("@rules_rust//rust:defs.bzl", "rust_library", "rust_shared_library")
-load(":private.bzl", "intermediate_target_name", "kebab_to_snake")
-load(":wasm.bzl", "WitPackageInfo", "wasm_component")
+load("//:private.bzl", "intermediate_target_name", "kebab_to_snake")
+load("//wasm:defs.bzl", "WitPackageInfo", "wasm_component")
 
 def _rust_wit_bindgen_impl(ctx):
     world = ctx.attr.world or ctx.label.name

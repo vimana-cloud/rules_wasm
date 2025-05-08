@@ -1,8 +1,8 @@
 # C-specific rules and macros.
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
-load(":private.bzl", "intermediate_target_name", "kebab_to_snake")
-load(":wasm.bzl", "WitPackageInfo", "wasm_component")
+load("//:private.bzl", "intermediate_target_name", "kebab_to_snake")
+load("//wasm:defs.bzl", "WitPackageInfo", "wasm_component")
 
 CWitBindgenInfo = provider(
     "Information relevant to generated C WIT bindings.",
@@ -99,6 +99,7 @@ def _c_module_impl(ctx):
     return [DefaultInfo(files = depset([output]))]
 
 # Stopgap solution while figuring out how to set up the WASI SDK as a regular CC toolchain.
+# https://github.com/bazelbuild/rules_cc/issues/277
 c_module = rule(
     implementation = _c_module_impl,
     doc = "Compile a Wasm core module from C source code and generated WIT bindings" +
@@ -111,6 +112,7 @@ c_module = rule(
         "wit": attr.label(
             doc = "Label of a `c_wit_bindgen` rule with relevant C WIT bindings",
             providers = [CWitBindgenInfo],
+            mandatory = True,
         ),
         "world": attr.string(
             doc = "World to generate bindings for. Default is the target name.",
@@ -138,7 +140,6 @@ def c_component(name, srcs, wit, world = None, deps = None):
         deps = []
 
     wit_name = intermediate_target_name(name, "wit")
-    wit_target = ":" + wit_name
     c_wit_bindgen(
         name = wit_name,
         src = wit,
@@ -150,7 +151,7 @@ def c_component(name, srcs, wit, world = None, deps = None):
     c_module(
         name = core_name,
         srcs = srcs,
-        wit = wit_target,
+        wit = ":" + wit_name,
         world = world,
     )
 
