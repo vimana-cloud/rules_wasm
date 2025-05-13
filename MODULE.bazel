@@ -82,23 +82,23 @@ wasi_sdk_integrity = {
 }
 
 # https://github.com/bytecodealliance/wasmtime/releases
-wasmtime_version = "31.0.0"
+wasmtime_version = "32.0.0"
 
 wasmtime_integrity = {
-    "aarch64-linux": "sha384-oFbdBvaA06v7TN/H4QcL7yeRKjzeJdQWtbybTlXlnQpy7K1N9ADsc27ceWAJ/xId",
-    "aarch64-macos": "sha384-x1RKC2/EELEgzPUrnJNwiwB62BkesU2UUqE3krN2kSMJOPwSjy7yoRzQmqBHY2xS",
-    "x86_64-linux": "sha384-74qkxN1YOYf+V/FgKZwSdvKG1YDP2s3GM/kAQH70n2pi04qVyQz8MZSVyUkMJtDi",
-    "x86_64-macos": "sha384-g7bvOROi31SFrp+gECuJfBiLdmWiZyWlwsdlwNNzdOQywEdZyhsSNiGwfRTDp4o0",
+    "aarch64-linux": "sha384-jhCvPSYHkojD5XyvVuwXaD136hyWM2/V31sZknMB3Z16RONTLKtwq6DV7Eh60AK+",
+    "aarch64-macos": "sha384-115sOmlrX/IYEKqaFz4lCkS2vqXb//VOFKGvvv5D2jIndBmWpq8EKy5Gw94XZyyo",
+    "x86_64-linux": "sha384-slP9eXTtflJuvRbT/wRghPZLJhnKctC7fB+SxOhCKVh6RH7Ob90V/fpE7NR2xFnG",
+    "x86_64-macos": "sha384-dTypdNfpzWD64J9GqEmrIhCQRAh6pUAkzGvCk1Q0+TbmATzSH/IZitJW3Tp1j1jj",
 }
 
 # https://github.com/bytecodealliance/wasm-tools/releases
-wasm_tools_version = "1.228.0"
+wasm_tools_version = "1.230.0"
 
 wasm_tools_integrity = {
-    "aarch64-linux": "sha384-FjkVr6YNcWYgzOUPkjNPGd9lFxVE4u10/1aKJSl2jXOvu+FCaXG7U+oLvBfdoclX",
-    "aarch64-macos": "sha384-CWIP7mYeoWWf5ufS5m0iR74yT0NzzymQAPNlMd741Q5TEAjswf16+7eZofNFgEGk",
-    "x86_64-linux": "sha384-naJFbpANg2MMhuQoQvq6fZ/x+WdAVWXkDDxDBXK58rLk+EQL4wobqF2rZETsozJY",
-    "x86_64-macos": "sha384-5+L4nvZG/IPCZEqhzBBMMnboaQ5a2kZiZblc4qm5ka2bVot3bDUILt6PyZd4cWVq",
+    "aarch64-linux": "sha384-+2E/AYYSSOan2HKXlF1lJSNuejN5mm6YXDjHRIb9YoZmfBEy675Y/JdqQkbHW7xJ",
+    "aarch64-macos": "sha384-JQf9Wiid1s0IppD8TRV/zZ46YLoIWgTwRen3zdXF91kUw5FViVZYcdhGEfZ3wA6b",
+    "x86_64-linux": "sha384-E0Lz7FAPj9mzXPX3ZVNjBgADSi3UmKg5+UFlycqz4LT1sPSUr1ooChfGgWntc/rC",
+    "x86_64-macos": "sha384-ky5XbMoq0BGgSMV4oWV1fwMA2L4P0Gmn86EQvbRH93m8A4l8OiUIuYE7C52IctFA",
 }
 
 # https://github.com/bytecodealliance/wit-bindgen/releases
@@ -364,7 +364,7 @@ http_file(
 # Temporary crutch until we can build against wasip2 directly.
 http_file(
     name = "wasi-snapshot-preview1-reactor",
-    integrity = "sha384-Hp8ktyMe6/bgPjbEkmmFnY/kWMta1f5FpZlxP1ltLFCaIgtf7L696pOzwMJtVkhi",
+    integrity = "sha384-4FOmdnn8LlRkm8UtB4AaRmNqi6Enr+76+WQENRiFfeoSEfzObl55LuUi1EMWDXVn",
     url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasi_snapshot_preview1.reactor.wasm".format(version = wasmtime_version),
 )
 
