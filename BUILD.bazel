@@ -29,6 +29,12 @@ alias(
 )
 
 alias(
+    name = "wasm-opt",
+    actual = format_platform("@binaryen-{}//:wasm-opt"),
+    visibility = ["//visibility:public"],
+)
+
+alias(
     name = "wasm-tools",
     actual = format_platform("@wasm-tools-{}//:wasm-tools"),
     visibility = ["//visibility:public"],

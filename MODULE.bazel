@@ -31,6 +31,16 @@ execution_platforms = [
     "x86_64-macos",
 ]
 
+# https://github.com/WebAssembly/binaryen/releases
+binaryen_version = "123"
+
+binaryen_integrity = {
+    "aarch64-linux": "sha384-gRHcVA3ixZu857DlrGkamJbWE73ec4mrq+e3SxF/EjV7wI7WRzHlSPEN3adzCb11",
+    "aarch64-macos": "sha384-BNHNaw4V4C7VD9VW6+77+lgzns0LjZBEtMb/HpoH67xmZf7muEwXWgGUzDFMPKbk",
+    "x86_64-linux": "sha384-ChUj3KQRLPlMFzI4go6A43jQMp1Db7RiV3EH1aHO9MxPI3rXxIzl8ieHBlpIAF30",
+    "x86_64-macos": "sha384-+jVPAGdgH1mZhGKbIQl3a5NFXNA952mWanfW07ysUUC7uqYMACz7D0dGIJ9TGAYf",
+}
+
 # https://pkg.go.dev/go.bytecodealliance.org/cm?tab=versions
 go_cm_version = "0.2.2"
 
@@ -138,6 +148,27 @@ use_repo(crate, "rules-wasm-crates")
 http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
+
+[http_archive(
+    name = "binaryen-" + exe_platform,
+    build_file_content = """
+alias(
+    name = "wasm-opt",
+    actual = "binaryen-version_{version}/bin/wasm-opt",
+    visibility = ["//visibility:public"],
+)
+""".format(version = binaryen_version),
+    integrity = binaryen_integrity[exe_platform],
+    url = "https://github.com/WebAssembly/binaryen/releases/download/version_{version}/binaryen-version_{version}-{platform}.tar.gz".format(
+        platform = {
+            "aarch64-linux": "aarch64-linux",
+            "aarch64-macos": "arm64-macos",
+            "x86_64-linux": "x86_64-linux",
+            "x86_64-macos": "x86_64-macos",
+        }[exe_platform],
+        version = binaryen_version,
+    ),
+) for exe_platform in execution_platforms]
 
 wac_platforms = {
     "aarch64-linux": "aarch64-unknown-linux-musl",

@@ -101,6 +101,7 @@ def _go_module_impl(ctx):
             ctx.executable._tinygo_bin.path,
             go_bin.path,
             ctx.executable._wasm_tools_bin.path,
+            ctx.executable._wasm_opt_bin.path,
             output.path,
             bindgen_info.bindings.path,
             bindgen_info.wit.path,
@@ -112,6 +113,7 @@ def _go_module_impl(ctx):
         ] + [src.path for src in ctx.files.srcs],
         tools = [
             ctx.executable._tinygo_bin,
+            ctx.executable._wasm_opt_bin,
             ctx.executable._wasm_tools_bin,
             go_bin,
         ],
@@ -161,6 +163,12 @@ go_module = rule(
         ),
         "_tinygo_runner_bin": attr.label(
             default = ":tinygo-runner",
+            executable = True,
+            cfg = "exec",
+        ),
+        "_wasm_opt_bin": attr.label(
+            default = "//:wasm-opt",
+            allow_single_file = True,
             executable = True,
             cfg = "exec",
         ),

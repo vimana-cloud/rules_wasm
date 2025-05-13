@@ -12,19 +12,22 @@
 tinygo="$1"
 go="$2"
 wasm_tools="$3"
-output="$4"
-bindings="$5"
-wit="$6"
-wit_module_name="$7"
-cm_source_directory="$8"
-cm_module_name="$9"
-cm_module_version="${10}"
-world="${11}"
-shift 11
+wasm_opt="$4"
+output="$5"
+bindings="$6"
+wit="$7"
+wit_module_name="$8"
+cm_source_directory="$9"
+cm_module_name="${10}"
+cm_module_version="${11}"
+world="${12}"
+shift 12
 
 go_dir="$(dirname "$(realpath "$go")")"
 path="${go_dir}${PATH:+:${PATH}}"
+
 wasm_tools="$(realpath "$wasm_tools")"
+wasm_opt="$(realpath "$wasm_opt")"
 
 cat > go.mod <<EOF
 module main
@@ -51,5 +54,5 @@ else
 fi
 mkdir -p "$tmp_cache"
 
-HOME="$tmp_home" PATH="$path" WASMTOOLS="$wasm_tools" \
+HOME="$tmp_home" PATH="$path" WASMTOOLS="$wasm_tools" WASMOPT="$wasm_opt" \
   exec "$tinygo" build --target=wasip2 --wit-package="$wit" --wit-world="$world" -o "$output" "$@"
