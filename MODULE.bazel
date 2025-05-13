@@ -49,9 +49,9 @@ wac_integrity = {
 }
 
 # https://github.com/WebAssembly/WASI/releases
-wasi_version = "0.2.5"
+wasi_version = "0.2.0"
 
-wasi_integrity = "sha384-suHCgERlQvwgcG255otUKRXiclnc5WCBR0hGdlnrtH3U/4wiW/WY5tttaHVZ52yW"
+wasi_integrity = "sha384-k5+dIIcSf9AtW/dpJ4wHglf9GCs0OZw5I90Lkd74RZ/X8PMv0Cx9WKFPsTFPCV9H"
 
 # https://github.com/WebAssembly/wasi-sdk/releases
 wasi_sdk_version = "25"
@@ -146,7 +146,7 @@ load(":wasm.bzl", "wasi_packages")
 
 [filegroup(
     name = package,
-    srcs = glob(["WASI-{version}/wasip2/" + package + "/*.wit"]),
+    srcs = glob(["WASI-{version}/preview2/" + package + "/*.wit"]),
     visibility = ["//visibility:public"],
 ) for package in wasi_packages.keys()]
 """.format(version = wasi_version),

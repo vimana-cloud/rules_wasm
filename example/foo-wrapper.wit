@@ -6,7 +6,7 @@ package test:foo-wrapper@6.6.6;
 
 world foo-command {
   // The regular WASI run interface:
-  export wasi:cli/run@0.2.5;
+  export wasi:cli/run@0.2.0;
 
   // Augment it with an additional import:
   import test:foo/custom;
