@@ -24,8 +24,7 @@ world="${12}"
 shift 12
 
 go_dir="$(dirname "$(realpath "$go")")"
-path="${go_dir}${PATH:+:${PATH}}"
-
+tiny_go_root="$(dirname "$(dirname "$(realpath "$tinygo")")")"
 wasm_tools="$(realpath "$wasm_tools")"
 wasm_opt="$(realpath "$wasm_opt")"
 
@@ -54,5 +53,9 @@ else
 fi
 mkdir -p "$tmp_cache"
 
-HOME="$tmp_home" PATH="$path" WASMTOOLS="$wasm_tools" WASMOPT="$wasm_opt" \
+HOME="$tmp_home" \
+  PATH="${go_dir}${PATH:+:${PATH}}" \
+  TINYGOROOT="$tiny_go_root" \
+  WASMTOOLS="$wasm_tools" \
+  WASMOPT="$wasm_opt" \
   exec "$tinygo" build --target=wasip2 --wit-package="$wit" --wit-world="$world" -o "$output" "$@"
