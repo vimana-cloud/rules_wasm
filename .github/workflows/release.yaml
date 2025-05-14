@@ -6,7 +6,7 @@ permissions:
   # Necessary to upload a release asset:
   contents: write
 jobs:
-  linux:
+  upload-archive:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -34,3 +34,23 @@ jobs:
           git ls-tree -r --name-only HEAD | xargs tar --transform "s,^,${ROOT_DIRECTORY}/," -czf "${ASSET_NAME}"
 
           gh release upload "${RELEASE_TAG}" "${ASSET_NAME}"
+  publish:
+    needs: upload-archive  # Run jobs sequentially.
+    uses: bazel-contrib/publish-to-bcr/.github/workflows/publish.yaml@v0.1.0
+    with:
+      tag_name: ${{ github.ref_name }}
+      # GitHub repository which is a fork of the upstream where the Pull Request will be opened.
+      registry_fork:  vimana-cloud/bazel-central-registry
+      # See note on Attestation Support:
+      # https://github.com/bazel-contrib/publish-to-bcr?tab=readme-ov-file#attesation-support
+      attest: false
+    # Specify permissions for that called workflow (not this calling workflow).
+    permissions:
+      contents: write
+      # Necessary if `attest: true`.
+      #id-token: write
+      # Necessary if `attest: true`.
+      #attestations: write
+    secrets:
+      # Necessary to push to the BCR fork, and to open a pull request against a registry.
+      publish_token: ${{ secrets.BCR_PUBLISH_TOKEN }}
