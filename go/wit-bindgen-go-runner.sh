@@ -13,9 +13,9 @@ out="$6"
 # `--package-root` must be explicitly supplied,
 # otherwise `wit-bindgen-go` will try to look for a `go.mod` file.
 "$wit_bindgen_go" generate "$src" \
-    --world "$world" \
-    --package-root "$package_root" \
-    --out "$out"
+  --world "$world" \
+  --package-root "$package_root" \
+  --out "$out" || exit $?
 
 # Generate a minimal `go.mod` file in the generated directory.
 cat > "$out/go.mod" <<EOF
