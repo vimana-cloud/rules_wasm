@@ -14,6 +14,7 @@ load(":private.bzl", "execution_platforms", "format_platform", "wasi_toolchain_c
         "@platforms//cpu:" + platform.split("-")[0],
         "@platforms//os:" + platform.split("-")[1],
     ],
+    visibility = ["//:__subpackages__"],
 ) for platform in execution_platforms]
 
 native_binary(

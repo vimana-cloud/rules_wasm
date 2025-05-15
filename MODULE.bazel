@@ -373,6 +373,7 @@ use_repo(go_sdk, "go_default_sdk")
 
 go_repository = use_repo_rule("@gazelle//:deps.bzl", "go_repository")
 
+# The only dependency for generated Go bindings.
 go_repository(
     name = "go-component-model-utility",
     importpath = "go.bytecodealliance.org/cm",
