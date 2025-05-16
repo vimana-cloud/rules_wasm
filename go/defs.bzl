@@ -154,6 +154,7 @@ go_module = rule(
         "_go_sdk": attr.label(
             default = "@go_default_sdk//:go_sdk",
             providers = [GoSDK],
+            cfg = "exec",
         ),
         "_tinygo_bin": attr.label(
             default = ":tinygo",
