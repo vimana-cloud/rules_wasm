@@ -2,6 +2,7 @@
 # would break downstream dependers.
 
 load("@buildtools//:rules.bzl", "buildifier")
+load("@rules_shell//shell:sh_binary.bzl", "sh_binary")
 
 # To format all Bazel files, run `bazel run //dev:buildifier`.
 buildifier(
@@ -11,4 +12,12 @@ buildifier(
     ],
     lint_mode = "fix",
     mode = "fix",
+)
+
+# Update Bzlmod dependencies in `MODULE.bazel`:
+sh_binary(
+    name = "update-dependencies",
+    srcs = ["update-dependencies.sh"],
+    args = ["$(execpath @buildtools//:buildozer)"],
+    data = ["@buildtools//:buildozer"],
 )
