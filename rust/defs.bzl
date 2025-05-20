@@ -12,25 +12,24 @@ def _rust_wit_bindgen_impl(ctx):
     # Put everything in a folder with the same name as the target to avoid name conflicts.
     # Generate the actual bindings in a subdirectory called `wit`.
     bindings = ctx.actions.declare_directory(paths.join(ctx.label.name, "wit"))
-    wit_bindgen_arguments = [
-        "rust",
-        ctx.attr.src[WitPackageInfo].info.directory.path,
-        "--world",
-        world,
-        "--out-dir",
-        bindings.path,
-        "--generate-all",
-        # Generate a public `export!` macro.
-        "--pub-export-macro",
-        # Make sure the generated `export!` macro uses the right namespace.
-        "--default-bindings-module",
-        snake_world,
-    ]
     ctx.actions.run(
         inputs = [ctx.attr.src[WitPackageInfo].info.directory],
         outputs = [bindings],
         executable = ctx.executable._wit_bindgen_bin,
-        arguments = wit_bindgen_arguments,
+        arguments = [
+            "rust",
+            ctx.attr.src[WitPackageInfo].info.directory.path,
+            "--world",
+            world,
+            "--out-dir",
+            bindings.path,
+            "--generate-all",
+            # Generate a public `export!` macro.
+            "--pub-export-macro",
+            # Make sure the generated `export!` macro uses the right namespace.
+            "--default-bindings-module",
+            snake_world,
+        ],
     )
 
     # The wrapper `lib.rs` just republishes everything for the generated world.
