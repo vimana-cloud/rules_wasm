@@ -2,3 +2,4 @@ bazel-bin
 bazel-example
 bazel-out
 bazel-testlogs
+MODULE.bazel.lock
