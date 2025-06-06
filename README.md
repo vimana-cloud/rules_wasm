@@ -37,8 +37,8 @@ but also welcomes language-specific rules to compile source code files into comp
   because Bazel's Go rules require knowing about module metadata and dependencies
   during the analysis phase,
   but the output of `wit-bindgen-go` is only known for sure during the execution phase.
-  Meanwhile, there's [`//go:defs.bzl`](go/defs.bzl),
-  which makes use of [TinyGo](https://tinygo.org/):
+  Meanwhile, there's a temporary crutch: [`//go:defs.bzl`](go/defs.bzl),
+  which makes use of [TinyGo](https://tinygo.org/) and is somewhat limited.
   * `go_component` - Compile a Wasm interface and matching C implementation
     into a Wasm component.
   * `go_wit_bindgen` - Generate Go sources for a Wasm interface,
@@ -53,7 +53,7 @@ See [`example/`](example/).
 ## Caveats
 
 - Currently works only for the following execution platforms
-  (due to a dependency on Bash and downloading pre-built binaries):
+  (due to the use of Bash scripts and downloading pre-built tool binaries):
   * `aarch64-linux`
   * `aarch64-macos`
   * `x86_64-linux`

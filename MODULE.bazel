@@ -113,13 +113,13 @@ wit_bindgen_integrity = {
 }
 
 # https://github.com/bytecodealliance/go-modules/releases
-wit_bindgen_go_version = "0.6.2"
+wit_bindgen_go_version = "0.7.0"
 
 wit_bindgen_go_integrity = {
-    "aarch64-linux": "sha384-rVjltK2mDW6XWnMKExRIi93vR33Mnb6AhOPlPzCql0E5a9tNThPpWnBh/Fv3kgCm",
-    "aarch64-macos": "sha384-ikIxu3lsWZsO4d6ezp8Zxw/29h+Hekxl8Id0fjVEN6RGOnzpwWpfeuNCyTytDdRv",
-    "x86_64-linux": "sha384-1882GcKP6El979JvLf+6CNh9WA1FGa4SHPX9FStCxE1cKDLHZ9ARRbziV4+fDva4",
-    "x86_64-macos": "sha384-vg18cGnUllblZmenCp25peF/nw49d48IjyHu++i8coOlSI22GaDWcXGu92xqQ8od",
+    "aarch64-linux": "sha384-cbNymuUTUpvyb0jVrN+Fy97NgFYmGyJQ+Ml7QyMa98G4KMKAi/Cbp/nRY/xGhvZX",
+    "aarch64-macos": "sha384-Yn43/bbLp4HKX2oz85ESWZOJgsa0La30Vda+SabuowxtS4604R+9h0ks1n1J0xGV",
+    "x86_64-linux": "sha384-a5R9jT7HdEHxManvsn8qhyP0Qma/kFousmmPVy4j+QHLat0eDh6aTfyXq1W6KyUd",
+    "x86_64-macos": "sha384-WmFNc+tWLOCe8zYuYBcQ/99ffOensY/FN1XmijQpVIWSBqz/KSIsPgDitVx2LJJF",
 }
 
 # Rust setup: wit-bindgen-generated Rust files depend on the wit-bindgen crate.
