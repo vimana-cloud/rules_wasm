@@ -11,13 +11,14 @@ package_root="$5"
 out="$6"
 
 # `--package-root` must be explicitly supplied,
-# otherwise `wit-bindgen-go` will try to look for a `go.mod` file.
+# otherwise `wit-bindgen-go` will try to look for a `go.mod` file in the current working directory.
 "$wit_bindgen_go" generate "$src" \
   --world "$world" \
   --package-root "$package_root" \
   --out "$out" || exit $?
 
-# Generate a minimal `go.mod` file in the generated directory.
+# Generate a minimal `go.mod` file in the generated directory
+# so the Go toolchain can import it as a local module while building a component.
 cat > "$out/go.mod" <<EOF
 module $module
 EOF

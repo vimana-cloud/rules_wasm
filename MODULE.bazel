@@ -68,6 +68,7 @@ wac_integrity = {
     "x86_64-macos": "sha384-7HgXDtsXuWKl1R5kAG9jwMaBCPkcarXCbHDLTbvufASm1RaO0o/1+Y11SWxFgO6d",
 }
 
+# ATTOW TinyGo only supports version `0.2.0`:
 # https://github.com/WebAssembly/WASI/releases
 wasi_version = "0.2.0"
 
@@ -369,9 +370,6 @@ http_file(
     integrity = "sha384-3Ci0S49o8mosFRAqbuUjBhwD+meEiLTlcjV28FkVki/cguWU/A36zHPmFNG6yHQc",
     url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasi_snapshot_preview1.reactor.wasm".format(version = wasmtime_version),
 )
-
-go_sdk = use_extension("@io_bazel_rules_go//go:extensions.bzl", "go_sdk")
-use_repo(go_sdk, "go_default_sdk")
 
 go_repository = use_repo_rule("@gazelle//:deps.bzl", "go_repository")
 

@@ -1,7 +1,7 @@
 # Go-specific rules and macros.
 
 load("@bazel_skylib//lib:paths.bzl", "paths")
-load("@io_bazel_rules_go//go:def.bzl", "GoSDK")
+load("@io_bazel_rules_go//go:def.bzl", "go_context")
 load("@io_bazel_rules_go//go/private:providers.bzl", "GoInfo")
 load("@rules_license//rules:providers.bzl", "PackageInfo")
 load("//:private.bzl", "intermediate_target_name", "kebab_to_snake")
@@ -86,7 +86,8 @@ def _go_module_impl(ctx):
     cm_go_mod = ctx.file._cm_go_mod
     cm_library = ctx.attr._cm_library[GoInfo]
     cm_package_info = ctx.attr._cm_package_info[PackageInfo]
-    go_bin = ctx.attr._go_sdk[GoSDK].go
+    go = go_context(ctx)
+    go_bin = go.sdk.go
 
     output = ctx.actions.declare_file(ctx.label.name + component_suffix)
     ctx.actions.run(
@@ -151,10 +152,9 @@ go_module = rule(
             default = "@go-component-model-utility//:package-info",
             providers = [PackageInfo],
         ),
-        "_go_sdk": attr.label(
-            default = "@go_default_sdk//:go_sdk",
-            providers = [GoSDK],
-            cfg = "exec",
+        # https://github.com/bazel-contrib/rules_go/blob/v0.55.1/go/toolchains.rst#writing-new-go-rules
+        "_go_context_data": attr.label(
+            default = "@io_bazel_rules_go//:go_context_data",
         ),
         "_tinygo_bin": attr.label(
             default = ":tinygo",
@@ -180,12 +180,14 @@ go_module = rule(
             cfg = "exec",
         ),
     },
+    toolchains = ["@io_bazel_rules_go//go:toolchain"],
 )
 
 def go_component(name, srcs, wit, wit_module, world = None):
     """
     Compile a Wasm component given a WIT package (`wit`),
     a set of Go source files (`srcs`), and a world name.
+    A Go module name for the generated WIT bindings (`wit_module`) is also required.
 
     The default for `world` is `name`.
     """
