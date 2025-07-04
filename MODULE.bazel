@@ -3,16 +3,17 @@ module(
     version = "2.0.1",
 )
 
-bazel_dep(name = "bazel_skylib", version = "1.7.1")
-bazel_dep(name = "gazelle", version = "0.43.0")
-bazel_dep(name = "platforms", version = "0.0.11")
-bazel_dep(name = "rules_cc", version = "0.1.1")
-bazel_dep(name = "rules_go", version = "0.54.0", repo_name = "io_bazel_rules_go")
-bazel_dep(name = "rules_license", version = "1.0.0")
-bazel_dep(name = "rules_rust", version = "0.61.0")
-bazel_dep(name = "rules_shell", version = "0.4.1")
+bazel_dep(name = "buildifier_prebuilt", version = "8.2.0.2", dev_dependency = True, repo_name = "buildtools")
 
-bazel_dep(name = "buildifier_prebuilt", version = "8.0.3", dev_dependency = True, repo_name = "buildtools")
+bazel_dep(name = "bazel_skylib", version = "1.8.0")
+bazel_dep(name = "gazelle", version = "0.44.0")
+bazel_dep(name = "package_metadata", version = "0.0.3")
+bazel_dep(name = "platforms", version = "1.0.0")
+bazel_dep(name = "rules_cc", version = "0.1.2")
+bazel_dep(name = "rules_go", version = "0.55.1", repo_name = "io_bazel_rules_go")
+bazel_dep(name = "rules_license", version = "1.0.0")
+bazel_dep(name = "rules_rust", version = "0.62.0")
+bazel_dep(name = "rules_shell", version = "0.5.0")
 
 # The example module (which contains basic tests)
 # is itself referenced by tests in the main module,
