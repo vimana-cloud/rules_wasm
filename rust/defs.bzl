@@ -103,7 +103,7 @@ def rust_component(name, srcs, wit, world = None, deps = None):
         crate_name = snake_world,
         deps = deps + [
             ":" + lib_name,
-            Label("//:wit-bindgen-cabi-realloc"),
+            Label("//:wit-bindgen-cabi"),
         ],
         platform = Label("@rules_rust//rust/platform:wasi"),
         # Make components as small as possible.

@@ -18,7 +18,7 @@ platform_downloads = [
 
 # List of platform-independent downloadable targets.
 universal_downloads = [
-    "@libwit-bindgen-cabi-realloc//file",
+    "@libwit-bindgen-cabi//file",
     "@wasi-snapshot-preview1-reactor//file",
     "@wasi//:cli",
 ]

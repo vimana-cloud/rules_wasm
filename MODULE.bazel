@@ -44,28 +44,28 @@ binaryen_integrity = {
 }
 
 # https://pkg.go.dev/go.bytecodealliance.org/cm?tab=versions
-go_cm_version = "0.2.2"
+go_cm_version = "0.3.0"
 
-go_cm_integrity = "h1:M9iHS6qs884mbQbIjtLX1OifgyPG9DuMs2iwz8G4WQA="
+go_cm_integrity = "h1:VhV+4vjZPUGCozCg9+up+FNL3YU6XR+XKghk7kQ0vFc="
 
 # https://github.com/tinygo-org/tinygo/releases
-tinygo_version = "0.37.0"
+tinygo_version = "0.38.0"
 
 tinygo_integrity = {
-    "aarch64-linux": "sha384-hYPKBCmCOy1oi5qXLKXWevXrEs5y4Zo6UBSKAgd683pS9PZA1TTth4ncs2PPr0mc",
-    "aarch64-macos": "sha384-Wp+X+zpEQYouBrHXgbP9KRNO0q4P7rkhNAyIYzg9EvDhJmZN3WWHBzX5l8Uwlrmt",
-    "x86_64-linux": "sha384-mXvibb7zoGzU5lBnMPo8bb7FpZEMBTL9K55AdUlkfcmx+38FacG+dx2pciZcim7O",
-    "x86_64-macos": "sha384-fosbaDMTRkeIdEf5QJIL45SwutsjmaYFf8N5jeaJeABrw+Dc0/EjCPbVAAIPPj/H",
+    "aarch64-linux": "sha384-Z6zdIRLp7PKFtCXueMNX0bmy+gE3TUZ3g9zyoLBK7IQwollx3QMIhWz4RAVnGXlQ",
+    "aarch64-macos": "sha384-pn1hq6ZWk7MwdNZE3I3poYQOx5LNO2oLECcrJ1sCog3IQaZt+SncQTkbrvx+rji0",
+    "x86_64-linux": "sha384-5nAHSMs8zqYoycl0AVLAr0l2awkzkac0YbNOC35GbXPhthsdTwZlPNpMyGroXNtu",
+    "x86_64-macos": "sha384-Y6PulpPkg4kIrMa6TaVqWqDETIlmLYPrlwegxOlM/dnvAOnGfN+PYGuOnFA+6y1p",
 }
 
 # https://github.com/bytecodealliance/wac/releases
-wac_version = "0.6.1"
+wac_version = "0.7.0"
 
 wac_integrity = {
-    "aarch64-linux": "sha384-a/w+0nesiZRqMqid2W9mrjBA4S/qU4iGXRgHZjA+3Ydq7/efLT3XE41mGBNNqkeC",
-    "aarch64-macos": "sha384-cEtDDp4io01CLGUuZVZu9LPbk3/Ib7yYn88Q0XG785OltXG81NibGfZVSD9C/+n/",
-    "x86_64-linux": "sha384-90D0wJeI35nuWmkZMHrOd79pVequX7kbAWHqpcmsG6ZKJdwmfLZVTSGyuvPhjlpo",
-    "x86_64-macos": "sha384-+hH0YcJEeLeih4NULigzzFgJ3pCKnKq70oB5hEJGKC0E+xU4Hd/kH6NUV9BX/IV+",
+    "aarch64-linux": "sha384-iZWru00Qm9z7BxweEsojSlj7ubdH9iFCyPAmWsODNhRkEKfPnQ3ki/ysUYZJDvb0",
+    "aarch64-macos": "sha384-6njLwvToPOfKEfU6769GrlZxo25lbsj219z8F8xv1aycxIOXyidabYstA7SrJIUd",
+    "x86_64-linux": "sha384-w9Ea0H2kdg+bPd5nJN7gFCJkX7E8EACD0D9208cSa9hpqWP+0kwEeyH7b2GiJ9hD",
+    "x86_64-macos": "sha384-7HgXDtsXuWKl1R5kAG9jwMaBCPkcarXCbHDLTbvufASm1RaO0o/1+Y11SWxFgO6d",
 }
 
 # https://github.com/WebAssembly/WASI/releases
@@ -84,33 +84,33 @@ wasi_sdk_integrity = {
 }
 
 # https://github.com/bytecodealliance/wasmtime/releases
-wasmtime_version = "32.0.0"
+wasmtime_version = "34.0.1"
 
 wasmtime_integrity = {
-    "aarch64-linux": "sha384-jhCvPSYHkojD5XyvVuwXaD136hyWM2/V31sZknMB3Z16RONTLKtwq6DV7Eh60AK+",
-    "aarch64-macos": "sha384-115sOmlrX/IYEKqaFz4lCkS2vqXb//VOFKGvvv5D2jIndBmWpq8EKy5Gw94XZyyo",
-    "x86_64-linux": "sha384-slP9eXTtflJuvRbT/wRghPZLJhnKctC7fB+SxOhCKVh6RH7Ob90V/fpE7NR2xFnG",
-    "x86_64-macos": "sha384-dTypdNfpzWD64J9GqEmrIhCQRAh6pUAkzGvCk1Q0+TbmATzSH/IZitJW3Tp1j1jj",
+    "aarch64-linux": "sha384-J7DeHNnCfuI8h+7MR0ZeAwXhoypCdK1HRX1gHaj9LZgNDSo/GvqEjOzdquOFhPKE",
+    "aarch64-macos": "sha384-MyslrefvqDKffzX5XkOsQQELVjmjuqGwWw/pdDovQ/PBq66Cw3mAmeflaaLz8sG8",
+    "x86_64-linux": "sha384-gJDLMte87YZ0TCRTX9qIkijhJ1kRYQBnKJ9/kDfDG/AuMaovCdkQtEovsJynR0RV",
+    "x86_64-macos": "sha384-dkjJod98jIDTF7N001PUvlPNMRqwxe5W6SrIcWW+wYssxKx1FYynkOmQlyW9PB9r",
 }
 
 # https://github.com/bytecodealliance/wasm-tools/releases
-wasm_tools_version = "1.230.0"
+wasm_tools_version = "1.235.0"
 
 wasm_tools_integrity = {
-    "aarch64-linux": "sha384-+2E/AYYSSOan2HKXlF1lJSNuejN5mm6YXDjHRIb9YoZmfBEy675Y/JdqQkbHW7xJ",
-    "aarch64-macos": "sha384-JQf9Wiid1s0IppD8TRV/zZ46YLoIWgTwRen3zdXF91kUw5FViVZYcdhGEfZ3wA6b",
-    "x86_64-linux": "sha384-E0Lz7FAPj9mzXPX3ZVNjBgADSi3UmKg5+UFlycqz4LT1sPSUr1ooChfGgWntc/rC",
-    "x86_64-macos": "sha384-ky5XbMoq0BGgSMV4oWV1fwMA2L4P0Gmn86EQvbRH93m8A4l8OiUIuYE7C52IctFA",
+    "aarch64-linux": "sha384-mbE74PDs3d/z2ZzIlklYSVMCp8DU2c179Vujm+kU109WztbS557SFCl7BUTTGK5d",
+    "aarch64-macos": "sha384-cI9D2hXa+0nwx9xQZme+hTmpICHH+jZviNWIkv4nBtC4G/PIRV0aTkTPCHw1bzP4",
+    "x86_64-linux": "sha384-UbGbw0AfmsGKsRV9AmWCP2An3s+/qvmSwR6baKRqjMEhOEKsbvSEw+AaWohn9aMc",
+    "x86_64-macos": "sha384-BBiakYt4GLeubvPorHrFaI/x7Agyii/DzM7QJ5j2/7ijDmcf4SEgOTNy3ISVdPaM",
 }
 
 # https://github.com/bytecodealliance/wit-bindgen/releases
-wit_bindgen_version = "0.41.0"
+wit_bindgen_version = "0.43.0"
 
 wit_bindgen_integrity = {
-    "aarch64-linux": "sha384-ExGOh/2RLlk/I75mDDYD8LIxLZ6SRnt+9lk9S+k1bBFIHdBxS7Plcyg8VkY7fsJy",
-    "aarch64-macos": "sha384-WMeFa5DYF5lX2HoXiTJFe1IecGffhzvSCi3YlgkuoTmJ786zGmwzmQ5XpOt8jYAn",
-    "x86_64-linux": "sha384-5871z2F7+yak9d9LYq1folGMCwpEOWJbuvIhFVyheAxFMATuySeVKKt0j41tqAAd",
-    "x86_64-macos": "sha384-4MVCqJYFsvcBKXUysSKtBnzUcN2DJyyHsmE35grfpuL8HbQJLigh3IfmVsPRgSoo",
+    "aarch64-linux": "sha384-8unEVH/DGI263VG89LGmlL4KASNu+Kr/8/wyKDysSdtgGohHJ5op5AVYAAs3JbMK",
+    "aarch64-macos": "sha384-Rjf+yg6iJYPusBxxsqmIXPWZUStT64Q4gQy/z+V9N3rzvf8lS6Cq5FvQktIRKEvZ",
+    "x86_64-linux": "sha384-3fPD7PxgIybcmXQ/mU+Y4fnQanreegAyQXQ6qqOoTLlY8p6g5pjzEF9u8k2Grot9",
+    "x86_64-macos": "sha384-C0OYKQzfOCiaqRz0IPPFxrGlk/pDXCWgYLq4vIHk4D1TaGaitfv11r+9fSaKWCUA",
 }
 
 # https://github.com/bytecodealliance/go-modules/releases
@@ -358,15 +358,15 @@ exports_files(
 
 # Needed to build Rust components.
 http_file(
-    name = "libwit-bindgen-cabi-realloc",
-    integrity = "sha384-sle1RnmoH6vtWvvF2s5anuN/JaQA56HE6ZCS6MwXmmNNkyLcsYG///amLrQ7HNSI",
-    url = "https://github.com/bytecodealliance/wit-bindgen/raw/v{version}/crates/guest-rust/rt/src/libwit_bindgen_cabi_realloc.a".format(version = wit_bindgen_version),
+    name = "libwit-bindgen-cabi",
+    integrity = "sha384-tYAxxKVIpYi9UUR9Bo+42ngHFjI9bHMfLxmhW08hZo9SYQVJNRGB9f/il4oS0Bv3",
+    url = "https://github.com/bytecodealliance/wit-bindgen/raw/v{version}/crates/guest-rust/rt/src/libwit_bindgen_cabi.a".format(version = wit_bindgen_version),
 )
 
 # Temporary crutch until we can build against wasip2 directly.
 http_file(
     name = "wasi-snapshot-preview1-reactor",
-    integrity = "sha384-4FOmdnn8LlRkm8UtB4AaRmNqi6Enr+76+WQENRiFfeoSEfzObl55LuUi1EMWDXVn",
+    integrity = "sha384-3Ci0S49o8mosFRAqbuUjBhwD+meEiLTlcjV28FkVki/cguWU/A36zHPmFNG6yHQc",
     url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasi_snapshot_preview1.reactor.wasm".format(version = wasmtime_version),
 )
 
