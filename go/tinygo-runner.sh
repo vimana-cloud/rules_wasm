@@ -3,11 +3,11 @@
 # Invoke TinyGo in an environment in which it can function, meaning:
 #
 # - It can find `go` in `$PATH`.
-#   https://github.com/tinygo-org/tinygo/blob/v0.37.0/goenv/goenv.go#L69
+#   https://github.com/tinygo-org/tinygo/blob/v0.39.0/goenv/goenv.go#L69
 # - The sandbox in which `tinygo` runs has a `go.mod` file
 #   pointing to all the relevant dependencies.
 # - It can find a cache directory under `$HOME`.
-#   https://github.com/tinygo-org/tinygo/blob/v0.37.0/goenv/goenv.go#L149
+#   https://github.com/tinygo-org/tinygo/blob/v0.39.0/goenv/goenv.go#L149
 
 tinygo="$1"
 go="$2"

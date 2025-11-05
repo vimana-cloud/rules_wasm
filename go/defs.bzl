@@ -152,7 +152,7 @@ go_module = rule(
             default = "@go-component-model-utility//:package-info",
             providers = [PackageInfo],
         ),
-        # https://github.com/bazel-contrib/rules_go/blob/v0.55.1/go/toolchains.rst#writing-new-go-rules
+        # https://github.com/bazel-contrib/rules_go/blob/v0.58.3/go/toolchains.rst#writing-new-go-rules
         "_go_context_data": attr.label(
             default = "@io_bazel_rules_go//:go_context_data",
         ),
