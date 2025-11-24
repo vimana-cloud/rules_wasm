@@ -5,12 +5,13 @@ on:
 permissions:
   # Necessary to upload a release asset:
   contents: write
+
 jobs:
   upload-archive:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
       - name: Upload Release Archive
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -36,7 +37,7 @@ jobs:
           gh release upload "${RELEASE_TAG}" "${ASSET_NAME}"
   publish:
     needs: upload-archive  # Run jobs sequentially.
-    uses: bazel-contrib/publish-to-bcr/.github/workflows/publish.yaml@v0.1.0
+    uses: bazel-contrib/publish-to-bcr/.github/workflows/publish.yaml@v1.0.0
     with:
       tag_name: ${{ github.ref_name }}
       # GitHub repository which is a fork of the upstream where the Pull Request will be opened.
