@@ -16,8 +16,8 @@ buildifier(
 
 # Update Bzlmod dependencies in `MODULE.bazel`:
 sh_binary(
-    name = "update-dependencies",
-    srcs = ["update-dependencies.sh"],
+    name = "upgrade-dependencies",
+    srcs = ["dependencies-upgrade.sh"],
     args = ["$(execpath @buildtools//:buildozer)"],
     data = ["@buildtools//:buildozer"],
 )
