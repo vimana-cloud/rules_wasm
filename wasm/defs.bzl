@@ -29,19 +29,28 @@ wasi_packages = {
     ],
 }
 
-def _wit_package_info(package, directory):
+def _wit_package_info(package, directory, deps):
     """
     Return WIT package information,
-    composed of the declared package name (string) and a generated directory (File object).
-    """
-    return struct(package = package, directory = directory)
+    composed of the declared package name (string),
+    a generated directory (File object),
+    and the set of other WIT packages this package depends on (depset).
 
-WitPackageInfo = provider(
-    "Information about a WIT package.",
+    The package name is necessary during the analysis phase
+    to support Go compilation.
+    """
+    return {
+        "info": struct(package = package, directory = directory),
+        "deps": deps,
+    }
+
+WitPackageInfo, _ = provider(
+    doc = "Information about a WIT package.",
     fields = {
         "info": "Information about this WIT package.",
         "deps": "Dependency set of information for all transitive package dependencies.",
     },
+    init = _wit_package_info,
 )
 
 def _wit_package_impl(ctx):
@@ -85,10 +94,8 @@ def _wit_package_impl(ctx):
     return [
         DefaultInfo(files = depset([package_dir])),
         WitPackageInfo(
-            info = _wit_package_info(
-                package = ctx.attr.package,
-                directory = package_dir,
-            ),
+            package = ctx.attr.package,
+            directory = package_dir,
             deps = deps,
         ),
     ]
