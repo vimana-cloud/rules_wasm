@@ -1,6 +1,10 @@
 module(
     name = "rules_wasm",
     version = "2.0.3",
+    # Since some external repositories use patches,
+    # we need to specify `7.2.1` as the minimum compatible Bazel version. 
+    # https://github.com/bazelbuild/bazel-central-registry/blob/310e56d7b185c997d5a862775ce30116206b9ad1/tools/bcr_validation.py#L668-L669
+    bazel_compatibility = [">=7.2.1"],
 )
 
 bazel_dep(name = "buildifier_prebuilt", version = "8.2.1", dev_dependency = True, repo_name = "buildtools")
