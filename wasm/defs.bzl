@@ -131,15 +131,17 @@ wit_package = rule(
 component_suffix = ".component.wasm"
 
 def _wasm_component_impl(ctx):
+    wit_info = ctx.attr.wit[WitPackageInfo].info
+
     embedded = ctx.actions.declare_file(ctx.label.name + ".embedded.wasm")
     ctx.actions.run(
-        inputs = [ctx.file.module, ctx.file.wit],
+        inputs = [ctx.file.module, wit_info.directory],
         outputs = [embedded],
         executable = ctx.executable._wasm_tools_bin,
         arguments = [
             "component",
             "embed",
-            ctx.file.wit.path,
+            wit_info.directory.path,
             ctx.file.module.path,
             "--world",
             ctx.attr.world or ctx.label.name,
@@ -171,11 +173,12 @@ wasm_component = rule(
         "module": attr.label(
             doc = "Core Wasm module to embed the interface in.",
             allow_single_file = [".wasm", ".wat"],
+            mandatory = True,
         ),
         "wit": attr.label(
             doc = "WIT package where the interface world is defined.",
-            allow_single_file = [".wit"],
             providers = [WitPackageInfo],
+            mandatory = True,
         ),
         "world": attr.string(
             doc = "World for the component, which must be defined in the WIT package." +
