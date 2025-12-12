@@ -13,7 +13,7 @@
 # instead of the previous expected checksum.
 
 module='MODULE.bazel'
-predicate='//test:fetch-all-remotes'
+predicate='//tests:fetch-all-remotes'
 
 while {
   bazel test "$predicate" 2>&1 \
