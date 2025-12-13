@@ -125,7 +125,13 @@ c_module = rule(
     },
 )
 
-def c_component(name, srcs, wit, world = None, deps = None):
+def c_component(
+        name,
+        srcs,
+        wit,
+        world = None,
+        deps = None,
+        visibility = ["//visibility:private"]):
     """
     Compile a Wasm component given a WIT package (`wit`),
     a set of C source files (`srcs`), and a world name.
@@ -159,4 +165,5 @@ def c_component(name, srcs, wit, world = None, deps = None):
         module = ":" + core_name,
         wit = wit,
         world = world,
+        visibility = visibility,
     )

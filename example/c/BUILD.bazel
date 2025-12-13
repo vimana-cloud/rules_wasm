@@ -6,6 +6,7 @@ load("//:wasm-test.bzl", "wasm_test")
 c_component(
     name = "foo-wrapper",
     srcs = ["foo-wrapper.c"],
+    visibility = ["//visibility:public"],
     wit = "//:foo-wrapper-wit",
     world = "foo-command",
 )
