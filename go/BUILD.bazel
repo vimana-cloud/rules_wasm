@@ -3,7 +3,7 @@ load("//:private.bzl", "format_platform")
 
 alias(
     name = "tinygo",
-    actual = format_platform("@tinygo-{}//:tinygo"),
+    actual = format_platform("@tinygo.{}//:tinygo"),
 )
 
 sh_binary(
@@ -13,7 +13,7 @@ sh_binary(
 
 alias(
     name = "wit-bindgen-go",
-    actual = format_platform("@wit-bindgen-go-{}//:wit-bindgen-go"),
+    actual = format_platform("@wit-bindgen-go.{}//:wit-bindgen-go"),
 )
 
 sh_binary(

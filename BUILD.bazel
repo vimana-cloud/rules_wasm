@@ -19,37 +19,37 @@ load(":private.bzl", "execution_platforms", "format_platform", "wasi_toolchain_c
 
 native_binary(
     name = "wac",
-    src = format_platform("@wac-{}//file"),
+    src = format_platform("@wac.{}//file"),
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "wasi-clang",
-    actual = format_platform("@wasi-sdk-{}//:clang"),
+    actual = format_platform("@wasi-sdk.{}//:clang"),
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "wasm-opt",
-    actual = format_platform("@binaryen-{}//:wasm-opt"),
+    actual = format_platform("@binaryen.{}//:wasm-opt"),
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "wasm-tools",
-    actual = format_platform("@wasm-tools-{}//:wasm-tools"),
+    actual = format_platform("@wasm-tools.{}//:wasm-tools"),
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "wasmtime",
-    actual = format_platform("@wasmtime-{}//:wasmtime"),
+    actual = format_platform("@wasmtime.{}//:wasmtime"),
     visibility = ["//visibility:public"],
 )
 
 alias(
     name = "wit-bindgen",
-    actual = format_platform("@wit-bindgen-{}//:wit-bindgen"),
+    actual = format_platform("@wit-bindgen.{}//:wit-bindgen"),
     visibility = ["//visibility:public"],
 )
 

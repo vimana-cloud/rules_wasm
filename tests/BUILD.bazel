@@ -6,14 +6,14 @@ load("//:private.bzl", "execution_platforms")
 # List of platform-dependent downloadable targets,
 # where `{}` is a placeholder for the platform name.
 platform_downloads = [
-    "@binaryen-{}//:wasm-opt",
-    "@tinygo-{}//:tinygo",
-    "@wac-{}//file",
-    "@wasi-sdk-{}//:clang",
-    "@wasm-tools-{}//:wasm-tools",
-    "@wasmtime-{}//:wasmtime",
-    "@wit-bindgen-{}//:wit-bindgen",
-    "@wit-bindgen-go-{}//:wit-bindgen-go",
+    "@binaryen.{}//:wasm-opt",
+    "@tinygo.{}//:tinygo",
+    "@wac.{}//file",
+    "@wasi-sdk.{}//:clang",
+    "@wasm-tools.{}//:wasm-tools",
+    "@wasmtime.{}//:wasmtime",
+    "@wit-bindgen.{}//:wit-bindgen",
+    "@wit-bindgen-go.{}//:wit-bindgen-go",
 ]
 
 # List of platform-independent downloadable targets.

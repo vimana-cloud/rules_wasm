@@ -95,7 +95,7 @@ http_archive = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "ht
 http_file = use_repo_rule("@bazel_tools//tools/build_defs/repo:http.bzl", "http_file")
 
 [http_archive(
-    name = "binaryen-" + exe_platform,
+    name = "binaryen.{}".format(exe_platform),
     build_file_content = """
 alias(
     name = "wasm-opt",
@@ -128,7 +128,7 @@ wac_platforms = {
 }
 
 [http_file(
-    name = "wac-" + exe_platform,
+    name = "wac.{}".format(exe_platform),
     executable = True,
     integrity = {
         "aarch64-linux": "sha384-IXwdLWoq0jax4B/k6Q3iU1iJCZdAuN1FYL/n3zfpjyIE3gjk7+8pEY9DuwcCegiM",
@@ -171,7 +171,7 @@ wasi_sdk_platforms = {
 }
 
 [http_archive(
-    name = "wasi-sdk-" + exe_platform,
+    name = "wasi-sdk.{}".format(exe_platform),
     # Note: these are symlinks within the HTTP archive:
     # - clang -> clang-19
     # - ar -> llvm-ar
@@ -217,7 +217,7 @@ subdirectory(
 ) for exe_platform in execution_platforms]
 
 [http_archive(
-    name = "wasmtime-" + exe_platform,
+    name = "wasmtime.{}".format(exe_platform),
     build_file_content = """
 alias(
     name = "wasmtime",
@@ -241,7 +241,7 @@ alias(
 ) for exe_platform in execution_platforms]
 
 [http_archive(
-    name = "wasm-tools-" + exe_platform,
+    name = "wasm-tools.{}".format(exe_platform),
     build_file_content = """
 alias(
     name = "wasm-tools",
@@ -265,7 +265,7 @@ alias(
 ) for exe_platform in execution_platforms]
 
 [http_archive(
-    name = "wit-bindgen-" + exe_platform,
+    name = "wit-bindgen.{}".format(exe_platform),
     build_file_content = """
 alias(
     name = "wit-bindgen",
@@ -289,7 +289,7 @@ alias(
 ) for exe_platform in execution_platforms]
 
 [http_archive(
-    name = "tinygo-" + exe_platform,
+    name = "tinygo.{}".format(exe_platform),
     build_file_content = """
 alias(
     name = "tinygo",
@@ -315,7 +315,7 @@ alias(
 ) for exe_platform in execution_platforms]
 
 [http_archive(
-    name = "wit-bindgen-go-" + exe_platform,
+    name = "wit-bindgen-go.{}".format(exe_platform),
     build_file_content = """
 exports_files(
     ["wit-bindgen-go"],
