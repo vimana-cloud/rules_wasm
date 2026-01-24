@@ -7,16 +7,16 @@ module(
     bazel_compatibility = [">=7.2.1"],
 )
 
-bazel_dep(name = "buildifier_prebuilt", version = "8.2.1", dev_dependency = True, repo_name = "buildtools")
+bazel_dep(name = "buildifier_prebuilt", version = "8.2.1.1", dev_dependency = True, repo_name = "buildtools")
 
-bazel_dep(name = "bazel_skylib", version = "1.8.2")
+bazel_dep(name = "bazel_skylib", version = "1.9.0")
 bazel_dep(name = "gazelle", version = "0.47.0")
-bazel_dep(name = "package_metadata", version = "0.0.6")
+bazel_dep(name = "package_metadata", version = "0.0.7")
 bazel_dep(name = "platforms", version = "1.0.0")
-bazel_dep(name = "rules_cc", version = "0.2.14")
+bazel_dep(name = "rules_cc", version = "0.2.16")
 bazel_dep(name = "rules_go", version = "0.59.0", repo_name = "io_bazel_rules_go")
 bazel_dep(name = "rules_license", version = "1.0.0")
-bazel_dep(name = "rules_rust", version = "0.67.0")
+bazel_dep(name = "rules_rust", version = "0.68.1")
 bazel_dep(name = "rules_shell", version = "0.6.1")
 
 # The example module (which contains basic tests)
@@ -44,7 +44,7 @@ binaryen_version = "125"
 go_cm_version = "0.3.0"
 
 # https://github.com/tinygo-org/tinygo/releases
-tinygo_version = "0.39.0"
+tinygo_version = "0.40.1"
 
 # https://github.com/bytecodealliance/wac/releases
 wac_version = "0.8.1"
@@ -57,13 +57,13 @@ wasi_version = "0.2.0"
 wasi_sdk_version = "29"
 
 # https://github.com/bytecodealliance/wasmtime/releases
-wasmtime_version = "39.0.0"
+wasmtime_version = "41.0.0"
 
 # https://github.com/bytecodealliance/wasm-tools/releases
-wasm_tools_version = "1.241.2"
+wasm_tools_version = "1.244.0"
 
 # https://github.com/bytecodealliance/wit-bindgen/releases
-wit_bindgen_version = "0.48.1"
+wit_bindgen_version = "0.51.0"
 
 # https://github.com/bytecodealliance/go-modules/releases
 wit_bindgen_go_version = "0.7.0"
@@ -229,10 +229,10 @@ alias(
         version = wasmtime_version,
     ),
     integrity = {
-        "aarch64-linux": "sha384-PkYBhaWuxSlMokqJzuI2BbR28GQaI/BAOzNIOfe3rGF9VU4voKH+uLq4Yv8olwvO",
-        "aarch64-macos": "sha384-vI0krkj0CDAkUWJEsRZDkFL3ihy6VmqmXrBGYmRUxB50x0CukJXlH1+mvGknYo6f",
-        "x86_64-linux": "sha384-ljYSa82I7RJNsWY7qQ0mTb3CwoLW0I+wAyL6aVcZ6q3V7kcsRKRWxpUyzh2cUv88",
-        "x86_64-macos": "sha384-Yy3iQ4+1uGhUUxOvRNajtRFaDrx8CdN1Nsp8zO7j8avdHqQ9UeklTkQJkc5+Srv4",
+        "aarch64-linux": "sha384-g9KkcIY/LbnVfQA4R7ndXkiPEkdKAWIfRHVRrg2iS5Pc8+2xOIudfcECVWJ4ncBq",
+        "aarch64-macos": "sha384-EzQwsox89bnSHgFAs4Xuls7FQYmbtgUuRFoa+m0qkNpEJ3RtJssJYrjWMnRlAhDp",
+        "x86_64-linux": "sha384-IZDeMtdL7PRJxzALijurh70rBvrZxOqqgXp9C9AvSVkUX6dKle0lF8zNOXUMbZ7z",
+        "x86_64-macos": "sha384-ORo320TWgLzZ5rzfVT7Rif1CPntWGsPBv3Wj2+aagPQwAL8oEwuPar2yLKirp0ZR",
     }[exe_platform],
     url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasmtime-v{version}-{platform}.tar.xz".format(
         platform = exe_platform,
@@ -253,10 +253,10 @@ alias(
         version = wasm_tools_version,
     ),
     integrity = {
-        "aarch64-linux": "sha384-d/fR/u28naIoiJMdjKSPHaMFZHJJLm7Gwhkp71jXtUgf7Cb+uYx9QeFPsCgTV50v",
-        "aarch64-macos": "sha384-I/3V9d7egNnRRcgRAen5yJ+IZJ2toqzbf+XPcxFWx4q6IFq5fwPc0MqyZUeH8GwJ",
-        "x86_64-linux": "sha384-TOtL6QT2ZgLE35TMTS39WHgWsp8MyKH5d3qBC3zNg4rP25CLhCsOlKq7CUtsFigf",
-        "x86_64-macos": "sha384-zKbb8MReONX3LZ1GfBJRaTzBEE/unyrm9lMMQGOrc2gR2E+lxqTYSGsmZN2JACRS",
+        "aarch64-linux": "sha384-ykfI6bmn9TjrH0LJpz2sODTcYXrgJi+GWa1NrHK2jw9QQI5rY3vaORite8PqG+ws",
+        "aarch64-macos": "sha384-odriRm3YZ5/J7GOej7jyPYKBrDSsHECW+PSHsoD2BCzc0cC61D3/ycT9A8DP7DV/",
+        "x86_64-linux": "sha384-AAQWOCQYyFk/CK/tG3TCLoaiWjP5Rm1GUun9jYebwwDuw+eDETsprAFSxWx2vWnC",
+        "x86_64-macos": "sha384-MgupJo/k1kTCqpnbflmfkneHwkI4un4qn2tJzApNRAf0UYZfemVYyJA8cB2SntIq",
     }[exe_platform],
     url = "https://github.com/bytecodealliance/wasm-tools/releases/download/v{version}/wasm-tools-{version}-{platform}.tar.gz".format(
         platform = exe_platform,
@@ -277,10 +277,10 @@ alias(
         version = wit_bindgen_version,
     ),
     integrity = {
-        "aarch64-linux": "sha384-wEwbZMcjKzwGPEJW8GZN3VG3RTTLPLq06be+MYFangnDuy4i3U5YKO6KrhxXTTxm",
-        "aarch64-macos": "sha384-My+C4rX74yKLYc0F8iN2c1/p89nOF7ftTe//td39IhrOp0OfNfDlB9Rd/Ld7Tftn",
-        "x86_64-linux": "sha384-q3NQYHXLbUDAq7fcny9IjsUVatoHpVLggrywr+nCEnomdvrgICBA7yMgyuueIBio",
-        "x86_64-macos": "sha384-M4hEqP8+Whei2MQHoxZFzaq0L+kE9GLeLcGa0uYWNfL6016TpUhCdmPKBGGUnfRb",
+        "aarch64-linux": "sha384-HhKzRgMm11IUeY2VEUJ4rOpdITXmI2kRtGMey345ZvPueTTB/nCpVYxY+Z0UvFMB",
+        "aarch64-macos": "sha384-svr3bOAxJqaJRraAo24T8RJOUKKnAczMqYhQoplF+g4Ll681VRHI68IZO+wFZ0ew",
+        "x86_64-linux": "sha384-4VA5uF8xzr4AVCAdowd842HPdFa4UhWBW7tmXSwT4sR19c/wFqB6yvleYxyc+V9B",
+        "x86_64-macos": "sha384-oA7BVSqO7wSEUkUjPgF4NK0iFClIVHb4fFLYBWgoFW4aq8hcj9NxRN/tsKLeSk5f",
     }[exe_platform],
     url = "https://github.com/bytecodealliance/wit-bindgen/releases/download/v{version}/wit-bindgen-{version}-{platform}.tar.gz".format(
         platform = exe_platform,
@@ -298,10 +298,10 @@ alias(
 )
 """,
     integrity = {
-        "aarch64-linux": "sha384-YzSti1CVRxYGVhn5ihWLgCwGiZnR9M6bSl2AklXxX4XUqQGqsJ8JiLK5AMc+3D54",
-        "aarch64-macos": "sha384-YZywVFCfTar+yd6d7IlWW518PTJUi0n11FUfO8h6fXorFxMxvrL3sW5CDj10Ts6E",
-        "x86_64-linux": "sha384-fv7Q2NWBsZT0YaxwaPsvx8ib/AvVYaS3GanOYZZdl8Koffb0kS/bTHSHVD0OOA7+",
-        "x86_64-macos": "sha384-CPPi8Z0kBo+9zNlya5KUMsMata4czS9VOnkdjHH3iyuS8OxBvhP9nZiIVIkJEAVi",
+        "aarch64-linux": "sha384-4oA3DtjBkX5aqRAqhDf7o2Y6svaus4aUHETOTN/vIJgX8j31jA9kcRquACBnWJqv",
+        "aarch64-macos": "sha384-xGK9sH3W13X2GQm4vZXQToizkw5DJ0UApU+Kemdt32RzVOtuT7O3dcX2r5KO7OP6",
+        "x86_64-linux": "sha384-BlHCxDpL/Ajw/zXN6yPQupbPopRVKFzgVUf8bCtEXG+CZl15rm6RLh1reZqqEw2Z",
+        "x86_64-macos": "sha384-sOo63ufRwabSy8pnr0DWHCBymKtb9y2Q4yC7tH8M1InYR2H77CCowoaOCElhTNaC",
     }[exe_platform],
     url = "https://github.com/tinygo-org/tinygo/releases/download/v{version}/tinygo{version}.{platform}.tar.gz".format(
         platform = {
@@ -342,7 +342,7 @@ exports_files(
 # Temporary crutch until we can build against wasip2 directly.
 http_file(
     name = "wasi-snapshot-preview1-reactor",
-    integrity = "sha384-lbuu+oHt/78NPSG3HIw7yqyd4m2MUDIxkKVuKNh37voeHlMCRihHmetG6JcIJBcg",
+    integrity = "sha384-x2E3+xi08275MNsEF+u7a/bAU4fQKL3G5N6sKbqa/kIIJXT3tVaQFMsBirYAwFZc",
     url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasi_snapshot_preview1.reactor.wasm".format(version = wasmtime_version),
 )
 
