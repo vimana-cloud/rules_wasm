@@ -131,7 +131,7 @@ def c_component(
         wit,
         world = None,
         deps = None,
-        visibility = ["//visibility:private"]):
+        visibility = None):
     """
     Compile a Wasm component given a WIT package (`wit`),
     a set of C source files (`srcs`), and a world name.
