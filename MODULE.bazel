@@ -7,7 +7,7 @@ module(
     bazel_compatibility = [">=7.2.1"],
 )
 
-bazel_dep(name = "buildifier_prebuilt", version = "8.2.1.1", dev_dependency = True, repo_name = "buildtools")
+bazel_dep(name = "buildifier_prebuilt", version = "8.2.1.2", dev_dependency = True, repo_name = "buildtools")
 
 bazel_dep(name = "bazel_skylib", version = "1.9.0")
 bazel_dep(name = "gazelle", version = "0.47.0")
@@ -47,23 +47,23 @@ go_cm_version = "0.3.0"
 tinygo_version = "0.40.1"
 
 # https://github.com/bytecodealliance/wac/releases
-wac_version = "0.8.1"
+wac_version = "0.9.0"
 
 # ATTOW TinyGo only supports version `0.2.0`:
 # https://github.com/WebAssembly/WASI/releases
 wasi_version = "0.2.0"
 
 # https://github.com/WebAssembly/wasi-sdk/releases
-wasi_sdk_version = "29"
+wasi_sdk_version = "30"
 
 # https://github.com/bytecodealliance/wasmtime/releases
-wasmtime_version = "41.0.0"
+wasmtime_version = "41.0.3"
 
 # https://github.com/bytecodealliance/wasm-tools/releases
 wasm_tools_version = "1.244.0"
 
 # https://github.com/bytecodealliance/wit-bindgen/releases
-wit_bindgen_version = "0.51.0"
+wit_bindgen_version = "0.52.0"
 
 # https://github.com/bytecodealliance/go-modules/releases
 wit_bindgen_go_version = "0.7.0"
@@ -131,10 +131,10 @@ wac_platforms = {
     name = "wac.{}".format(exe_platform),
     executable = True,
     integrity = {
-        "aarch64-linux": "sha384-IXwdLWoq0jax4B/k6Q3iU1iJCZdAuN1FYL/n3zfpjyIE3gjk7+8pEY9DuwcCegiM",
-        "aarch64-macos": "sha384-xSbymKgHE+ELSmprYedYF5Ak4L6ThqEZF3kllpNqKYXxxpLcNWtzlwdaGtBIk0SB",
-        "x86_64-linux": "sha384-KYJhbk+OszFP0FeoPUd6hH9KQmIIgZ6jmtfYT5CgcwEJOUTdXTAfzTQac/qdpqyb",
-        "x86_64-macos": "sha384-UAjGFeHo77fqwwykTWjOTn8//a3e183bAkGAuc55wTpN10uiNfZLTnK5Xm9OVVZ8",
+        "aarch64-linux": "sha384-+TtQSg+/zAioaEIrCssDeYUCGGHdLpte8I+jdSyIdF/r6psPbF5KQyYqXUiXHGFJ",
+        "aarch64-macos": "sha384-Dyu/2G4OThVCOuyL+aahZThRk2njNVLu+RWPspy8tP0uW320sa8vjL9CZVljhBRv",
+        "x86_64-linux": "sha384-7gORhZkigfWoLbC9raKk2+e2red56CGFPrKr+Ckblef4+aHa1C5ogXa8plVkal4l",
+        "x86_64-macos": "sha384-PrlmSSF0gJ+X116/ylwW/Za/JtVbC76X9U6EHmPxWrbQG31fmUy+3xVgGGJw9ENw",
     }[exe_platform],
     url = "https://github.com/bytecodealliance/wac/releases/download/v{version}/wac-cli-{platform}".format(
         # WAC uses non-canonical platform strings in the URLs:
@@ -205,10 +205,10 @@ subdirectory(
         version = wasi_sdk_version,
     ),
     integrity = {
-        "aarch64-linux": "sha384-0/4ZdpmJp6vgPzQTym6YAZXBXOXmIOaqPhntzKKkGqAsqjaV6Y4ykA/ga6Ox3i98",
-        "aarch64-macos": "sha384-ntXb6D5Je2Co93QjlxoCO2cRvU/vGUXsYeJVJL5ZMAI6FcZqK3hWVZefmFAFnX1q",
-        "x86_64-linux": "sha384-pn0lgY+yOddbNJzDHvvEVCJF+ZU/d8J31HF8Jo80mbhZNXa33qegs3ejsrwRJ9OC",
-        "x86_64-macos": "sha384-HBmQLk9vm5d3AMxQb0Awwn6ylOA/uySWd84xGhTlpgSHXb6k/Lk0iIWGg3Q7LkHm",
+        "aarch64-linux": "sha384-6CBZ8X+TV3KR6kpvF1l7GD8qTJAyVmqHDHdz1e0iFTUqQc3qtakmHVp3iJndbXby",
+        "aarch64-macos": "sha384-b/Ug1N47MLpJNRGfZTyaxtKNSeIjsX6DZmXIAiJQGdPtDl4ScRNnq8ED66vvIFGD",
+        "x86_64-linux": "sha384-mRIxiaLEy7rrVpKmnopHuK0GQ1xH5mQyj06cc5TgQeqc6pJJG6Qnljn0+kYxN4gl",
+        "x86_64-macos": "sha384-DtQ818n6vfmgR7n4t3IncpQQGfUEv5D96arGPjrlXnnvjeGMXi8/Z7BS706tn0EK",
     }[exe_platform],
     url = "https://github.com/WebAssembly/wasi-sdk/releases/download/wasi-sdk-{version}/wasi-sdk-{version}.0-{platform}.tar.gz".format(
         platform = wasi_sdk_platforms[exe_platform],
@@ -229,10 +229,10 @@ alias(
         version = wasmtime_version,
     ),
     integrity = {
-        "aarch64-linux": "sha384-g9KkcIY/LbnVfQA4R7ndXkiPEkdKAWIfRHVRrg2iS5Pc8+2xOIudfcECVWJ4ncBq",
-        "aarch64-macos": "sha384-EzQwsox89bnSHgFAs4Xuls7FQYmbtgUuRFoa+m0qkNpEJ3RtJssJYrjWMnRlAhDp",
-        "x86_64-linux": "sha384-IZDeMtdL7PRJxzALijurh70rBvrZxOqqgXp9C9AvSVkUX6dKle0lF8zNOXUMbZ7z",
-        "x86_64-macos": "sha384-ORo320TWgLzZ5rzfVT7Rif1CPntWGsPBv3Wj2+aagPQwAL8oEwuPar2yLKirp0ZR",
+        "aarch64-linux": "sha384-2cg8FAt1gG3MiGHK3DRsbXt39ABPlXcwzz58K4clbS9mzMqwOrWzLud4z6kgssR9",
+        "aarch64-macos": "sha384-JGNsXtrZZOmeBVQrZZtTBrkVIAn4eDlLXA+/jTEEortibW3XUyIaov9Ui/x7ZBNb",
+        "x86_64-linux": "sha384-7qQX9FI/ZzIultkf/0BTjIkBesCLk3oXxmzkjKKCml95vbVNRGUJRE2ysR3MtTuI",
+        "x86_64-macos": "sha384-4Ex9ZoHTrG1pWey5UQ9K+d45pzgZAnXOC+Dtpy3v+7RDpWDorDQwHzXIc78QJ+rm",
     }[exe_platform],
     url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasmtime-v{version}-{platform}.tar.xz".format(
         platform = exe_platform,
@@ -277,10 +277,10 @@ alias(
         version = wit_bindgen_version,
     ),
     integrity = {
-        "aarch64-linux": "sha384-HhKzRgMm11IUeY2VEUJ4rOpdITXmI2kRtGMey345ZvPueTTB/nCpVYxY+Z0UvFMB",
-        "aarch64-macos": "sha384-svr3bOAxJqaJRraAo24T8RJOUKKnAczMqYhQoplF+g4Ll681VRHI68IZO+wFZ0ew",
-        "x86_64-linux": "sha384-4VA5uF8xzr4AVCAdowd842HPdFa4UhWBW7tmXSwT4sR19c/wFqB6yvleYxyc+V9B",
-        "x86_64-macos": "sha384-oA7BVSqO7wSEUkUjPgF4NK0iFClIVHb4fFLYBWgoFW4aq8hcj9NxRN/tsKLeSk5f",
+        "aarch64-linux": "sha384-j3E0m7o5CR614Xse2HbyY2Q7JrL2zFjt8QQqG+MXJwvqKZcfnJHJIKbi5OYZW1Y0",
+        "aarch64-macos": "sha384-B44dld+Tpqy5AmOZqDZThVTOUch+ffduWpbAEUy91xNxvQkWczXJ5U1IvwCsqHEZ",
+        "x86_64-linux": "sha384-kl30pabL1khyCnzK/DXzjxWdy9dTcxUOTGId/kP22iwCd7Gff6wB87/fOaQDwBMY",
+        "x86_64-macos": "sha384-2FJPaljQG+ZQ0xdxDJ2ROejp6Pte0dEhFDP+SL9uIj4Am79TBDflyF36iyHniFQI",
     }[exe_platform],
     url = "https://github.com/bytecodealliance/wit-bindgen/releases/download/v{version}/wit-bindgen-{version}-{platform}.tar.gz".format(
         platform = exe_platform,
@@ -342,7 +342,7 @@ exports_files(
 # Temporary crutch until we can build against wasip2 directly.
 http_file(
     name = "wasi-snapshot-preview1-reactor",
-    integrity = "sha384-x2E3+xi08275MNsEF+u7a/bAU4fQKL3G5N6sKbqa/kIIJXT3tVaQFMsBirYAwFZc",
+    integrity = "sha384-PloNQ0gFXmM0CkpYT36Jcs4R+A8VJNwACs73BsU2p+vmWh8T7x0xT1UIS24mjyaA",
     url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasi_snapshot_preview1.reactor.wasm".format(version = wasmtime_version),
 )
 
