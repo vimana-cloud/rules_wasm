@@ -18,8 +18,9 @@ but also welcomes language-specific rules to compile source code files into comp
     without a [WAC](https://github.com/bytecodealliance/wac) file.
   * `wit_package` - Bundle a group of WIT files into a unified package.
 - [`//rust:defs.bzl`](rust/defs.bzl):
-  * `rust_component` - Compile a Wasm interface and matching Rust implementation
+  * `rust_component` - Compile a WIT interface and matching Rust implementation
     into a Wasm component.
+    Use the default Rust toolchain.
   * `rust_wit_bindgen` - Generate Rust sources for a Wasm interface.
     This is a lower-level rule that you normally wouldn't need to use directly.
     Use `rust_component` for a single macro to compile a component from Rust.
@@ -27,7 +28,7 @@ but also welcomes language-specific rules to compile source code files into comp
   (blocked on [bazelbuild/rules_cc#277](https://github.com/bazelbuild/rules_cc/issues/277)),
   but there's [`//c:defs.bzl`](c/defs.bzl),
   which makes use of the [WASI SDK](https://github.com/WebAssembly/wasi-sdk):
-  * `c_component` - Compile a Wasm interface and matching C implementation
+  * `c_component` - Compile a WIT interface and matching C implementation
     into a Wasm component.
   * `c_wit_bindgen` - Generate C sources for a Wasm interface.
     This is a lower-level rule that you normally wouldn't need to use directly.
@@ -39,7 +40,7 @@ but also welcomes language-specific rules to compile source code files into comp
   but the output of `wit-bindgen-go` is only known for sure during the execution phase.
   Meanwhile, there's a temporary crutch: [`//go:defs.bzl`](go/defs.bzl),
   which makes use of [TinyGo](https://tinygo.org/) and is somewhat limited.
-  * `go_component` - Compile a Wasm interface and matching C implementation
+  * `go_component` - Compile a WIT interface and matching Go implementation
     into a Wasm component.
   * `go_wit_bindgen` - Generate Go sources for a Wasm interface,
     including a minimal `go.mod` file to emulate a Go module.

@@ -5,17 +5,13 @@
 package main
 
 import (
-	"fmt"
-
 	"example.com/wit/test/foo/custom"
+
+	"this-is.a/dependency"
 )
 
 func main() {
-	theWords := custom.Words("These are fersher words.")
-
-	if theWords.Len() == 4 {
-		fmt.Println("It worked")
-	} else {
-		panic("Something is messed up!")
-	}
+	dependency.DoSomething(func(s string) []string {
+		return custom.Words(s).Slice()
+	})
 }

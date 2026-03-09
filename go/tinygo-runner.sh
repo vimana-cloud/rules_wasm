@@ -13,40 +13,66 @@ tinygo="$1"
 go="$2"
 wasm_tools="$3"
 wasm_opt="$4"
-output="$5"
-bindings="$6"
-wit="$7"
-wit_module_name="$8"
-cm_source_directory="$9"
-cm_module_name="${10}"
-cm_module_version="${11}"
-world="${12}"
-shift 12
+jq="$5"
+output="$6"
+bindings="$7"
+wit="$8"
+wit_module_name="$9"
+cm_source_directory="${10}"
+cm_module_name="${11}"
+cm_module_version="${12}"
+world="${13}"
+main_package="${14}"
+shift 14
+
+# Remaining args are pairs of: <importpath> <src_dir>
+dep_importpaths=()
+dep_packages=()
+while [[ $# -ge 2 ]]
+do
+  dep_importpaths+=("$1")
+  dep_packages+=("$2")
+  shift 2
+done
 
 go_dir="$(dirname "$(realpath "$go")")"
 tiny_go_root="$(dirname "$(dirname "$(realpath "$tinygo")")")"
 wasm_tools="$(realpath "$wasm_tools")"
 wasm_opt="$(realpath "$wasm_opt")"
 
-cat > go.mod <<EOF
-module main
+# `go env GOVERSION` prints something like `go1.26.0`
+# so use `tail` to strip the first 2 characters, which should always be `go`.
+go_version="$("$go" env GOVERSION | tail -c +3)"
 
-go $("$go" env GOVERSION | tail -c +3)
+# Create a dummy `go.mod` file for the main module and each dependency module.
+# Dependencies are resolved via the `go.work` file.
+printf 'module main\n\ngo %s\n' "$go_version" > go.mod
+for i in "${!dep_importpaths[@]}"
+do
+  printf 'module %s\n\ngo %s\n' "${dep_importpaths[$i]}" "$go_version" > "${dep_packages[$i]}/go.mod"
+done
 
-require (
-    $wit_module_name v0.0.0
-    $cm_module_name v$cm_module_version // indirect
-)
-
-replace $wit_module_name => ./$bindings
-replace $cm_module_name => ./$cm_source_directory
-EOF
+# Create a `go.work` file so TinyGo uses workspace mode,
+# which lets all modules in a dependency tree resolve each other
+# without explicit require/replace entries.
+{
+  echo "go $go_version"
+  echo ""
+  echo "use ."
+  echo "use ./$bindings"
+  echo "use ./$cm_source_directory"
+  for dir in "${dep_packages[@]}"
+  do
+    echo "use ./$dir"
+  done
+} > go.work
 
 # Set up a temporary cache dir for TinyGo (effectively disabling caching).
 # Do it by setting up a fake `$HOME` directory with the right shape to support either Linux or Mac.
 # https://github.com/golang/go/blob/go1.24.3/src/os/file.go#L487
 tmp_home="$(mktemp -d)"
-if [[ "$(uname)" == "Darwin" ]]; then
+if [[ "$(uname)" == 'Darwin' ]]
+then
   tmp_cache="$tmp_home/Library/Caches"
 else
   tmp_cache="$tmp_home/.cache"
@@ -58,4 +84,9 @@ HOME="$tmp_home" \
   TINYGOROOT="$tiny_go_root" \
   WASMTOOLS="$wasm_tools" \
   WASMOPT="$wasm_opt" \
-  exec "$tinygo" build --target=wasip2 --wit-package="$wit" --wit-world="$world" -o "$output" "$@"
+  exec "$tinygo" build \
+    --target=wasip2 \
+    --wit-package="$wit" \
+    --wit-world="$world" \
+    -o "$output" \
+    "$main_package"

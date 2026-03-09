@@ -9,6 +9,7 @@ go_component(
     wit = "//:foo-wrapper-wit",
     wit_module = "example.com/wit",
     world = "foo-command",
+    deps = ["//go/dependency:example-dependency"],
 )
 
 # Plug a Rust component into a Go component.

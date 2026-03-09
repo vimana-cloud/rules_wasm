@@ -1,0 +1,10 @@
+load("@rules_go//go:def.bzl", "go_library")
+
+# Go does not like it when multiple packages exist int the same directory,
+# so use a subdirectory for this dependency package.
+go_library(
+    name = "example-dependency",
+    srcs = ["library-dependency.go"],
+    importpath = "this-is.a/dependency",
+    visibility = ["//go:__pkg__"],
+)
