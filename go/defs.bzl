@@ -86,6 +86,13 @@ def _go_module_impl(ctx):
     cm_go_mod = ctx.file._cm_go_mod
     cm_library = ctx.attr._cm_library[GoInfo]
     cm_package_info = ctx.attr._cm_package_info[PackageInfo]
+
+    package_paths = set([paths.dirname(src.path) for src in ctx.files.srcs])
+    if len(package_paths) > 1:
+        fail('All source files must be in the same directory')
+    # Use a relative path to indicate that this is not a system package.
+    package_path = "./{}".format(package_paths.pop())
+
     go = go_context(ctx)
     go_bin = go.sdk.go
 
@@ -111,7 +118,8 @@ def _go_module_impl(ctx):
             cm_package_info.package_name,
             cm_package_info.package_version,
             world,
-        ] + [src.path for src in ctx.files.srcs],
+            package_path,
+        ],
         tools = [
             ctx.executable._tinygo_bin,
             ctx.executable._wasm_opt_bin,
