@@ -52,18 +52,36 @@ do
   printf 'module %s\n\ngo %s\n' "${dep_importpaths[$i]}" "$go_version" > "${dep_packages[$i]}/go.mod"
 done
 
+# The `go:embed` directive uses lstat and will not follow symlinks,
+# but Bazel exposes sandbox inputs as symlinks.
+# Replace any symlinks in dependency directories with their targets.
+# https://pkg.go.dev/embed
+for package in "${dep_packages[@]}"
+do
+  while IFS= read -r -d '' link
+  do
+    real="$(readlink -f "$link")"
+    if [[ -f "$real" ]]
+    then
+      # A simple `cp "$real" "$link"`
+      # would cause `cp` to follow the destination symlink rather than overwrite it.
+      cp "$real" "${link}.tmp" && mv "${link}.tmp" "$link"
+    fi
+  done < <(find "$package" -type l -print0)
+done
+
 # Create a `go.work` file so TinyGo uses workspace mode,
 # which lets all modules in a dependency tree resolve each other
-# without explicit require/replace entries.
+# without explicit require / replace entries.
 {
   echo "go $go_version"
   echo ""
   echo "use ."
   echo "use ./$bindings"
   echo "use ./$cm_source_directory"
-  for dir in "${dep_packages[@]}"
+  for package in "${dep_packages[@]}"
   do
-    echo "use ./$dir"
+    echo "use ./$package"
   done
 } > go.work
 
