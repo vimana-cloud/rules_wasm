@@ -14,10 +14,10 @@ bazel_dep(name = "gazelle", version = "0.47.0")
 bazel_dep(name = "jq.bzl", version = "0.6.1")
 bazel_dep(name = "package_metadata", version = "0.0.7")
 bazel_dep(name = "platforms", version = "1.0.0")
-bazel_dep(name = "rules_cc", version = "0.2.16")
-bazel_dep(name = "rules_go", version = "0.59.0", repo_name = "io_bazel_rules_go")
+bazel_dep(name = "rules_cc", version = "0.2.17")
+bazel_dep(name = "rules_go", version = "0.60.0", repo_name = "io_bazel_rules_go")
 bazel_dep(name = "rules_license", version = "1.0.0")
-bazel_dep(name = "rules_rust", version = "0.68.1")
+bazel_dep(name = "rules_rust", version = "0.69.0")
 bazel_dep(name = "rules_shell", version = "0.6.1")
 
 # The example module (which contains basic tests)
@@ -39,7 +39,7 @@ execution_platforms = [
 ]
 
 # https://github.com/WebAssembly/binaryen/releases
-binaryen_version = "125"
+binaryen_version = "127"
 
 # https://pkg.go.dev/go.bytecodealliance.org/cm?tab=versions
 go_cm_version = "0.3.0"
@@ -58,13 +58,13 @@ wasi_version = "0.2.0"
 wasi_sdk_version = "30"
 
 # https://github.com/bytecodealliance/wasmtime/releases
-wasmtime_version = "41.0.3"
+wasmtime_version = "42.0.1"
 
 # https://github.com/bytecodealliance/wasm-tools/releases
-wasm_tools_version = "1.244.0"
+wasm_tools_version = "1.245.1"
 
 # https://github.com/bytecodealliance/wit-bindgen/releases
-wit_bindgen_version = "0.52.0"
+wit_bindgen_version = "0.53.1"
 
 # https://github.com/bytecodealliance/go-modules/releases
 wit_bindgen_go_version = "0.7.0"
@@ -108,10 +108,10 @@ alias(
 )
 """.format(version = binaryen_version),
     integrity = {
-        "aarch64-linux": "sha384-hr2gnlEqLM2lXYeCJCPepHUFu944rceDINqlD2Mp8czhIng56SKwNgDt7OO/Okhq",
-        "aarch64-macos": "sha384-/VyGEnbNCfuWhQdgk0jUZZ5BR6X/jFgUAp9UE704z/1z8TF4Q9TO80RdLwUVYW1C",
-        "x86_64-linux": "sha384-610rBOCcTE/qoOsS9ghQdTaN6z+TIbyjAeEQGuBJN6Xx9d2+pnZtvJiSSxW6UCov",
-        "x86_64-macos": "sha384-j1OKGc5CF6tcBJn0anAijAapE4eGtdMH75jcDXEqzaLFz/obRgkmr9agFRnUVY+D",
+        "aarch64-linux": "sha384-SUScfMm0dfJpWO75n+rj6WSZybCGXH57EiHHjjaQ5V6aPP0X0694tK820O6K5Jis",
+        "aarch64-macos": "sha384-21yvYg4vOzHKSQ5uC/XTRBLn1ksTL0o8hKnECL4zTZdk+Lo3ooFwWuAHtMdpM0kl",
+        "x86_64-linux": "sha384-8E/4EPQNhvWqe54v6onnEqxM0jbmtIm9p0M9R3osvhQGBehCwtfDpSrxh3iVRMgI",
+        "x86_64-macos": "sha384-3r3pTjoBQuUEoQEU2YsH7TAE6rlt0ARmpqx1M2StjCBB3l+wbMeD0/BXERQmEUXp",
     }[exe_platform],
     url = "https://github.com/WebAssembly/binaryen/releases/download/version_{version}/binaryen-version_{version}-{platform}.tar.gz".format(
         platform = {
@@ -233,10 +233,10 @@ alias(
         version = wasmtime_version,
     ),
     integrity = {
-        "aarch64-linux": "sha384-2cg8FAt1gG3MiGHK3DRsbXt39ABPlXcwzz58K4clbS9mzMqwOrWzLud4z6kgssR9",
-        "aarch64-macos": "sha384-JGNsXtrZZOmeBVQrZZtTBrkVIAn4eDlLXA+/jTEEortibW3XUyIaov9Ui/x7ZBNb",
-        "x86_64-linux": "sha384-7qQX9FI/ZzIultkf/0BTjIkBesCLk3oXxmzkjKKCml95vbVNRGUJRE2ysR3MtTuI",
-        "x86_64-macos": "sha384-4Ex9ZoHTrG1pWey5UQ9K+d45pzgZAnXOC+Dtpy3v+7RDpWDorDQwHzXIc78QJ+rm",
+        "aarch64-linux": "sha384-4QFMGTufNU01agiwnRshcBOmExSqGecfIUCezk7RDXCu7a8t25hubIx4L86JIE1g",
+        "aarch64-macos": "sha384-1sD6U/3qGGv7Q3+mW0mfSLwpWrkKyGKcjLdaYdqz+gvdytZJlIkEj6nkPnhvYLtd",
+        "x86_64-linux": "sha384-1/jVf4e0aEaTwe2ZjybxqXDOUg/kLDZXJPzyrCKPBMtNnyRU+j4ZoRhqFXkGu+A9",
+        "x86_64-macos": "sha384-lnR3TCwuj/aJHgLgWIFWxf5fuzYo0ofrz0b4OAbsbStWWGpZG7eqjB9HCtRfqa/c",
     }[exe_platform],
     url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasmtime-v{version}-{platform}.tar.xz".format(
         platform = exe_platform,
@@ -257,10 +257,10 @@ alias(
         version = wasm_tools_version,
     ),
     integrity = {
-        "aarch64-linux": "sha384-ykfI6bmn9TjrH0LJpz2sODTcYXrgJi+GWa1NrHK2jw9QQI5rY3vaORite8PqG+ws",
-        "aarch64-macos": "sha384-odriRm3YZ5/J7GOej7jyPYKBrDSsHECW+PSHsoD2BCzc0cC61D3/ycT9A8DP7DV/",
-        "x86_64-linux": "sha384-AAQWOCQYyFk/CK/tG3TCLoaiWjP5Rm1GUun9jYebwwDuw+eDETsprAFSxWx2vWnC",
-        "x86_64-macos": "sha384-MgupJo/k1kTCqpnbflmfkneHwkI4un4qn2tJzApNRAf0UYZfemVYyJA8cB2SntIq",
+        "aarch64-linux": "sha384-vA9YcL9eBLSkTJnugGHb+35Osp/f2CsrSiLP5k+lPS5CtPGFKfQh8X6TRoegxblB",
+        "aarch64-macos": "sha384-XwPPGka4C+Mc/klZFlNSkIQW4ktd9aiGYS1LwtL2cipe3G70box2B76JA0M6tQ7h",
+        "x86_64-linux": "sha384-Qi7fBVQa8c9cwdnMWLIXHIZ2kVl66FMHJz424zFrwnkveKMwbYPfOcceD2f/k5A+",
+        "x86_64-macos": "sha384-Y+i81ODSGvXOtMoqcCxz1E4cigsVHjGVQ3amB/6DyOmw4uuINwyjPF6OiSUd1oyS",
     }[exe_platform],
     url = "https://github.com/bytecodealliance/wasm-tools/releases/download/v{version}/wasm-tools-{version}-{platform}.tar.gz".format(
         platform = exe_platform,
@@ -281,10 +281,10 @@ alias(
         version = wit_bindgen_version,
     ),
     integrity = {
-        "aarch64-linux": "sha384-j3E0m7o5CR614Xse2HbyY2Q7JrL2zFjt8QQqG+MXJwvqKZcfnJHJIKbi5OYZW1Y0",
-        "aarch64-macos": "sha384-B44dld+Tpqy5AmOZqDZThVTOUch+ffduWpbAEUy91xNxvQkWczXJ5U1IvwCsqHEZ",
-        "x86_64-linux": "sha384-kl30pabL1khyCnzK/DXzjxWdy9dTcxUOTGId/kP22iwCd7Gff6wB87/fOaQDwBMY",
-        "x86_64-macos": "sha384-2FJPaljQG+ZQ0xdxDJ2ROejp6Pte0dEhFDP+SL9uIj4Am79TBDflyF36iyHniFQI",
+        "aarch64-linux": "sha384-C9ibB7vM0Y2gJFBqD1jUZ94kCzJu2HdZfGhne5qZEKxCIZo+uIB7hn1dWP8BRtRV",
+        "aarch64-macos": "sha384-OohskCVIlMW9WUB3h9FpffNH+qXYdZ+6wmlD7aqDr6MVmRapTggLlFHW/qcGvmGt",
+        "x86_64-linux": "sha384-ubXl+maRqKzLZjvBHbHuNc32FpJRJvOdBr8LAZyK38AHgArmm2UN2iPZFWM10GII",
+        "x86_64-macos": "sha384-ZO4aMFUkNvm6Fh3ghl8BnAdUXT9W6C7vwbIpzPS4MfFJM/QnQNS8vNr5gzmKIO/P",
     }[exe_platform],
     url = "https://github.com/bytecodealliance/wit-bindgen/releases/download/v{version}/wit-bindgen-{version}-{platform}.tar.gz".format(
         platform = exe_platform,
@@ -346,7 +346,7 @@ exports_files(
 # Temporary crutch until we can build against wasip2 directly.
 http_file(
     name = "wasi-snapshot-preview1-reactor",
-    integrity = "sha384-PloNQ0gFXmM0CkpYT36Jcs4R+A8VJNwACs73BsU2p+vmWh8T7x0xT1UIS24mjyaA",
+    integrity = "sha384-brQEdKQL+9NcQeUEb/imUUfcLCoP5vCq+IALB/EQ60d1McTv92GOnmlqnH1BxQ5O",
     url = "https://github.com/bytecodealliance/wasmtime/releases/download/v{version}/wasi_snapshot_preview1.reactor.wasm".format(version = wasmtime_version),
 )
 
