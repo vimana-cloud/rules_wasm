@@ -88,13 +88,14 @@ def _package_directory(srcs, package_name):
     Return the relative path to the common direct parent of a list of source files.
     Fail if the files do not share a single common direct parent.
     """
-    package_paths = set([paths.dirname(src.path) for src in srcs])
+    # Use a dict instead of a set for compatibility with Bazel 7.
+    package_paths = {paths.dirname(src.path): None for src in srcs}
     if len(package_paths) == 0:
         fail("No source files in {}".format(package_name))
     if len(package_paths) > 1:
         fail("All source files for {} must be in the same directory".format(package_name))
     # Use a relative path to indicate that this is not a system package.
-    return "./{}".format(package_paths.pop())
+    return "./{}".format(package_paths.popitem()[0])
 
 def _go_module_impl(ctx):
     world = ctx.attr.world or ctx.label.name
@@ -110,13 +111,14 @@ def _go_module_impl(ctx):
     inputs.extend(cm_library.srcs)
 
     dep_arguments = []
-    all_importpaths = set()
+    # Use a dict instead of a set for compatibility with Bazel 7.
+    all_importpaths = {}
     for dep in ctx.attr.deps:
         for archive_data in dep[GoArchive].transitive.to_list():
             importpath = archive_data.importpath
             if importpath in all_importpaths:
                 continue
-            all_importpaths.add(importpath)
+            all_importpaths[importpath] = None
 
             package_srcs = list(archive_data.srcs)
             inputs.extend(package_srcs)
